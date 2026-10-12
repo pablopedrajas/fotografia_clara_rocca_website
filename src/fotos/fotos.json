@@ -6,17 +6,17 @@
     "seleccionada": true,
     "orden": 1
   },
-  "salzburgo-vista-rio-salzach.jpg": {
-    "alt": "Vista de Salzburgo al atardecer con el río Salzach, las cúpulas del casco antiguo y las montañas al fondo",
+  "cala-aguas-turquesas.jpg": {
+    "alt": "Cala de aguas turquesas bajo un acantilado, con una lancha fondeada junto a las rocas",
     "categoria": "Paisaje",
     "lado": "detras",
-    "orden": 2
+    "orden": 2,
+    "seleccionada": true
   },
-  "retrato-mujer-londres.jpg": {
-    "alt": "Retrato de una mujer sonriente con gafas y plumífero negro frente a un edificio victoriano con banderas británicas en Londres",
-    "categoria": "Retrato",
+  "ciudad-valle-montana-atardecer.jpg": {
+    "alt": "Ciudad en un valle vista desde lo alto, con montañas y nubes encendidas por el atardecer",
+    "categoria": "Paisaje",
     "lado": "detras",
-    "seleccionada": true,
     "orden": 3
   },
   "gastronomia-plato-salsa-tomate.jpg": {
@@ -25,94 +25,94 @@
     "lado": "detras",
     "orden": 4
   },
-  "barcelona-edificio-modernista.jpg": {
-    "alt": "Fachada modernista de un edificio de Barcelona con balcones de forja y miradores verdes, entre plátanos y un taxi en movimiento",
+  "londres-noria-farolas.jpg": {
+    "alt": "Farolas encendidas del puente de Westminster con la noria London Eye al fondo bajo un cielo dorado",
     "categoria": "Arquitectura",
     "lado": "detras",
     "orden": 5
+  },
+  "salzburgo-vista-rio-salzach.jpg": {
+    "alt": "Vista de Salzburgo al atardecer con el río Salzach, las cúpulas del casco antiguo y las montañas al fondo",
+    "categoria": "Paisaje",
+    "lado": "detras",
+    "orden": 6
+  },
+  "farolillos-chinos-noche.jpg": {
+    "alt": "Farolillos chinos rojos encendidos a la entrada de un restaurante, de noche y bajo la lluvia",
+    "categoria": "Reportaje",
+    "lado": "detras",
+    "orden": 7
+  },
+  "toledo-torre-mudejar.jpg": {
+    "alt": "Torre mudéjar de ladrillo entre las fachadas de una calle estrecha de Toledo, bajo un cielo azul",
+    "categoria": "Arquitectura",
+    "lado": "detras",
+    "orden": 8
+  },
+  "sendero-pinar.jpg": {
+    "alt": "Sendero de tierra entre pinos y flores amarillas, con el valle al fondo",
+    "categoria": "Paisaje",
+    "lado": "detras",
+    "orden": 9
+  },
+  "gastronomia-desayuno-huevo-poche.jpg": {
+    "alt": "Desayuno con huevo poché sobre pan de semillas, ensalada de verduras picadas, yogur con frutos rojos y zumo de naranja",
+    "categoria": "Gastronomía",
+    "lado": "detras",
+    "orden": 10
   },
   "retrato-hombre-calle.jpg": {
     "alt": "Retrato de un hombre con gafas de sol y camisa de lino en una calle peatonal de edificios clásicos",
     "categoria": "Retrato",
     "lado": "detras",
     "seleccionada": true,
-    "orden": 6
-  },
-  "cala-aguas-turquesas.jpg": {
-    "alt": "Cala de aguas turquesas bajo un acantilado, con una lancha fondeada junto a las rocas",
-    "categoria": "Paisaje",
-    "lado": "detras",
-    "orden": 7
-  },
-  "farolillos-chinos-noche.jpg": {
-    "alt": "Farolillos chinos rojos encendidos a la entrada de un restaurante, de noche y bajo la lluvia",
-    "categoria": "Reportaje",
-    "lado": "detras",
-    "orden": 8
-  },
-  "londres-noria-farolas.jpg": {
-    "alt": "Farolas encendidas del puente de Westminster con la noria London Eye al fondo bajo un cielo dorado",
-    "categoria": "Arquitectura",
-    "lado": "detras",
-    "orden": 9
-  },
-  "viena-iglesia-san-pedro.jpg": {
-    "alt": "Cúpula verde y reloj de la iglesia de San Pedro de Viena, iluminados por la luz de la tarde",
-    "categoria": "Arquitectura",
-    "lado": "detras",
-    "orden": 10
-  },
-  "gastronomia-desayuno-huevo-poche.jpg": {
-    "alt": "Desayuno con huevo poché sobre pan de semillas, ensalada de verduras picadas, yogur con frutos rojos y zumo de naranja",
-    "categoria": "Gastronomía",
-    "lado": "detras",
     "orden": 11
-  },
-  "ciudad-valle-montana-atardecer.jpg": {
-    "alt": "Ciudad en un valle vista desde lo alto, con montañas y nubes encendidas por el atardecer",
-    "categoria": "Paisaje",
-    "lado": "detras",
-    "orden": 12
   },
   "londres-chinatown-puerta.jpg": {
     "alt": "Puerta del barrio chino de Londres con farolillos rojos y paraguas bajo la lluvia",
     "categoria": "Reportaje",
     "lado": "detras",
+    "orden": 12
+  },
+  "viena-iglesia-san-pedro.jpg": {
+    "alt": "Cúpula verde y reloj de la iglesia de San Pedro de Viena, iluminados por la luz de la tarde",
+    "categoria": "Arquitectura",
+    "lado": "detras",
     "orden": 13
-  },
-  "retrato-hombre-tren.jpg": {
-    "alt": "Retrato de un hombre con gafas de sol mirando por la ventana de un tren",
-    "categoria": "Retrato",
-    "lado": "detras",
-    "orden": 14
-  },
-  "toledo-torre-mudejar.jpg": {
-    "alt": "Torre mudéjar de ladrillo entre las fachadas de una calle estrecha de Toledo, bajo un cielo azul",
-    "categoria": "Arquitectura",
-    "lado": "detras",
-    "orden": 15
-  },
-  "sendero-pinar.jpg": {
-    "alt": "Sendero de tierra entre pinos y flores amarillas, con el valle al fondo",
-    "categoria": "Paisaje",
-    "lado": "detras",
-    "orden": 16
-  },
-  "londres-chinatown-detalle.jpg": {
-    "alt": "Detalle de la puerta del barrio chino de Londres, con dragones dorados, columna lacada y farolillos rojos",
-    "categoria": "Arquitectura",
-    "lado": "detras",
-    "orden": 17
   },
   "columnas-jonicas-atardecer.jpg": {
     "alt": "Tres columnas jónicas vistas desde abajo contra un cielo rosado al atardecer",
     "categoria": "Arquitectura",
     "lado": "detras",
-    "orden": 18
+    "orden": 14
+  },
+  "valle-montanas-bruma.jpg": {
+    "alt": "Valle con casas entre árboles y montañas difuminadas por la bruma al fondo",
+    "categoria": "Paisaje",
+    "lado": "detras",
+    "orden": 15
+  },
+  "barcelona-edificio-modernista.jpg": {
+    "alt": "Fachada modernista de un edificio de Barcelona con balcones de forja y miradores verdes, entre plátanos y un taxi en movimiento",
+    "categoria": "Arquitectura",
+    "lado": "detras",
+    "orden": 16
   },
   "globo-cielo-azul.jpg": {
     "alt": "Globo de rayas rojas y blancas suspendido en un cielo azul limpio",
     "categoria": "Paisaje",
+    "lado": "detras",
+    "orden": 17
+  },
+  "londres-chinatown-detalle.jpg": {
+    "alt": "Detalle de la puerta del barrio chino de Londres, con dragones dorados, columna lacada y farolillos rojos",
+    "categoria": "Arquitectura",
+    "lado": "detras",
+    "orden": 18
+  },
+  "retrato-hombre-tren.jpg": {
+    "alt": "Retrato de un hombre con gafas de sol mirando por la ventana de un tren",
+    "categoria": "Retrato",
     "lado": "detras",
     "orden": 19
   },
@@ -127,11 +127,5 @@
     "categoria": "Arquitectura",
     "lado": "detras",
     "orden": 21
-  },
-  "valle-montanas-bruma.jpg": {
-    "alt": "Valle con casas entre árboles y montañas difuminadas por la bruma al fondo",
-    "categoria": "Paisaje",
-    "lado": "detras",
-    "orden": 22
   }
 }

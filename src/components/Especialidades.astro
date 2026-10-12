@@ -6,15 +6,19 @@ import { especialidades } from '../config/especialidades';
 interface Props { fotos: Foto[] }
 const { fotos } = Astro.props;
 
-const portadaDe = (categoria: string) =>
-  fotos.find((f) => f.categoria === categoria && f.seleccionada) ?? fotos.find((f) => f.categoria === categoria);
+const portadaDe = (categorias: string[], portada?: string) => {
+  const suyas = fotos.filter((f) => categorias.includes(f.categoria));
+  const elegida = portada && suyas.find((f) => f.archivo === portada);
+  if (elegida) return elegida;
+  return suyas.find((f) => f.seleccionada) ?? suyas[0];
+};
 ---
 
 <section class="especialidades" id="especialidades" aria-labelledby="t-especialidades">
   <h2 class="titulo-seccion" id="t-especialidades">Especialidades</h2>
   <ul>
     {especialidades.map((e) => {
-      const foto = portadaDe(e.categoria);
+      const foto = portadaDe(e.categorias, e.portada);
       return (
         <li>
           <a href={ruta(`/${e.slug}/`)}>

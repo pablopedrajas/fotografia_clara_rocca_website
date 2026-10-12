@@ -3,7 +3,7 @@
  * pensada para posicionar en Google por esa búsqueda concreta.
  *
  * Para que una foto aparezca en la página de una especialidad, ponle en
- * src/fotos/fotos.json la misma "categoria" que el campo `categoria` de aquí.
+ * src/fotos/fotos.json una "categoria" que esté en el campo `categorias` de aquí.
  *
  * Si en sitio.ts se rellena la ciudad, se añade sola a los títulos
  * («Fotógrafa de bodas en …»), que es lo que más pesa en el SEO local.
@@ -25,8 +25,10 @@ export interface Especialidad {
   nombre: string;
   /** Lo que se busca en Google, sin la ciudad: «Fotógrafa de bodas» */
   busqueda: string;
-  /** Categoría de las fotos en fotos.json */
-  categoria: string;
+  /** Categorías de fotos de fotos.json que se muestran en la página */
+  categorias: string[];
+  /** Foto que se marca con lápiz en su tira y sirve de miniatura en la portada (nombre de archivo) */
+  portada?: string;
   /** Frase de la lista de especialidades de la portada */
   resumen: string;
   /** Meta description, máx. ~155 caracteres (la ciudad se añade si existe) */
@@ -43,12 +45,12 @@ export const especialidades: Especialidad[] = [
     slug: 'bodas',
     nombre: 'Bodas',
     busqueda: 'Fotógrafa de bodas',
-    categoria: 'Bodas',
+    categorias: ['Bodas'],
     resumen: 'Vuestro día contado de principio a fin, sin poses forzadas.',
     descripcion:
       'Clara Rocca, fotógrafa de bodas y modelo profesional. Reportajes naturales para parejas que no se sienten cómodas delante de una cámara.',
     entradilla:
-      'La mayoría de las parejas nunca se han puesto delante de una cámara profesional. Clara sí, durante más de diez años, y sabe cómo haceros olvidar que está ahí.',
+      'La mayoría de las parejas nunca se han puesto delante de una cámara profesional. Clara sí: es modelo profesional y sabe cómo haceros olvidar que está ahí.',
     parrafos: [
       'Una boda pasa deprisa. Clara la cuenta entera: los preparativos, la ceremonia, las miradas que nadie más ve y la fiesta hasta el final. Trabaja con discreción durante los momentos importantes y dirige con calma cuando toca hacer los retratos de pareja.',
       'Su experiencia como modelo se nota en esos minutos de retrato: os dice dónde mirar, qué hacer con las manos y cómo colocaros para que la luz os favorezca, sin que parezca una sesión de estudio.',
@@ -72,10 +74,43 @@ export const especialidades: Especialidad[] = [
     ],
   },
   {
+    slug: 'viajes',
+    nombre: 'Viajes y paisajes',
+    busqueda: 'Fotografía de viajes y turismo',
+    categorias: ['Paisaje', 'Arquitectura', 'Retrato'],
+    portada: 'cala-aguas-turquesas.jpg',
+    resumen: 'Destinos, alojamientos y personas en el lugar que quieren recordar.',
+    descripcion:
+      'Fotografía de viajes y turismo de Clara Rocca: imágenes de destinos, hoteles y alojamientos, y sesiones de fotos para quien quiere volver de su viaje con buenas fotos suyas.',
+    entradilla:
+      'Clara fotografía los lugares como los recuerda quien los visita: la luz de una tarde en Salzburgo, el agua de una cala o una calle estrecha de Toledo.',
+    parrafos: [
+      'Trabaja con dos tipos de encargo. Por un lado, negocios que viven de que la gente quiera ir: hoteles, casas rurales, apartamentos turísticos, restaurantes con vistas, oficinas de turismo y marcas de viaje que necesitan fotos que den ganas de reservar.',
+      'Por otro, personas que viajan y quieren volver con fotos suyas en el destino, más allá del selfie. Su experiencia como modelo hace que estas sesiones sean naturales: elige el sitio y la hora, y te dice cómo colocarte para que el lugar y tú salgáis bien a la vez.',
+    ],
+    pasos: [
+      { titulo: 'Contáis el encargo', texto: 'El lugar, las fechas y para qué vais a usar las fotos: la web de un alojamiento, una campaña o el recuerdo de un viaje.' },
+      { titulo: 'La sesión', texto: 'Clara planifica los sitios y la luz del día para cada foto, y aprovecha lo que el lugar ofrece en ese momento.' },
+      { titulo: 'La entrega', texto: 'Recibís las fotos seleccionadas y editadas, listas para usarlas donde las necesitéis.' },
+    ],
+    preguntas: [
+      {
+        pregunta: '¿Hacéis fotos para hoteles y alojamientos?',
+        respuesta:
+          'Sí. Clara fotografía espacios, entorno y detalles pensando en lo que el viajero busca al comparar dónde dormir. Cuéntale qué tipo de alojamiento tienes y dónde vas a publicar las fotos.',
+      },
+      {
+        pregunta: '¿Puede hacerme una sesión durante mi viaje?',
+        respuesta:
+          'Escríbele con el destino y las fechas. Te responderá con su disponibilidad y el presupuesto.',
+      },
+    ],
+  },
+  {
     slug: 'bautizos',
     nombre: 'Bautizos',
     busqueda: 'Fotógrafa de bautizos',
-    categoria: 'Bautizos',
+    categorias: ['Bautizos'],
     resumen: 'La ceremonia y la familia, con la discreción que pide el momento.',
     descripcion:
       'Clara Rocca, fotógrafa de bautizos. Reportajes discretos de la ceremonia y la celebración, con retratos de familia naturales.',
@@ -106,7 +141,7 @@ export const especialidades: Especialidad[] = [
     slug: 'comuniones',
     nombre: 'Comuniones',
     busqueda: 'Fotógrafa de comuniones',
-    categoria: 'Comuniones',
+    categorias: ['Comuniones'],
     resumen: 'Retratos con los que los niños se reconocen, sin sesiones eternas.',
     descripcion:
       'Clara Rocca, fotógrafa de comuniones. Sesiones cortas y divertidas en las que los niños se sienten cómodos y salen como son.',
@@ -137,12 +172,12 @@ export const especialidades: Especialidad[] = [
     slug: 'book-de-modelo',
     nombre: 'Book de modelo',
     busqueda: 'Book de modelo',
-    categoria: 'Book de modelo',
-    resumen: 'Un book hecho por alguien que lleva diez años trabajando como modelo.',
+    categorias: ['Book de modelo'],
+    resumen: 'Un book hecho por alguien que también trabaja como modelo.',
     descripcion:
       'Book de fotos para modelos con Clara Rocca, fotógrafa y modelo profesional con más de diez años de experiencia en el sector.',
     entradilla:
-      'Clara lleva más de diez años trabajando como modelo. Sabe qué fotos tiene que tener un book y cómo moverse delante de la cámara para conseguirlas.',
+      'Clara también trabaja como modelo. Sabe qué fotos tiene que tener un book y cómo moverse delante de la cámara para conseguirlas.',
     parrafos: [
       'Un book necesita variedad: retratos limpios, cuerpo entero, distintos planos y estilos. Clara planifica la sesión para cubrir todo lo necesario sin repetir fotos parecidas.',
       'Si estás empezando, te enseña a posar durante la propia sesión: dónde poner el peso, cómo colocar las manos y cómo cambiar de expresión entre disparo y disparo. Es la parte que más agradecen quienes nunca han trabajado con un fotógrafo.',

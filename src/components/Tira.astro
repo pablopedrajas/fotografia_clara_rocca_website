@@ -3,13 +3,14 @@ import type { Foto } from '../lib/fotos';
 import { sitio } from '../config/sitio';
 
 /** Una sola tira de película, cruzando la página, con las fotos de una especialidad. */
-interface Props { fotos: Foto[] }
-const { fotos } = Astro.props;
+interface Props { fotos: Foto[]; portada?: string }
+const { fotos, portada } = Astro.props;
 const FOTOGRAMAS = 8;
 // La foto elegida cae en el 4.º fotograma, que se ve entero tanto en móvil como en escritorio
 const MARCA = 3;
 const n = fotos.length;
-const elegida = Math.max(0, fotos.findIndex((f) => f.seleccionada));
+const porNombre = portada ? fotos.findIndex((f) => f.archivo === portada) : -1;
+const elegida = porNombre >= 0 ? porNombre : Math.max(0, fotos.findIndex((f) => f.seleccionada));
 const lista = n ? Array.from({ length: FOTOGRAMAS }, (_, i) => fotos[(((i - MARCA + elegida) % n) + n) % n]) : [];
 // Cada foto real se enfoca con el teclado una sola vez
 const vistas = new Set<string>();

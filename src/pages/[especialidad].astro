@@ -14,7 +14,7 @@ export function getStaticPaths() {
 
 const { e } = Astro.props as { e: Especialidad };
 const todas = await cargarFotos();
-const fotos = todas.filter((f) => f.categoria === e.categoria);
+const fotos = todas.filter((f) => e.categorias.includes(f.categoria));
 const ciudad = sitio.contacto.ciudad;
 
 const h1 = ciudad ? `${e.busqueda} en ${ciudad}` : e.busqueda;
@@ -63,7 +63,7 @@ if (sitio.url) {
     <p class="entradilla">{e.entradilla}</p>
   </header>
 
-  <Tira fotos={fotos} />
+  <Tira fotos={fotos} portada={e.portada} />
 
   <section class="cuerpo" aria-label={`Cómo trabaja Clara en ${e.nombre.toLowerCase()}`}>
     <div class="parrafos">

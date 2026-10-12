@@ -12,22 +12,22 @@ export const sitio = {
 
   /** Texto que aparece en Google y al compartir el enlace. */
   descripcion:
-    'Clara Rocca, fotógrafa y modelo profesional con más de diez años de experiencia a los dos lados de la cámara.',
+    'Clara Rocca, fotógrafa y modelo profesional en Alicante. Bodas, viajes, paisaje, arquitectura y retrato, con más de diez años de experiencia en el sector.',
 
   /** Frase bajo el nombre en la portada. */
-  lema: 'Fotógrafa y modelo. Más de diez años a los dos lados de la cámara.',
+  lema: 'Fotógrafa y modelo en Alicante. Mirar despacio, recordar siempre.',
 
   /** Texto de la sección «Los dos lados». */
   sobre: [
-    'Llevo más de diez años trabajando delante y detrás del objetivo. Como modelo aprendí lo que se siente al otro lado: los nervios, la luz en la cara, la duda de qué hacer con las manos.',
-    'Como fotógrafa uso eso a tu favor. Dirijo cada sesión sabiendo exactamente lo que necesitas para estar cómoda y salir como eres.',
+    'Llevo más de diez años en el sector, delante del objetivo como modelo y, desde hace cinco, también detrás como fotógrafa. Como modelo aprendí lo que se siente al otro lado: los nervios, la luz en la cara, la duda de qué hacer con las manos.',
+    'Como fotógrafa uso eso a tu favor. Estudié Diseño Gráfico y me interesan las fotos que transmiten algo: la calma de un paisaje, la textura de una fachada, la última luz del día. Miro sin prisa y dirijo cada sesión sabiendo lo que necesitas para estar cómoda y salir como eres.',
   ],
 
   contacto: {
-    email: '',
+    email: 'claradepajr@gmail.com',
     telefono: '',
-    instagram: '', // solo el usuario, sin @
-    ciudad: '',
+    instagram: 'clararoccap', // solo el usuario, sin @
+    ciudad: 'Alicante',
   },
 
   /**
@@ -35,5 +35,5 @@ export const sitio = {
    * Se añaden a las especialidades en el desplegable del formulario.
    * Ejemplo: ['Retrato', 'Moda y marcas']
    */
-  servicios: [] as string[],
+  servicios: ['Historias personales'] as string[],
 };
