@@ -13,12 +13,18 @@ const total = POR_TIRA * TIRAS;
 const fotogramas = Array.from({ length: total }, (_, i) => (fotos.length ? fotos[i % fotos.length] : null));
 
 // Fotogramas marcados con lápiz graso: los «seleccionada» o, si no hay, tres repartidos
-let marcados = new Set<number>();
-fotogramas.forEach((f, i) => {
-  if (f?.seleccionada && i < fotos.length) marcados.add(i);
+// Cada foto elegida se marca en una tira distinta y en las columnas centrales,
+// que son las que se ven enteras aunque la hoja se salga por los lados
+const elegidas = fotos.filter((f) => f.seleccionada).slice(0, 3);
+const ordenMarca: number[] = [];
+elegidas.forEach((foto, k) => {
+  for (const fila of [1 + (k % 3), 1, 2, 3]) {
+    const col = [2, 3, 4, 5, 6].find((c) => fotogramas[fila * POR_TIRA + c]?.id === foto.id);
+    const i = col === undefined ? -1 : fila * POR_TIRA + col;
+    if (i >= 0 && !ordenMarca.includes(i)) { ordenMarca.push(i); break; }
+  }
 });
-if (!marcados.size && fotos.length) marcados = new Set([11, 21, 33].map((i) => i % total));
-const ordenMarca = [...marcados];
+if (!ordenMarca.length && fotos.length) ordenMarca.push(11, 21, 33);
 
 // Trazos de lápiz a mano alzada (viewBox 150×100, el fotograma es 3:2)
 const trazos = [
