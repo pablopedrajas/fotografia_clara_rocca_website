@@ -1,4 +1,5 @@
 ---
+import { ruta } from '../lib/ruta';
 import type { Foto } from '../lib/fotos';
 import { especialidades } from '../config/especialidades';
 
@@ -16,7 +17,7 @@ const portadaDe = (categoria: string) =>
       const foto = portadaDe(e.categoria);
       return (
         <li>
-          <a href={`/${e.slug}/`}>
+          <a href={ruta(`/${e.slug}/`)}>
             <span class="nombre">{e.nombre}</span>
             <span class="resumen">{e.resumen}</span>
             {foto && (

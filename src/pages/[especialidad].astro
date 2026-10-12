@@ -1,4 +1,5 @@
 ---
+import { ruta } from '../lib/ruta';
 import Base from '../layouts/Base.astro';
 import Tira from '../components/Tira.astro';
 import Trabajo from '../components/Trabajo.astro';
@@ -57,7 +58,7 @@ if (sitio.url) {
 
 <Base titulo={titulo} descripcion={descripcion} ogFoto={fotos[0]} jsonld={jsonld} hayTrabajo={todas.length > 0}>
   <header class="cabecera">
-    <p class="migas"><a href="/">{sitio.nombre}</a> <span aria-hidden="true">/</span> {e.nombre}</p>
+    <p class="migas"><a href={ruta('/')}>{sitio.nombre}</a> <span aria-hidden="true">/</span> {e.nombre}</p>
     <h1>{h1}</h1>
     <p class="entradilla">{e.entradilla}</p>
   </header>
@@ -98,7 +99,7 @@ if (sitio.url) {
   <nav class="otras" aria-label="Otras especialidades">
     <h2>También fotografía</h2>
     <ul>
-      {otras.map((o) => <li><a href={`/${o.slug}/`}>{o.nombre}</a></li>)}
+      {otras.map((o) => <li><a href={ruta(`/${o.slug}/`)}>{o.nombre}</a></li>)}
     </ul>
   </nav>
 
