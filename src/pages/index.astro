@@ -1,125 +1,44 @@
 ---
-import '@fontsource-variable/bodoni-moda/opsz.css';
-import '@fontsource-variable/hanken-grotesk';
-import '@fontsource/doto/latin-500.css';
-import '../styles/global.css';
+import Base from '../layouts/Base.astro';
 import { sitio } from '../config/sitio';
+import { especialidades } from '../config/especialidades';
 import { cargarFotos } from '../lib/fotos';
 import HojaContactos from '../components/HojaContactos.astro';
+import Especialidades from '../components/Especialidades.astro';
 import DosLados from '../components/DosLados.astro';
 import Trabajo from '../components/Trabajo.astro';
 import Contacto from '../components/Contacto.astro';
 
 const fotos = await cargarFotos();
-const portadaOg = fotos.find((f) => f.seleccionada) ?? fotos[0];
-const { email, telefono, instagram } = sitio.contacto;
-const hayContacto = email || telefono || instagram;
-const titulo = `${sitio.nombre} · Fotógrafa y modelo`;
-const canonica = sitio.url ? new URL('/', sitio.url).href : undefined;
-const ogImagen = portadaOg && sitio.url ? new URL(portadaOg.grande, sitio.url).href : undefined;
+const { email, instagram, ciudad } = sitio.contacto;
+const titulo = `${sitio.nombre} · Fotógrafa y modelo${ciudad ? ` en ${ciudad}` : ''}`;
 
-const jsonld = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: sitio.nombre,
-  jobTitle: ['Fotógrafa', 'Modelo'],
-  description: sitio.descripcion,
-  ...(sitio.url && { url: sitio.url }),
-  ...(email && { email }),
-  ...(instagram && { sameAs: [`https://instagram.com/${instagram}`] }),
-};
+const jsonld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: sitio.nombre,
+    jobTitle: ['Fotógrafa', 'Modelo'],
+    description: sitio.descripcion,
+    knowsAbout: especialidades.map((e) => e.busqueda),
+    ...(sitio.url && { url: sitio.url }),
+    ...(email && { email }),
+    ...(ciudad && { address: { '@type': 'PostalAddress', addressLocality: ciudad, addressCountry: 'ES' } }),
+    ...(instagram && { sameAs: [`https://instagram.com/${instagram}`] }),
+  },
+];
 ---
 
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{titulo}</title>
-    <meta name="description" content={sitio.descripcion} />
-    {canonica && <link rel="canonical" href={canonica} />}
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={titulo} />
-    <meta property="og:description" content={sitio.descripcion} />
-    {ogImagen && <meta property="og:image" content={ogImagen} />}
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#e9eae6" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <script is:inline>document.documentElement.classList.add('js');</script>
-    <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
-  </head>
-  <body>
-    <a class="saltar" href="#principal">Saltar al contenido</a>
-
-    <!-- Textura de cera para los trazos de lápiz graso -->
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-      <filter id="cera" x="-10%" y="-10%" width="120%" height="120%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="ruido" />
-        <feDisplacementMap in="SourceGraphic" in2="ruido" scale="2.2" result="trazo" />
-        <feComposite in="trazo" in2="ruido" operator="arithmetic" k1="0" k2="1" k3="-0.35" k4="0.12" />
-      </filter>
-    </svg>
-
-    <nav class="barra" aria-label="Principal">
-      <a class="marca-nombre" href="#nombre">{sitio.nombre}</a>
-      <ul>
-        {fotos.length > 0 && <li><a href="#trabajo">Trabajo</a></li>}
-        <li><a href="#dos-lados">Los dos lados</a></li>
-        {hayContacto && <li><a class="cta" href="#contacto">Reservar sesión</a></li>}
-      </ul>
-    </nav>
-
-    <main id="principal">
-      <HojaContactos fotos={fotos} />
-      <DosLados fotos={fotos} />
-      <Trabajo fotos={fotos} />
-      <Contacto />
-    </main>
-
-    <footer class="pie">
-      <span>© {new Date().getFullYear()} {sitio.nombre}</span>
-      <span>Todas las fotografías son propiedad de {sitio.nombre}.</span>
-    </footer>
-  </body>
-</html>
-
-<style>
-  .barra {
-    position: fixed;
-    inset: 0 0 auto;
-    z-index: 20;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.1rem var(--margen);
-    background: color-mix(in srgb, var(--papel) 88%, transparent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-  .barra a { text-decoration: none; }
-  .marca-nombre { font: 500 1.35rem/1 var(--serif); letter-spacing: -0.01em; }
-  .barra ul { display: flex; align-items: center; gap: clamp(.9rem, 2.5vw, 2rem); list-style: none; margin: 0; padding: 0; }
-  .barra ul a { font-size: .9375rem; }
-  .barra ul a:not(.cta):hover { text-decoration: underline; text-decoration-color: var(--lapiz); text-underline-offset: .3em; }
-  .cta {
-    background: var(--pelicula);
-    color: var(--papel);
-    padding: .55rem 1rem;
-  }
-  .cta:hover { background: var(--lapiz); }
-  @media (max-width: 560px) {
-    .barra ul li:not(:last-child) { display: none; }
-    .barra ul li:only-child { display: block; }
-  }
-
-  .pie {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: .5rem 2rem;
-    padding: 1.5rem var(--margen);
-    font-size: .875rem;
-    color: var(--grafito-suave);
-  }
-</style>
+<Base
+  titulo={titulo}
+  descripcion={sitio.descripcion}
+  ogFoto={fotos.find((f) => f.seleccionada) ?? fotos[0]}
+  jsonld={jsonld}
+  hayTrabajo={fotos.length > 0}
+>
+  <HojaContactos fotos={fotos} />
+  <Especialidades fotos={fotos} />
+  <DosLados fotos={fotos} />
+  <Trabajo fotos={fotos} />
+  <Contacto />
+</Base>

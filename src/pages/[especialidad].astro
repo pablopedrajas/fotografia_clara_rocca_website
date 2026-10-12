@@ -1,0 +1,188 @@
+---
+import Base from '../layouts/Base.astro';
+import Tira from '../components/Tira.astro';
+import Trabajo from '../components/Trabajo.astro';
+import Contacto from '../components/Contacto.astro';
+import { sitio } from '../config/sitio';
+import { especialidades, type Especialidad } from '../config/especialidades';
+import { cargarFotos } from '../lib/fotos';
+
+export function getStaticPaths() {
+  return especialidades.map((e) => ({ params: { especialidad: e.slug }, props: { e } }));
+}
+
+const { e } = Astro.props as { e: Especialidad };
+const todas = await cargarFotos();
+const fotos = todas.filter((f) => f.categoria === e.categoria);
+const ciudad = sitio.contacto.ciudad;
+
+const h1 = ciudad ? `${e.busqueda} en ${ciudad}` : e.busqueda;
+const titulo = `${h1} · ${sitio.nombre}`;
+const descripcion = ciudad ? `${e.descripcion} En ${ciudad}.` : e.descripcion;
+const otras = especialidades.filter((o) => o.slug !== e.slug);
+const urlPagina = sitio.url ? new URL(`/${e.slug}/`, sitio.url).href : undefined;
+
+const jsonld: object[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: h1,
+    serviceType: e.busqueda,
+    description: descripcion,
+    provider: { '@type': 'Person', name: sitio.nombre, jobTitle: ['Fotógrafa', 'Modelo'] },
+    ...(ciudad && { areaServed: { '@type': 'City', name: ciudad } }),
+    ...(urlPagina && { url: urlPagina }),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: e.preguntas.map((p) => ({
+      '@type': 'Question',
+      name: p.pregunta,
+      acceptedAnswer: { '@type': 'Answer', text: p.respuesta },
+    })),
+  },
+];
+if (sitio.url) {
+  jsonld.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: sitio.nombre, item: new URL('/', sitio.url).href },
+      { '@type': 'ListItem', position: 2, name: e.nombre, item: urlPagina },
+    ],
+  });
+}
+---
+
+<Base titulo={titulo} descripcion={descripcion} ogFoto={fotos[0]} jsonld={jsonld} hayTrabajo={todas.length > 0}>
+  <header class="cabecera">
+    <p class="migas"><a href="/">{sitio.nombre}</a> <span aria-hidden="true">/</span> {e.nombre}</p>
+    <h1>{h1}</h1>
+    <p class="entradilla">{e.entradilla}</p>
+  </header>
+
+  <Tira fotos={fotos} />
+
+  <section class="cuerpo" aria-label={`Cómo trabaja Clara en ${e.nombre.toLowerCase()}`}>
+    <div class="parrafos">
+      {e.parrafos.map((p) => <p>{p}</p>)}
+    </div>
+    <div class="pasos">
+      <h2>Cómo es el encargo</h2>
+      <ol>
+        {e.pasos.map((p) => (
+          <li>
+            <h3>{p.titulo}</h3>
+            <p>{p.texto}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <Trabajo fotos={fotos} titulo={e.nombre} />
+
+  <section class="preguntas" aria-labelledby="t-preguntas">
+    <h2 class="titulo-seccion" id="t-preguntas">Preguntas frecuentes</h2>
+    <div class="lista">
+      {e.preguntas.map((p, i) => (
+        <details open={i === 0}>
+          <summary>{p.pregunta}</summary>
+          <p>{p.respuesta}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <nav class="otras" aria-label="Otras especialidades">
+    <h2>También fotografía</h2>
+    <ul>
+      {otras.map((o) => <li><a href={`/${o.slug}/`}>{o.nombre}</a></li>)}
+    </ul>
+  </nav>
+
+  <Contacto tipo={e.nombre} />
+</Base>
+
+<style>
+  .cabecera {
+    padding: clamp(7rem, 14vw, 10rem) var(--margen) clamp(1rem, 3vw, 2rem);
+    display: grid;
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+  }
+  .migas { margin: 0; font-size: .9375rem; color: var(--grafito-suave); }
+  .migas a { color: var(--grafito); text-decoration-color: var(--lapiz); text-underline-offset: .25em; }
+  h1 {
+    margin: 0;
+    max-width: 12ch;
+    font: 400 clamp(3.25rem, 11vw, 10rem)/0.88 var(--serif);
+    font-optical-sizing: auto;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+  .entradilla {
+    margin: 0;
+    max-width: 40ch;
+    font-size: clamp(var(--t-0), 2.4vw, var(--t-1));
+    line-height: 1.45;
+  }
+
+  .cuerpo {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    padding: clamp(3rem, 7vw, 6rem) var(--margen) clamp(5rem, 10vw, 8rem);
+  }
+  .parrafos p { max-width: 58ch; margin: 0 0 1.1em; line-height: 1.7; }
+  .pasos h2 { font: 400 var(--t-2)/1.15 var(--serif); margin: 0 0 1.5rem; }
+  .pasos ol { list-style: none; margin: 0; padding: 0; counter-reset: paso; display: grid; gap: 1.5rem; }
+  .pasos li {
+    counter-increment: paso;
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    column-gap: .75rem;
+  }
+  /* Los pasos se numeran como el borde de la película */
+  .pasos li::before {
+    content: counter(paso);
+    grid-row: span 2;
+    font: 500 1.35rem/1.2 var(--borde);
+    color: var(--lapiz);
+  }
+  .pasos h3 { margin: 0 0 .25rem; font-size: var(--t-0); font-weight: 600; }
+  .pasos li p { margin: 0; color: var(--grafito-suave); line-height: 1.55; }
+
+  .preguntas { padding: 0 var(--margen) clamp(4rem, 9vw, 7rem); }
+  .lista { max-width: 50rem; }
+  details { border-top: 1px solid #c9cbc6; }
+  details:last-child { border-bottom: 1px solid #c9cbc6; }
+  summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 0;
+    font: 400 var(--t-1)/1.3 var(--serif);
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; font-family: var(--sans); color: var(--lapiz); transition: rotate .3s var(--ease); }
+  details[open] summary::after { rotate: 45deg; }
+  details p { margin: 0 0 1.25rem; max-width: 60ch; color: var(--grafito-suave); line-height: 1.65; }
+
+  .otras { padding: 0 var(--margen) clamp(4rem, 9vw, 7rem); }
+  .otras h2 { font-size: var(--t-0); font-weight: 600; margin: 0 0 .75rem; }
+  .otras ul { display: flex; flex-wrap: wrap; gap: .5rem 2.25rem; list-style: none; margin: 0; padding: 0; }
+  .otras a {
+    font: 400 var(--t-2)/1.2 var(--serif);
+    text-decoration: none;
+    background: linear-gradient(var(--lapiz), var(--lapiz)) 0 100% / 0 2px no-repeat;
+    transition: background-size .35s var(--ease);
+  }
+  .otras a:hover, .otras a:focus-visible { background-size: 100% 2px; }
+
+  @media (max-width: 900px) {
+    .cuerpo { grid-template-columns: 1fr; }
+  }
+</style>

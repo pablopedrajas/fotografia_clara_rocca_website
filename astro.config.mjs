@@ -5,6 +5,7 @@ import { sitio } from './src/config/sitio.ts';
 
 export default defineConfig({
   site: sitio.url || undefined,
+  trailingSlash: 'always',
   integrations: sitio.url ? [sitemap()] : [],
   image: {
     // Las fotos se sirven optimizadas en WebP a varios tamaños

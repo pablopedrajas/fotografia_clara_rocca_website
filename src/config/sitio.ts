@@ -31,8 +31,9 @@ export const sitio = {
   },
 
   /**
-   * Tipos de sesión que ofrece Clara. Se muestran en el formulario de contacto.
-   * Ejemplo: ['Retrato', 'Book de modelo', 'Moda y marcas']
+   * Otros tipos de sesión que ofrece Clara y que no tienen página propia.
+   * Se añaden a las especialidades en el desplegable del formulario.
+   * Ejemplo: ['Retrato', 'Moda y marcas']
    */
   servicios: [] as string[],
 };

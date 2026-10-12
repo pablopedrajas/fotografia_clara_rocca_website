@@ -1,8 +1,8 @@
 ---
 import type { Foto } from '../lib/fotos';
 
-interface Props { fotos: Foto[] }
-const { fotos } = Astro.props;
+interface Props { fotos: Foto[]; titulo?: string }
+const { fotos, titulo = 'Trabajo' } = Astro.props;
 
 const categorias = [...new Set(fotos.map((f) => f.categoria))];
 const datosVisor = fotos.map(({ id, alt, grande, srcset, categoria }) => ({ id, alt, grande, srcset, categoria }));
@@ -11,7 +11,7 @@ const datosVisor = fotos.map(({ id, alt, grande, srcset, categoria }) => ({ id, 
 {fotos.length > 0 && (
   <section class="trabajo" id="trabajo" aria-labelledby="t-trabajo">
     <div class="cabecera">
-      <h2 class="titulo-seccion" id="t-trabajo">Trabajo</h2>
+      <h2 class="titulo-seccion" id="t-trabajo">{titulo}</h2>
       {categorias.length > 1 && (
         <div class="filtros" role="group" aria-label="Filtrar por tipo de sesión" data-filtros>
           <button aria-pressed="true" data-cat="">Todo</button>

@@ -1,5 +1,10 @@
 ---
 import { sitio } from '../config/sitio';
+import { especialidades } from '../config/especialidades';
+
+interface Props { tipo?: string }
+const { tipo } = Astro.props;
+const opciones = [...new Set([...especialidades.map((e) => e.nombre), ...sitio.servicios])];
 const { email, telefono, instagram, ciudad } = sitio.contacto;
 const hayContacto = email || telefono || instagram;
 const telLimpio = telefono.replace(/[^\d+]/g, '');
@@ -23,24 +28,22 @@ const telLimpio = telefono.replace(/[^\d+]/g, '');
       <form class="formulario" data-form data-email={email}>
         <label>
           <span>Tu nombre</span>
-          <input name="nombre" autocomplete="name" required />
+          <input name="nombre" id="nombre-contacto" autocomplete="name" required />
         </label>
-        {sitio.servicios.length > 0 && (
-          <label>
-            <span>Tipo de sesión</span>
-            <select name="tipo">
-              {sitio.servicios.map((s) => <option>{s}</option>)}
-              <option>Otra cosa</option>
-            </select>
-          </label>
-        )}
+        <label>
+          <span>Tipo de sesión</span>
+          <select name="tipo" id="tipo">
+            {opciones.map((o) => <option selected={o === tipo}>{o}</option>)}
+            <option>Otra cosa</option>
+          </select>
+        </label>
         <label>
           <span>Fecha aproximada</span>
-          <input name="fecha" placeholder="Por ejemplo, finales de noviembre" />
+          <input name="fecha" id="fecha" placeholder="Por ejemplo, finales de noviembre" />
         </label>
         <label>
           <span>Qué tienes en mente</span>
-          <textarea name="mensaje" rows="5" required></textarea>
+          <textarea name="mensaje" id="mensaje" rows="5" required></textarea>
         </label>
         <button type="submit">Escribir a Clara</button>
         <p class="nota">Se abrirá tu programa de correo con el mensaje ya preparado.</p>
@@ -107,7 +110,7 @@ const telLimpio = telefono.replace(/[^\d+]/g, '');
     e.preventDefault();
     const d = new FormData(form);
     const tipo = (d.get('tipo') as string) || '';
-    const asunto = `Sesión${tipo ? ` de ${tipo.toLowerCase()}` : ''} — ${d.get('nombre')}`;
+    const asunto = `${tipo && tipo !== 'Otra cosa' ? tipo : 'Sesión de fotos'}: ${d.get('nombre')}`;
     const lineas = [`Hola Clara, soy ${d.get('nombre')}.`];
     if (tipo) lineas.push(`Me interesa: ${tipo}.`);
     if (d.get('fecha')) lineas.push(`Fecha aproximada: ${d.get('fecha')}.`);

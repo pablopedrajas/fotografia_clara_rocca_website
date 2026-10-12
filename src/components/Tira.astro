@@ -1,0 +1,118 @@
+---
+import type { Foto } from '../lib/fotos';
+import { sitio } from '../config/sitio';
+
+/** Una sola tira de película, cruzando la página, con las fotos de una especialidad. */
+interface Props { fotos: Foto[] }
+const { fotos } = Astro.props;
+const FOTOGRAMAS = 8;
+// La foto elegida cae en el 4.º fotograma, que se ve entero tanto en móvil como en escritorio
+const MARCA = 3;
+const n = fotos.length;
+const elegida = Math.max(0, fotos.findIndex((f) => f.seleccionada));
+const lista = n ? Array.from({ length: FOTOGRAMAS }, (_, i) => fotos[(((i - MARCA + elegida) % n) + n) % n]) : [];
+// Cada foto real se enfoca con el teclado una sola vez
+const vistas = new Set<string>();
+---
+
+{lista.length > 0 && (
+  <div class="tira-mesa">
+    <div class="tira">
+      <div class="canto" aria-hidden="true">
+        <span>{sitio.nombre.toUpperCase()} 400</span>
+        <span class="perforaciones"></span>
+      </div>
+      <div class="fotogramas">
+        {lista.map((f, i) => {
+          const real = !vistas.has(f.id);
+          vistas.add(f.id);
+          return (
+            <button
+              class:list={['fotograma', { vertical: f.vertical }]}
+              data-abrir={f.id}
+              aria-label={`Ver foto: ${f.alt}`}
+              tabindex={real ? 0 : -1}
+              aria-hidden={real ? undefined : 'true'}
+            >
+              <span class="encuadre"><img src={f.mini} alt="" width={f.ancho} height={f.alto} decoding="async" /></span>
+              {i === MARCA && (
+                <svg class="marca" viewBox="-10 -10 170 120" aria-hidden="true">
+                  <path d="M18 56 C 14 22, 70 6, 118 14 C 150 20, 152 70, 120 88 C 86 104, 22 96, 12 66 C 8 52, 30 30, 62 24" pathLength="1" />
+                </svg>
+              )}
+            </button>
+          );
+        })}
+      </div>
+      <div class="canto numeros" aria-hidden="true">
+        {lista.map((_, i) => <><span>{i + 1}</span><span>▸{i + 1}A</span></>)}
+      </div>
+    </div>
+  </div>
+)}
+
+<style>
+  .tira-mesa { overflow: hidden; padding: 2.5rem 0; }
+  .tira {
+    width: max(125vw, 1100px);
+    margin-left: 50%;
+    translate: -50% 0;
+    rotate: 1.6deg;
+    background: var(--pelicula);
+    color: var(--ambar);
+    padding: 0 1rem;
+  }
+  .canto {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    height: 1.55rem;
+    font: 500 .72rem/1 var(--borde);
+    letter-spacing: .08em;
+    white-space: nowrap;
+  }
+  .perforaciones {
+    flex: 1;
+    height: .55rem;
+    background: repeating-linear-gradient(90deg, #262626 0 .75rem, transparent .75rem 1.35rem);
+    border-radius: 2px;
+  }
+  .numeros { justify-content: space-around; }
+  .fotogramas { display: grid; grid-template-columns: repeat(8, 1fr); gap: .9rem; }
+  .fotograma {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    padding: 0; border: 0;
+    background: #121212;
+    cursor: zoom-in;
+  }
+  .encuadre { position: absolute; inset: 0; overflow: hidden; border-radius: 3px; }
+  .fotograma img { width: 100%; height: 100%; object-fit: cover; }
+  .fotograma.vertical img {
+    position: absolute; left: 50%; top: 50%;
+    width: 66.667%; height: 150%;
+    translate: -50% -50%;
+    rotate: -90deg;
+  }
+  .marca {
+    position: absolute; inset: -12% -10%;
+    width: 120%; height: 124%;
+    overflow: visible; pointer-events: none; z-index: 2;
+  }
+  .marca path {
+    fill: none; stroke: var(--lapiz); stroke-width: 5.5;
+    stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 1; stroke-dashoffset: 0;
+    filter: url(#cera);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .marca path { stroke-dashoffset: 1; animation: trazar .9s cubic-bezier(.6, .1, .3, 1) .6s forwards; }
+  }
+  @keyframes trazar { to { stroke-dashoffset: 0; } }
+  @media (max-width: 720px) {
+    .tira { width: 260vw; }
+    .fotogramas { gap: .5rem; }
+    .canto { font-size: .6rem; height: 1.25rem; }
+  }
+</style>
