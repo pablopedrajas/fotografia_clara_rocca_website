@@ -1,0 +1,150 @@
+---
+import type { Foto } from '../lib/fotos';
+import { sitio } from '../config/sitio';
+
+interface Props { fotos: Foto[] }
+const { fotos } = Astro.props;
+
+const elegir = (lado: 'detras' | 'delante') =>
+  fotos.find((f) => f.lado === lado && f.seleccionada) ?? fotos.find((f) => f.lado === lado);
+
+const detras = elegir('detras');
+const delante = elegir('delante');
+const comparar = detras && delante;
+const sola = comparar ? null : (delante ?? detras);
+---
+
+<section class="dos-lados" id="dos-lados" aria-labelledby="t-dos-lados">
+  <div class="texto">
+    <h2 class="titulo-seccion" id="t-dos-lados">Los dos lados</h2>
+    {sitio.sobre.map((p) => <p>{p}</p>)}
+  </div>
+
+  {comparar && (
+    <figure class="comparador" data-comparador style="--corte: 50%">
+      <img class="capa delante" src={delante.grande} srcset={delante.srcset} sizes="(max-width: 900px) 92vw, 55vw" alt={delante.alt} loading="lazy" decoding="async" />
+      <img class="capa detras" src={detras.grande} srcset={detras.srcset} sizes="(max-width: 900px) 92vw, 55vw" alt={detras.alt} loading="lazy" decoding="async" />
+      <span class="etiqueta izq" aria-hidden="true">Detrás de la cámara</span>
+      <span class="etiqueta der" aria-hidden="true">Delante de la cámara</span>
+      <span class="divisoria" aria-hidden="true"><span class="asa"></span></span>
+      <label class="oculto" for="corte">Desliza para pasar de la foto que hizo Clara a una en la que posa ella</label>
+      <input id="corte" type="range" min="0" max="100" value="50" data-corte />
+      <figcaption class="oculto">A la izquierda, una fotografía de Clara. A la derecha, Clara como modelo.</figcaption>
+    </figure>
+  )}
+
+  {sola && (
+    <figure class="comparador">
+      <img class="capa" src={sola.grande} srcset={sola.srcset} sizes="(max-width: 900px) 92vw, 55vw" alt={sola.alt} loading="lazy" decoding="async" />
+    </figure>
+  )}
+</section>
+
+<style>
+  .dos-lados {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: center;
+    padding: clamp(5rem, 12vw, 10rem) var(--margen);
+  }
+  .texto p {
+    max-width: 38ch;
+    font-size: var(--t-1);
+    line-height: 1.45;
+    margin: 0 0 1em;
+  }
+  .texto p + p { font-size: var(--t-0); line-height: 1.6; color: var(--grafito-suave); max-width: 46ch; }
+
+  .comparador {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 4 / 5;
+    background: var(--pelicula);
+    overflow: hidden;
+    touch-action: pan-y;
+    user-select: none;
+  }
+  .capa {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .detras { clip-path: inset(0 calc(100% - var(--corte)) 0 0); }
+
+  .divisoria {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: var(--corte);
+    width: 2px;
+    translate: -1px 0;
+    background: var(--papel);
+    pointer-events: none;
+  }
+  .asa {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 3.25rem; height: 3.25rem;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: var(--papel);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
+  }
+  /* El asa es un obturador de diafragma: seis láminas */
+  .asa::before {
+    content: '';
+    position: absolute; inset: 22%;
+    border-radius: 50%;
+    background: conic-gradient(var(--grafito) 0 30deg, #3b3e42 30deg 60deg, var(--grafito) 60deg 90deg, #3b3e42 90deg 120deg, var(--grafito) 120deg 150deg, #3b3e42 150deg 180deg, var(--grafito) 180deg 210deg, #3b3e42 210deg 240deg, var(--grafito) 240deg 270deg, #3b3e42 270deg 300deg, var(--grafito) 300deg 330deg, #3b3e42 330deg 360deg);
+    transition: inset .3s var(--ease);
+  }
+  .asa::after {
+    content: '';
+    position: absolute; inset: 42%;
+    border-radius: 50%;
+    background: var(--papel);
+  }
+  .comparador:hover .asa::before { inset: 16%; }
+
+  .etiqueta {
+    position: absolute;
+    bottom: 1rem;
+    padding: .35rem .6rem;
+    background: var(--papel);
+    color: var(--grafito);
+    font-size: .875rem;
+    line-height: 1.2;
+    pointer-events: none;
+  }
+  .izq { left: 1rem; }
+  .der { right: 1rem; }
+
+  input[type='range'] {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+  }
+  .comparador:has(input:focus-visible) .asa { outline: 2px solid var(--lapiz); outline-offset: 3px; }
+
+  @media (max-width: 900px) {
+    .dos-lados { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-comparador]').forEach((fig) => {
+    const input = fig.querySelector<HTMLInputElement>('[data-corte]')!;
+    const fijar = (v: number) => fig.style.setProperty('--corte', `${Math.min(100, Math.max(0, v))}%`);
+    input.addEventListener('input', () => fijar(+input.value));
+    // Seguir el puntero sin necesidad de arrastrar el asa
+    fig.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      const r = fig.getBoundingClientRect();
+      const v = ((e.clientX - r.left) / r.width) * 100;
+      input.value = String(Math.round(v));
+      fijar(v);
+    });
+  });
+</script>

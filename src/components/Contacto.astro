@@ -1,0 +1,118 @@
+---
+import { sitio } from '../config/sitio';
+const { email, telefono, instagram, ciudad } = sitio.contacto;
+const hayContacto = email || telefono || instagram;
+const telLimpio = telefono.replace(/[^\d+]/g, '');
+---
+
+{hayContacto && (
+  <section class="contacto" id="contacto" aria-labelledby="t-contacto">
+    <div class="intro">
+      <h2 class="titulo-seccion" id="t-contacto">Hablemos de tu sesión</h2>
+      <p>Cuéntale a Clara qué tienes en mente y te responderá con disponibilidad y presupuesto.</p>
+      <ul class="vias">
+        {email && <li><a href={`mailto:${email}`}>{email}</a></li>}
+        {telefono && <li><a href={`tel:${telLimpio}`}>{telefono}</a></li>}
+        {telefono && <li><a href={`https://wa.me/${telLimpio.replace('+', '')}`} rel="noopener">WhatsApp</a></li>}
+        {instagram && <li><a href={`https://instagram.com/${instagram}`} rel="noopener">Instagram</a></li>}
+        {ciudad && <li class="ciudad">{ciudad}</li>}
+      </ul>
+    </div>
+
+    {email && (
+      <form class="formulario" data-form data-email={email}>
+        <label>
+          <span>Tu nombre</span>
+          <input name="nombre" autocomplete="name" required />
+        </label>
+        {sitio.servicios.length > 0 && (
+          <label>
+            <span>Tipo de sesión</span>
+            <select name="tipo">
+              {sitio.servicios.map((s) => <option>{s}</option>)}
+              <option>Otra cosa</option>
+            </select>
+          </label>
+        )}
+        <label>
+          <span>Fecha aproximada</span>
+          <input name="fecha" placeholder="Por ejemplo, finales de noviembre" />
+        </label>
+        <label>
+          <span>Qué tienes en mente</span>
+          <textarea name="mensaje" rows="5" required></textarea>
+        </label>
+        <button type="submit">Escribir a Clara</button>
+        <p class="nota">Se abrirá tu programa de correo con el mensaje ya preparado.</p>
+      </form>
+    )}
+  </section>
+)}
+
+<style>
+  .contacto {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    padding: clamp(5rem, 12vw, 9rem) var(--margen);
+    background: var(--pelicula);
+    color: var(--papel);
+  }
+  .intro p { max-width: 34ch; font-size: var(--t-1); line-height: 1.45; margin: 0 0 2rem; color: #c9cbcd; }
+  .vias { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+  .vias a {
+    font: 400 var(--t-2)/1.2 var(--serif);
+    text-decoration: none;
+    background: linear-gradient(var(--lapiz), var(--lapiz)) 0 100% / 0 2px no-repeat;
+    transition: background-size .35s var(--ease);
+  }
+  .vias a:hover, .vias a:focus-visible { background-size: 100% 2px; }
+  .ciudad { color: #9a9ea2; margin-top: .5rem; }
+
+  .formulario { display: grid; gap: 1.25rem; align-content: start; }
+  label { display: grid; gap: .4rem; }
+  label span { font-size: .9375rem; color: #b9bcbf; }
+  input, select, textarea {
+    font: inherit;
+    color: var(--papel);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #55595d;
+    padding: .55rem 0;
+    border-radius: 0;
+  }
+  select option { color: var(--grafito); }
+  textarea { resize: vertical; }
+  input::placeholder { color: #6f7377; }
+  input:focus, select:focus, textarea:focus { outline: none; border-bottom-color: var(--ambar); }
+  .formulario button {
+    justify-self: start;
+    margin-top: .5rem;
+    padding: .9rem 1.6rem;
+    background: var(--papel);
+    color: var(--pelicula);
+    border: 0;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .formulario button:hover { background: var(--ambar); }
+  .nota { margin: 0; font-size: .875rem; color: #8c9094; }
+
+  @media (max-width: 900px) { .contacto { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const d = new FormData(form);
+    const tipo = (d.get('tipo') as string) || '';
+    const asunto = `Sesión${tipo ? ` de ${tipo.toLowerCase()}` : ''} — ${d.get('nombre')}`;
+    const lineas = [`Hola Clara, soy ${d.get('nombre')}.`];
+    if (tipo) lineas.push(`Me interesa: ${tipo}.`);
+    if (d.get('fecha')) lineas.push(`Fecha aproximada: ${d.get('fecha')}.`);
+    lineas.push('', String(d.get('mensaje')));
+    const cuerpo = lineas.join('\n');
+    location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+  });
+</script>

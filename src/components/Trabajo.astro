@@ -1,0 +1,231 @@
+---
+import type { Foto } from '../lib/fotos';
+
+interface Props { fotos: Foto[] }
+const { fotos } = Astro.props;
+
+const categorias = [...new Set(fotos.map((f) => f.categoria))];
+const datosVisor = fotos.map(({ id, alt, grande, srcset, categoria }) => ({ id, alt, grande, srcset, categoria }));
+---
+
+{fotos.length > 0 && (
+  <section class="trabajo" id="trabajo" aria-labelledby="t-trabajo">
+    <div class="cabecera">
+      <h2 class="titulo-seccion" id="t-trabajo">Trabajo</h2>
+      {categorias.length > 1 && (
+        <div class="filtros" role="group" aria-label="Filtrar por tipo de sesión" data-filtros>
+          <button aria-pressed="true" data-cat="">Todo</button>
+          {categorias.map((c) => <button aria-pressed="false" data-cat={c}>{c}</button>)}
+        </div>
+      )}
+    </div>
+
+    <ul class="muro" data-muro>
+      {fotos.map((f) => (
+        <li data-cat={f.categoria}>
+          <button data-abrir={f.id} aria-label={`Ampliar: ${f.alt}`}>
+            <img
+              src={f.mini}
+              srcset={f.srcset}
+              sizes="(max-width: 640px) 92vw, (max-width: 1100px) 46vw, 31vw"
+              alt={f.alt}
+              width={f.ancho}
+              height={f.alto}
+              loading="lazy"
+              decoding="async"
+            />
+          </button>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<dialog class="visor" data-visor aria-label="Visor de fotos">
+  <figure>
+    <img data-visor-img alt="" />
+    <figcaption>
+      <span data-visor-texto></span>
+      <span class="cuenta" data-visor-cuenta></span>
+    </figcaption>
+  </figure>
+  <button class="cerrar" data-visor-cerrar>Cerrar</button>
+  <button class="nav ant" data-visor-ant aria-label="Foto anterior">‹</button>
+  <button class="nav sig" data-visor-sig aria-label="Foto siguiente">›</button>
+</dialog>
+
+<script type="application/json" id="datos-visor" set:html={JSON.stringify(datosVisor)} />
+
+<style>
+  .trabajo { padding: 0 var(--margen) clamp(5rem, 12vw, 10rem); }
+  .cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem 2rem;
+    margin-bottom: clamp(1.5rem, 4vw, 3rem);
+  }
+  .cabecera .titulo-seccion { margin: 0; }
+
+  .filtros { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; }
+  .filtros button {
+    background: none;
+    border: 0;
+    padding: .3rem 0;
+    font-size: var(--t-0);
+    color: var(--grafito-suave);
+    cursor: pointer;
+    position: relative;
+  }
+  .filtros button[aria-pressed='true'] { color: var(--grafito); }
+  /* El filtro activo se subraya con el mismo lápiz rojo de la hoja de contactos */
+  .filtros button[aria-pressed='true']::after {
+    content: '';
+    position: absolute;
+    left: -6%; right: -6%; bottom: 0;
+    height: 3px;
+    background: var(--lapiz);
+    border-radius: 2px;
+    rotate: -1.5deg;
+  }
+
+  .muro {
+    list-style: none;
+    margin: 0; padding: 0;
+    columns: 3 18rem;
+    column-gap: clamp(.75rem, 2vw, 1.5rem);
+  }
+  .muro li {
+    break-inside: avoid;
+    margin-bottom: clamp(.75rem, 2vw, 1.5rem);
+  }
+  .muro li[hidden] { display: none; }
+  .muro button {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: var(--papel-hondo);
+    cursor: zoom-in;
+  }
+  .muro img { width: 100%; }
+
+  /* ── Visor ── */
+  .visor {
+    width: 100vw; height: 100dvh;
+    max-width: none; max-height: none;
+    margin: 0; padding: 0;
+    border: 0;
+    background: var(--pelicula);
+    color: var(--papel);
+  }
+  .visor::backdrop { background: var(--pelicula); }
+  .visor figure {
+    margin: 0;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 3.5rem clamp(1rem, 6vw, 5rem) 0;
+  }
+  .visor img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    min-height: 0;
+  }
+  .visor figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0 1.25rem;
+    font-size: .9375rem;
+    color: #b9bcbf;
+  }
+  .cuenta { font-family: var(--borde); color: var(--ambar); white-space: nowrap; }
+  .visor button {
+    position: absolute;
+    background: none;
+    border: 0;
+    color: var(--papel);
+    cursor: pointer;
+  }
+  .cerrar { top: 1rem; right: clamp(1rem, 3vw, 2rem); padding: .5rem; font-size: var(--t-0); }
+  .nav {
+    top: 50%;
+    translate: 0 -50%;
+    width: 3.5rem; height: 6rem;
+    font: 300 3.5rem/1 var(--serif);
+  }
+  .ant { left: 0; }
+  .sig { right: 0; }
+  @media (max-width: 640px) { .nav { display: none; } }
+</style>
+
+<script>
+  type F = { id: string; alt: string; grande: string; srcset: string; categoria: string };
+  const datos: F[] = JSON.parse(document.getElementById('datos-visor')?.textContent || '[]');
+  const visor = document.querySelector<HTMLDialogElement>('[data-visor]')!;
+  const img = visor.querySelector<HTMLImageElement>('[data-visor-img]')!;
+  const texto = visor.querySelector<HTMLElement>('[data-visor-texto]')!;
+  const cuenta = visor.querySelector<HTMLElement>('[data-visor-cuenta]')!;
+
+  // El visor recorre las fotos visibles según el filtro activo
+  let filtro = '';
+  const visibles = () => datos.filter((d) => !filtro || d.categoria === filtro);
+  let actual = 0;
+
+  const mostrar = (i: number) => {
+    const lista = visibles();
+    if (!lista.length) return;
+    actual = (i + lista.length) % lista.length;
+    const d = lista[actual];
+    img.srcset = d.srcset;
+    img.sizes = '100vw';
+    img.src = d.grande;
+    img.alt = d.alt;
+    texto.textContent = d.alt;
+    cuenta.textContent = `${actual + 1} / ${lista.length}`;
+  };
+
+  document.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>('[data-abrir]');
+    if (!b) return;
+    const id = b.dataset.abrir;
+    // Desde la hoja de contactos se abre con todas las fotos
+    if (!b.closest('[data-muro]')) {
+      filtro = '';
+      document.querySelectorAll<HTMLButtonElement>('[data-filtros] button').forEach((x) =>
+        x.setAttribute('aria-pressed', String(x.dataset.cat === '')),
+      );
+      document.querySelectorAll<HTMLElement>('[data-muro] li').forEach((li) => (li.hidden = false));
+    }
+    mostrar(visibles().findIndex((d) => d.id === id));
+    visor.showModal();
+  });
+
+  visor.querySelector('[data-visor-cerrar]')!.addEventListener('click', () => visor.close());
+  visor.querySelector('[data-visor-ant]')!.addEventListener('click', () => mostrar(actual - 1));
+  visor.querySelector('[data-visor-sig]')!.addEventListener('click', () => mostrar(actual + 1));
+  visor.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') mostrar(actual - 1);
+    if (e.key === 'ArrowRight') mostrar(actual + 1);
+  });
+
+  let x0 = 0;
+  visor.addEventListener('pointerdown', (e) => (x0 = e.clientX));
+  visor.addEventListener('pointerup', (e) => {
+    const dx = e.clientX - x0;
+    if (Math.abs(dx) > 50 && e.pointerType !== 'mouse') mostrar(actual + (dx < 0 ? 1 : -1));
+  });
+
+  // Filtros
+  document.querySelector('[data-filtros]')?.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!b) return;
+    filtro = b.dataset.cat ?? '';
+    b.parentElement!.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    document.querySelectorAll<HTMLElement>('[data-muro] li').forEach((li) => {
+      li.hidden = !!filtro && li.dataset.cat !== filtro;
+    });
+  });
+</script>

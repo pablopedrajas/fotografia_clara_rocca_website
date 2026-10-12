@@ -1,0 +1,342 @@
+---
+import type { Foto } from '../lib/fotos';
+import { sitio } from '../config/sitio';
+
+interface Props { fotos: Foto[] }
+const { fotos } = Astro.props;
+
+const POR_TIRA = 9;
+const TIRAS = 5;
+const total = POR_TIRA * TIRAS;
+
+// Rellena la hoja repitiendo las fotos si hay menos de 36
+const fotogramas = Array.from({ length: total }, (_, i) => (fotos.length ? fotos[i % fotos.length] : null));
+
+// Fotogramas marcados con lápiz graso: los «seleccionada» o, si no hay, tres repartidos
+let marcados = new Set<number>();
+fotogramas.forEach((f, i) => {
+  if (f?.seleccionada && i < fotos.length) marcados.add(i);
+});
+if (!marcados.size && fotos.length) marcados = new Set([11, 21, 33].map((i) => i % total));
+const ordenMarca = [...marcados];
+
+// Trazos de lápiz a mano alzada (viewBox 150×100, el fotograma es 3:2)
+const trazos = [
+  'M18 56 C 14 22, 70 6, 118 14 C 150 20, 152 70, 120 88 C 86 104, 22 96, 12 66 C 8 52, 30 30, 62 24',
+  'M136 30 C 120 6, 36 4, 14 34 C -2 58, 30 96, 84 94 C 132 92, 150 64, 138 38 C 132 26, 112 18, 96 16',
+  'M24 26 C 54 4, 128 2, 140 40 C 150 76, 112 98, 64 96 C 18 94, 4 64, 14 40 C 18 30, 32 22, 50 18',
+];
+
+// Numeración real del borde de un carrete: 1, 1A, 2, 2A…
+const numero = (i: number) => i + 1;
+---
+
+<section class="portada" aria-labelledby="nombre" data-portada>
+  <div class="mesa">
+    <div class="hoja" data-hoja>
+      {Array.from({ length: TIRAS }, (_, t) => (
+        <div class="tira">
+          <div class="canto" aria-hidden="true">
+            <span>{sitio.nombre.toUpperCase()} 400</span>
+            <span class="perforaciones"></span>
+            <span>{sitio.nombre.toUpperCase()} 400</span>
+          </div>
+          <div class="fotogramas">
+            {fotogramas.slice(t * POR_TIRA, (t + 1) * POR_TIRA).map((f, k) => {
+              const i = t * POR_TIRA + k;
+              const m = ordenMarca.indexOf(i);
+              return f ? (
+                <button
+                  class:list={['fotograma', { vertical: f.vertical, marcado: m >= 0 }]}
+                  data-abrir={f.id}
+                  aria-label={`Ver foto: ${f.alt}`}
+                  tabindex={i < fotos.length ? 0 : -1}
+                  aria-hidden={i < fotos.length ? undefined : 'true'}
+                >
+                  <span class="encuadre"><img src={f.mini} alt="" width={f.ancho} height={f.alto} decoding="async" fetchpriority={i < 12 ? 'high' : 'auto'} /></span>
+                  {m >= 0 && (
+                    <svg class="marca" viewBox="-10 -10 170 120" aria-hidden="true" style={`--orden:${m}`}>
+                      <path d={trazos[m % trazos.length]} pathLength="1" />
+                    </svg>
+                  )}
+                </button>
+              ) : (
+                <span class="fotograma vacio" aria-hidden="true"></span>
+              );
+            })}
+          </div>
+          <div class="canto numeros" aria-hidden="true">
+            {Array.from({ length: POR_TIRA }, (_, k) => {
+              const n = numero(t * POR_TIRA + k);
+              return (<><span>{n}</span><span class="flecha">▸{n}A</span></>);
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="lupa" aria-hidden="true" data-lupa><div class="lupa-campo" data-lupa-campo></div></div>
+
+  <header class="rotulo">
+    <h1 id="nombre">{sitio.nombre}</h1>
+    <p>{sitio.lema}</p>
+  </header>
+</section>
+
+<style>
+  .portada {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    overflow: hidden;
+    padding-top: 4.5rem;
+  }
+
+  /* La hoja se inclina y se sale de los bordes, como apoyada en la mesa */
+  .mesa {
+    position: relative;
+    overflow: hidden;
+    min-height: 58svh;
+  }
+  .hoja {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: max(122vw, 1300px);
+    translate: -50% -50%;
+    rotate: -2.2deg;
+    display: grid;
+    gap: clamp(.6rem, 1.4vw, 1.2rem);
+    padding: 1.4rem 0;
+  }
+
+  .tira {
+    background: var(--pelicula);
+    color: var(--ambar);
+    padding: 0 1rem;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .25);
+  }
+  .canto {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    height: 1.55rem;
+    font: 500 .72rem/1 var(--borde);
+    letter-spacing: .08em;
+    white-space: nowrap;
+  }
+  .perforaciones {
+    flex: 1;
+    height: .55rem;
+    background: repeating-linear-gradient(90deg, #262626 0 .75rem, transparent .75rem 1.35rem);
+    border-radius: 2px;
+    opacity: .9;
+  }
+  .numeros { justify-content: space-around; }
+  .numeros .flecha { opacity: .75; }
+
+  .fotogramas {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: .9rem;
+  }
+  .fotograma {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    padding: 0;
+    border: 0;
+    border-radius: 3px;
+    background: #121212;
+    overflow: visible;
+    cursor: zoom-in;
+  }
+  .encuadre {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 3px;
+  }
+  .fotograma img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  /* Las verticales aparecen giradas, como en un contacto de verdad */
+  .fotograma.vertical img {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 66.667%;
+    height: 150%;
+    translate: -50% -50%;
+    rotate: -90deg;
+  }
+
+  .vacio { cursor: default; }
+
+  /* Lápiz graso */
+  .marca {
+    position: absolute;
+    inset: -12% -10%;
+    width: 120%; height: 124%;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .marca path {
+    fill: none;
+    stroke: var(--lapiz);
+    stroke-width: 5.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    filter: url(#cera);
+    opacity: .92;
+  }
+
+  /* ── Revelado: la hoja aparece como en la cubeta y luego se marcan las elegidas ── */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .hoja img {
+      animation: revelar 2.4s var(--ease) both;
+      animation-delay: calc(var(--d, 0) * 1ms);
+    }
+    :global(.js) .marca path {
+      stroke-dashoffset: 1;
+      animation: trazar .9s cubic-bezier(.6, .1, .3, 1) forwards;
+      animation-delay: calc(2.2s + var(--orden) * .55s);
+    }
+  }
+  @keyframes revelar {
+    from { filter: brightness(4) contrast(.2) grayscale(1); opacity: .15; }
+    60% { filter: brightness(1.15) contrast(.9) grayscale(.6); opacity: 1; }
+    to { filter: none; opacity: 1; }
+  }
+  @keyframes trazar { to { stroke-dashoffset: 0; } }
+
+  /* ── Lupa ── */
+  .lupa {
+    --r: 130px;
+    position: absolute;
+    left: 0; top: 0;
+    width: calc(var(--r) * 2);
+    height: calc(var(--r) * 2);
+    border-radius: 50%;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    scale: .6;
+    transition: opacity .25s, scale .35s var(--ease);
+    box-shadow:
+      0 0 0 6px #111,
+      0 0 0 7px rgba(255, 255, 255, .25),
+      0 22px 50px rgba(0, 0, 0, .55);
+    z-index: 5;
+    background: var(--papel);
+  }
+  .lupa::after {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, .28), transparent 38%),
+      radial-gradient(circle, transparent 62%, rgba(0, 0, 0, .35));
+  }
+  .lupa.activa { opacity: 1; scale: 1; }
+  .lupa-campo {
+    position: absolute;
+    left: 0; top: 0;
+    transform-origin: 0 0;
+  }
+  :global(.con-lupa) .mesa { cursor: none; }
+  :global(.con-lupa) .fotograma { cursor: none; }
+
+  /* ── Rótulo ── */
+  .rotulo {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: .5rem 2rem;
+    padding: clamp(.75rem, 2vw, 1.5rem) var(--margen) clamp(1.25rem, 3vw, 2.25rem);
+    background: var(--papel);
+  }
+  h1 {
+    margin: 0;
+    font: 400 clamp(4rem, 17.5vw, 17rem)/0.8 var(--serif);
+    font-optical-sizing: auto;
+    letter-spacing: -0.045em;
+    margin-left: -0.04em;
+  }
+  .rotulo p {
+    margin: 0 0 .4em;
+    max-width: 30ch;
+    font-size: var(--t-0);
+    line-height: 1.45;
+    color: var(--grafito-suave);
+  }
+
+  @media (max-width: 720px) {
+    .hoja { width: 290vw; rotate: -3deg; }
+    .canto { font-size: .6rem; height: 1.25rem; }
+    .fotogramas { gap: .5rem; }
+    .lupa { display: none; }
+  }
+</style>
+
+<script>
+  const portada = document.querySelector<HTMLElement>('[data-portada]');
+  const hoja = portada?.querySelector<HTMLElement>('[data-hoja]');
+  const lupa = portada?.querySelector<HTMLElement>('[data-lupa]');
+  const campo = portada?.querySelector<HTMLElement>('[data-lupa-campo]');
+  const mesa = portada?.querySelector<HTMLElement>('.mesa');
+
+  // Revelado escalonado desde la esquina superior izquierda, como el revelador entrando en la cubeta
+  hoja?.querySelectorAll<HTMLImageElement>('img').forEach((img, i) => {
+    const fila = Math.floor(i / 9), col = i % 9;
+    img.style.setProperty('--d', String((fila + col) * 110));
+  });
+
+  const finoYHover = matchMedia('(hover: hover) and (pointer: fine)');
+  const ESCALA = 2.6;
+
+  if (portada && hoja && lupa && campo && mesa && finoYHover.matches) {
+    document.documentElement.classList.add('con-lupa');
+
+    // El campo de la lupa es una copia de la mesa entera, ampliada
+    const copia = mesa.cloneNode(true) as HTMLElement;
+    copia.querySelectorAll('button').forEach((b) => b.setAttribute('tabindex', '-1'));
+    copia.querySelectorAll('.marca path').forEach((p) => ((p as SVGPathElement).style.animation = 'none'));
+    copia.querySelectorAll<HTMLImageElement>('img').forEach((img) => (img.style.animation = 'none'));
+    campo.appendChild(copia);
+
+    const ajustar = () => {
+      const r = mesa.getBoundingClientRect();
+      copia.style.width = r.width + 'px';
+      copia.style.height = r.height + 'px';
+    };
+    ajustar();
+    addEventListener('resize', ajustar);
+
+    let rafId = 0;
+    let px = 0, py = 0;
+    const mover = () => {
+      rafId = 0;
+      const rm = mesa.getBoundingClientRect();
+      const rp = portada.getBoundingClientRect();
+      const radio = lupa.offsetWidth / 2;
+      const x = px - rm.left, y = py - rm.top;
+      lupa.style.translate = `${px - rp.left - radio}px ${py - rp.top - radio}px`;
+      campo.style.transform = `translate(${radio - x * ESCALA}px, ${radio - y * ESCALA}px) scale(${ESCALA})`;
+    };
+
+    mesa.addEventListener('pointermove', (e) => {
+      px = e.clientX; py = e.clientY;
+      lupa.classList.add('activa');
+      if (!rafId) rafId = requestAnimationFrame(mover);
+    });
+    mesa.addEventListener('pointerleave', () => lupa.classList.remove('activa'));
+    addEventListener('scroll', () => lupa.classList.remove('activa'), { passive: true });
+  }
+</script>
