@@ -8,7 +8,7 @@ export const sitio = {
   nombre: 'Clara Rocca',
 
   /** Dominio definitivo, p. ej. 'https://clararocca.com'. Activa el sitemap y las URLs canónicas. */
-  url: '',
+  url: 'https://clararocca.com',
 
   /** Texto que aparece en Google y al compartir el enlace. */
   descripcion:
