@@ -13,119 +13,391 @@
     "orden": 2,
     "seleccionada": true
   },
+  "boda-novia-emocionada.jpg": {
+    "alt": "La novia se emociona al llegar a la ceremonia",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "La llegada",
+    "fotograma": 84,
+    "orden": 3
+  },
   "ciudad-valle-montana-atardecer.jpg": {
     "alt": "Ciudad en un valle vista desde lo alto, con montañas y nubes encendidas por el atardecer",
     "categoria": "Paisaje",
     "lado": "detras",
-    "orden": 3
+    "orden": 4
   },
   "gastronomia-plato-salsa-tomate.jpg": {
     "alt": "Plato hondo blanco con un rollo bañado en salsa de tomate, hilos de nata, hierbas y un tomate confitado",
     "categoria": "Gastronomía",
     "lado": "detras",
-    "orden": 4
+    "orden": 5
   },
   "londres-noria-farolas.jpg": {
     "alt": "Farolas encendidas del puente de Westminster con la noria London Eye al fondo bajo un cielo dorado",
     "categoria": "Arquitectura",
     "lado": "detras",
-    "orden": 5
+    "orden": 6
+  },
+  "boda-vestido-novia-colgado.jpg": {
+    "alt": "Vestido de novia colgado en un porche con tejado de cañizo",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Preparativos",
+    "fotograma": 28,
+    "orden": 7
   },
   "salzburgo-vista-rio-salzach.jpg": {
     "alt": "Vista de Salzburgo al atardecer con el río Salzach, las cúpulas del casco antiguo y las montañas al fondo",
     "categoria": "Paisaje",
     "lado": "detras",
-    "orden": 6
+    "orden": 8
   },
   "farolillos-chinos-noche.jpg": {
     "alt": "Farolillos chinos rojos encendidos a la entrada de un restaurante, de noche y bajo la lluvia",
     "categoria": "Reportaje",
     "lado": "detras",
-    "orden": 7
+    "orden": 9
   },
   "toledo-torre-mudejar.jpg": {
     "alt": "Torre mudéjar de ladrillo entre las fachadas de una calle estrecha de Toledo, bajo un cielo azul",
     "categoria": "Arquitectura",
     "lado": "detras",
-    "orden": 8
+    "orden": 10
+  },
+  "boda-novios-rocas.jpg": {
+    "alt": "Los novios abrazados contra las rocas de la cala",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Los dos",
+    "fotograma": 212,
+    "orden": 11
   },
   "sendero-pinar.jpg": {
     "alt": "Sendero de tierra entre pinos y flores amarillas, con el valle al fondo",
     "categoria": "Paisaje",
     "lado": "detras",
-    "orden": 9
+    "orden": 12
   },
   "gastronomia-desayuno-huevo-poche.jpg": {
     "alt": "Desayuno con huevo poché sobre pan de semillas, ensalada de verduras picadas, yogur con frutos rojos y zumo de naranja",
     "categoria": "Gastronomía",
     "lado": "detras",
-    "orden": 10
+    "orden": 13
   },
   "retrato-hombre-calle.jpg": {
     "alt": "Retrato de un hombre con gafas de sol y camisa de lino en una calle peatonal de edificios clásicos",
     "categoria": "Retrato",
     "lado": "detras",
-    "seleccionada": true,
-    "orden": 11
+    "orden": 14
+  },
+  "boda-anillos-manos.jpg": {
+    "alt": "Las manos de los novios con los anillos puestos",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Los dos",
+    "fotograma": 206,
+    "orden": 15
   },
   "londres-chinatown-puerta.jpg": {
     "alt": "Puerta del barrio chino de Londres con farolillos rojos y paraguas bajo la lluvia",
     "categoria": "Reportaje",
     "lado": "detras",
-    "orden": 12
+    "orden": 16
   },
   "viena-iglesia-san-pedro.jpg": {
     "alt": "Cúpula verde y reloj de la iglesia de San Pedro de Viena, iluminados por la luz de la tarde",
     "categoria": "Arquitectura",
     "lado": "detras",
-    "orden": 13
+    "orden": 17
   },
   "columnas-jonicas-atardecer.jpg": {
     "alt": "Tres columnas jónicas vistas desde abajo contra un cielo rosado al atardecer",
     "categoria": "Arquitectura",
     "lado": "detras",
-    "orden": 14
+    "orden": 18
+  },
+  "boda-novia-llegada-playa.jpg": {
+    "alt": "La novia llega por la playa de la mano de un niño, con las sandalias en la mano",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "La llegada",
+    "fotograma": 81,
+    "orden": 19
   },
   "valle-montanas-bruma.jpg": {
     "alt": "Valle con casas entre árboles y montañas difuminadas por la bruma al fondo",
     "categoria": "Paisaje",
     "lado": "detras",
-    "orden": 15
+    "orden": 20
   },
   "barcelona-edificio-modernista.jpg": {
     "alt": "Fachada modernista de un edificio de Barcelona con balcones de forja y miradores verdes, entre plátanos y un taxi en movimiento",
     "categoria": "Arquitectura",
     "lado": "detras",
-    "orden": 16
+    "orden": 21
   },
   "globo-cielo-azul.jpg": {
     "alt": "Globo de rayas rojas y blancas suspendido en un cielo azul limpio",
     "categoria": "Paisaje",
     "lado": "detras",
-    "orden": 17
+    "orden": 22
+  },
+  "boda-espalda-encaje-vestido.jpg": {
+    "alt": "Abrochando los botones de la espalda de encaje del vestido de novia",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Preparativos",
+    "fotograma": 34,
+    "orden": 23
   },
   "londres-chinatown-detalle.jpg": {
     "alt": "Detalle de la puerta del barrio chino de Londres, con dragones dorados, columna lacada y farolillos rojos",
     "categoria": "Arquitectura",
     "lado": "detras",
-    "orden": 18
+    "orden": 24
   },
   "retrato-hombre-tren.jpg": {
     "alt": "Retrato de un hombre con gafas de sol mirando por la ventana de un tren",
     "categoria": "Retrato",
     "lado": "detras",
-    "orden": 19
+    "orden": 25
   },
   "sendero-barandilla-otono.jpg": {
     "alt": "Sendero de montaña con barandilla de troncos y hojas rojizas de otoño",
     "categoria": "Paisaje",
     "lado": "detras",
-    "orden": 20
+    "orden": 26
   },
   "salzburgo-cupula-catedral.jpg": {
     "alt": "Cúpula de cobre de la catedral de Salzburgo recortada contra un cielo azul intenso",
     "categoria": "Arquitectura",
     "lado": "detras",
-    "orden": 21
+    "orden": 27
+  },
+  "boda-preparativos-puno-camisa.jpg": {
+    "alt": "Manos abrochando el puño de la camisa blanca de un niño antes de la boda",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Preparativos",
+    "fotograma": 8,
+    "orden": 28
+  },
+  "boda-preparativos-camisa-ventana.jpg": {
+    "alt": "La novia abrocha la camisa blanca de un niño junto a la ventana",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Preparativos",
+    "fotograma": 11,
+    "orden": 29
+  },
+  "boda-novia-vestida-habitacion.jpg": {
+    "alt": "La novia ya vestida en la habitación, con la cola del vestido extendida en el suelo",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Preparativos",
+    "fotograma": 42,
+    "orden": 30
+  },
+  "boda-novia-ventana.jpg": {
+    "alt": "La novia sentada junto a la ventana, mirando hacia fuera antes de salir",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Preparativos",
+    "fotograma": 47,
+    "orden": 31
+  },
+  "boda-beso-nino-novia.jpg": {
+    "alt": "Un niño da un beso en la mejilla a la novia antes de la ceremonia",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Preparativos",
+    "fotograma": 55,
+    "orden": 32
+  },
+  "boda-cala-orilla.jpg": {
+    "alt": "Orilla de la cala donde se celebra la boda, con pinos al fondo",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "El lugar",
+    "fotograma": 59,
+    "orden": 33
+  },
+  "boda-silla-ceremonia-detalle.jpg": {
+    "alt": "Detalle de una silla blanca de la ceremonia con un lazo de tul",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "El lugar",
+    "fotograma": 60,
+    "orden": 34
+  },
+  "boda-cartel-arena.jpg": {
+    "alt": "Cartel de madera clavado en la arena con flechas hacia los zapatos, los votos y el amor",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "El lugar",
+    "fotograma": 63,
+    "orden": 35
+  },
+  "boda-arco-ceremonia-playa.jpg": {
+    "alt": "Arco de tul y flores junto a las rocas, con las sillas blancas preparadas para la ceremonia",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "El lugar",
+    "fotograma": 66,
+    "orden": 36
+  },
+  "boda-novio-esperando.jpg": {
+    "alt": "El novio espera sonriente junto al arco",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "La espera",
+    "fotograma": 70,
+    "orden": 37
+  },
+  "boda-cola-vestido-arena.jpg": {
+    "alt": "La cola del vestido de novia extendida sobre la arena",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "La llegada",
+    "fotograma": 86,
+    "orden": 38
+  },
+  "boda-primer-beso.jpg": {
+    "alt": "Los novios se besan al encontrarse junto al mar",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "La llegada",
+    "fotograma": 94,
+    "orden": 39
+  },
+  "boda-novia-caricia.jpg": {
+    "alt": "La novia acaricia la cara del novio durante la ceremonia",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "La ceremonia",
+    "fotograma": 102,
+    "orden": 40
+  },
+  "boda-novios-risas.jpg": {
+    "alt": "Los novios se ríen delante del arco, frente al mar",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "La ceremonia",
+    "fotograma": 107,
+    "orden": 41
+  },
+  "boda-novios-sentados-mar.jpg": {
+    "alt": "Los novios sentados de la mano durante la ceremonia, con el mar detrás",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "La ceremonia",
+    "fotograma": 128,
+    "orden": 42
+  },
+  "boda-invitados-risas.jpg": {
+    "alt": "Los niños invitados se ríen durante la ceremonia",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "La ceremonia",
+    "fotograma": 149,
+    "orden": 43
+  },
+  "boda-novia-votos.jpg": {
+    "alt": "La novia lee sus votos junto al arco",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "La ceremonia",
+    "fotograma": 157,
+    "orden": 44
+  },
+  "boda-novia-lagrimas.jpg": {
+    "alt": "La novia se seca las lágrimas durante los votos",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "La ceremonia",
+    "fotograma": 160,
+    "orden": 45
+  },
+  "boda-novios-manos.jpg": {
+    "alt": "Los novios de la mano frente al oficiante; la novia, de espaldas, con el escote de encaje",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "La ceremonia",
+    "fotograma": 163,
+    "orden": 46
+  },
+  "boda-anillo.jpg": {
+    "alt": "El novio pone el anillo a la novia",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "La ceremonia",
+    "fotograma": 178,
+    "orden": 47
+  },
+  "boda-recien-casados.jpg": {
+    "alt": "Los recién casados abrazados junto al arco",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Abrazos",
+    "fotograma": 183,
+    "orden": 48
+  },
+  "boda-abrazo-nina.jpg": {
+    "alt": "La novia abraza a una niña con trenzas",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Abrazos",
+    "fotograma": 189,
+    "orden": 49
+  },
+  "boda-abrazo-invitada.jpg": {
+    "alt": "La novia abraza emocionada a una invitada",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Abrazos",
+    "fotograma": 191,
+    "orden": 50
+  },
+  "boda-beso-arco.jpg": {
+    "alt": "Beso de los novios bajo el arco de tul",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Los dos",
+    "fotograma": 198,
+    "orden": 51,
+    "seleccionada": true
+  },
+  "boda-beso-orilla.jpg": {
+    "alt": "Beso de los novios en la orilla con la luz de la tarde",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Los dos",
+    "fotograma": 214,
+    "orden": 52
+  },
+  "boda-novios-espaldas-mar.jpg": {
+    "alt": "Los novios abrazados de espaldas, mirando al mar",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Los dos",
+    "fotograma": 217,
+    "orden": 53
+  },
+  "boda-novios-orilla.jpg": {
+    "alt": "Los novios en la orilla, con la cala al fondo",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Los dos",
+    "fotograma": 220,
+    "orden": 54
+  },
+  "boda-foto-familia.jpg": {
+    "alt": "Foto de familia en la orilla al final del día",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "capitulo": "Familia",
+    "fotograma": 230,
+    "orden": 55
   }
 }

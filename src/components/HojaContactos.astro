@@ -12,19 +12,22 @@ const total = POR_TIRA * TIRAS;
 // Rellena la hoja repitiendo las fotos si hay menos de 36
 const fotogramas = Array.from({ length: total }, (_, i) => (fotos.length ? fotos[i % fotos.length] : null));
 
-// Fotogramas marcados con lápiz graso: los «seleccionada» o, si no hay, tres repartidos
-// Cada foto elegida se marca en una tira distinta y en las columnas centrales,
-// que son las que se ven enteras aunque la hoja se salga por los lados
+// Fotogramas marcados con lápiz graso: las fotos «seleccionada».
+// Cada una se coloca en una tira distinta y en una columna central, que son
+// las que se ven enteras aunque la hoja se salga por los lados.
 const elegidas = fotos.filter((f) => f.seleccionada).slice(0, 3);
+const huecos = [1 * POR_TIRA + 3, 2 * POR_TIRA + 5, 3 * POR_TIRA + 4];
 const ordenMarca: number[] = [];
 elegidas.forEach((foto, k) => {
-  for (const fila of [1 + (k % 3), 1, 2, 3]) {
-    const col = [2, 3, 4, 5, 6].find((c) => fotogramas[fila * POR_TIRA + c]?.id === foto.id);
-    const i = col === undefined ? -1 : fila * POR_TIRA + col;
-    if (i >= 0 && !ordenMarca.includes(i)) { ordenMarca.push(i); break; }
+  const destino = huecos[k];
+  const actual = fotogramas.findIndex((f, i) => f?.id === foto.id && !ordenMarca.includes(i));
+  if (actual >= 0 && actual !== destino) {
+    [fotogramas[actual], fotogramas[destino]] = [fotogramas[destino], fotogramas[actual]];
+  } else if (actual < 0) {
+    fotogramas[destino] = foto;
   }
+  ordenMarca.push(destino);
 });
-if (!ordenMarca.length && fotos.length) ordenMarca.push(11, 21, 33);
 
 // Trazos de lápiz a mano alzada (viewBox 150×100, el fotograma es 3:2)
 const trazos = [

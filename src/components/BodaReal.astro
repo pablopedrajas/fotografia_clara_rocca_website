@@ -1,0 +1,476 @@
+---
+/**
+ * Reportaje de boda contado como lo trabaja Clara:
+ *  1. La hoja de contactos completa del día, con sus elegidas marcadas en rojo.
+ *  2. El carrete: las elegidas en orden, momento a momento (scroll horizontal).
+ *  3. El revelado: la misma foto en color y en blanco y negro.
+ */
+import { getImage } from 'astro:assets';
+import type { Foto } from '../lib/fotos';
+import { sitio } from '../config/sitio';
+import hoja from '../assets/boda/hoja-contactos-boda.jpg';
+import besoBN from '../assets/boda/boda-beso-orilla-bn.jpg';
+
+interface Props { fotos: Foto[] }
+const { fotos } = Astro.props;
+
+// Datos de la hoja de contactos generada a partir del reportaje completo
+const TOTAL = 230;
+const COLS = 23;
+const FILAS = Math.ceil(TOTAL / COLS);
+
+const elegidas = fotos.filter((f) => f.fotograma).sort((a, b) => a.fotograma! - b.fotograma!);
+const porFotograma = new Map(elegidas.map((f) => [f.fotograma!, f]));
+
+const textos: Record<string, string> = {
+  Preparativos: 'Botones, gemelos y el vestido esperando en el porche.',
+  'El lugar': 'Una cala, un arco de tul y las sillas mirando al mar.',
+  'La espera': 'Los últimos minutos antes de que llegue la novia.',
+  'La llegada': 'Descalza por la arena hasta el arco.',
+  'La ceremonia': 'Votos, risas, lágrimas y el anillo.',
+  Abrazos: 'Cuando todos quieren ser los primeros en felicitar.',
+  'Los dos': 'Unos minutos a solas con la luz de la tarde.',
+  Familia: 'La última foto del día, todos juntos.',
+};
+
+const capitulos: { nombre: string; fotos: Foto[] }[] = [];
+for (const f of elegidas) {
+  const c = f.capitulo ?? 'La boda';
+  const ultimo = capitulos[capitulos.length - 1];
+  if (ultimo?.nombre === c) ultimo.fotos.push(f);
+  else capitulos.push({ nombre: c, fotos: [f] });
+}
+
+const [hojaWebp, hojaWebpG] = await Promise.all([
+  getImage({ src: hoja, width: 2070, format: 'webp', quality: 74 }),
+  getImage({ src: hoja, width: 4140, format: 'webp', quality: 72 }),
+]);
+
+const color = elegidas.find((f) => f.archivo === 'boda-beso-orilla.jpg');
+const bn = await getImage({ src: besoBN, width: 1333, format: 'webp', quality: 82 });
+
+const tres = (n: number) => String(n).padStart(3, '0');
+
+// Trazos de lápiz graso, variados para que no parezcan repetidos
+const trazos = [
+  'M18 56 C 14 22, 70 6, 118 14 C 150 20, 152 70, 120 88 C 86 104, 22 96, 12 66 C 8 52, 30 30, 62 24',
+  'M136 30 C 120 6, 36 4, 14 34 C -2 58, 30 96, 84 94 C 132 92, 150 64, 138 38 C 132 26, 112 18, 96 16',
+  'M24 26 C 54 4, 128 2, 140 40 C 150 76, 112 98, 64 96 C 18 94, 4 64, 14 40 C 18 30, 32 22, 50 18',
+];
+---
+
+<section class="hoja-boda" aria-labelledby="t-hoja-boda" style={`--hoja:url(${hojaWebp.src});--hoja-g:url(${hojaWebpG.src})`}>
+  <div class="hoja-cab">
+    <h2 id="t-hoja-boda">Una boda, de principio a fin</h2>
+    <p>
+      Estas son las {TOTAL} fotos que Clara editó de una boda en la playa, en el orden en que las hizo. Las que
+      ha marcado en rojo son las que verás a continuación, momento a momento.
+    </p>
+  </div>
+
+  <div class="hoja-mesa" tabindex="0" aria-label="Hoja de contactos completa de la boda. Desliza para verla entera.">
+    <div class="hoja-tiras" data-hoja-boda>
+      {Array.from({ length: FILAS }, (_, fila) => (
+        <div class="tira">
+          <div class="canto" aria-hidden="true">
+            <span>{sitio.nombre.toUpperCase()} · BODA</span>
+            <span class="perf"></span>
+            <span>{sitio.nombre.toUpperCase()} · BODA</span>
+          </div>
+          <div class="cuadros">
+            {Array.from({ length: COLS }, (_, c) => {
+              const n = fila * COLS + c + 1;
+              if (n > TOTAL) return <span class="cuadro vacio" aria-hidden="true"></span>;
+              const f = porFotograma.get(n);
+              const pos = `--x:${(c / (COLS - 1)) * 100}%;--y:${(fila / (FILAS - 1)) * 100}%`;
+              return f ? (
+                <a class="cuadro elegido" href={`#fg-${n}`} style={pos} aria-label={`Fotograma ${n}: ${f.alt}`} title={f.capitulo}>
+                  <svg class="marca" viewBox="-10 -10 170 120" aria-hidden="true">
+                    <path d={trazos[n % trazos.length]} pathLength="1" />
+                  </svg>
+                </a>
+              ) : (
+                <span class="cuadro" style={pos} aria-hidden="true"></span>
+              );
+            })}
+          </div>
+          <div class="canto numeros" aria-hidden="true">
+            {Array.from({ length: COLS }, (_, c) => {
+              const n = fila * COLS + c + 1;
+              return <span>{n <= TOTAL ? n : ''}</span>;
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="carrete" aria-labelledby="t-carrete" data-carrete>
+  <div class="carrete-fijo">
+    <header class="carrete-cab">
+      <h2 id="t-carrete" class="oculto">El día, momento a momento</h2>
+      <ol class="capitulos" aria-label="Momentos del día">
+        {capitulos.map((c, i) => (
+          <li><a href={`#cap-${i}`} data-cap-enlace={i}>{c.nombre}</a></li>
+        ))}
+      </ol>
+      <p class="contador" aria-hidden="true"><span data-contador>{tres(elegidas[0]?.fotograma ?? 1)}</span> / {TOTAL}</p>
+    </header>
+
+    <div class="pista" data-pista>
+      {capitulos.map((c, i) => (
+        <>
+          <div class="cap-titulo" id={`cap-${i}`} data-cap={i}>
+            <h3>{c.nombre}</h3>
+            {textos[c.nombre] && <p>{textos[c.nombre]}</p>}
+          </div>
+          {c.fotos.map((f) => (
+            <figure class:list={['foto', { horizontal: !f.vertical }]} id={`fg-${f.fotograma}`} data-fg={f.fotograma} data-cap-de={i}>
+              <button data-abrir={f.id} aria-label={`Ampliar: ${f.alt}`}>
+                <img
+                  src={f.mini}
+                  srcset={f.srcset}
+                  sizes="(max-width: 760px) 78vw, 46vh"
+                  alt={f.alt}
+                  width={f.ancho}
+                  height={f.alto}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+              <figcaption aria-hidden="true"><span>{f.fotograma}</span><span>▸{f.fotograma}A</span></figcaption>
+            </figure>
+          ))}
+        </>
+      ))}
+    </div>
+  </div>
+</section>
+
+{color && (
+  <section class="revelado" aria-labelledby="t-revelado">
+    <div class="revelado-texto">
+      <h2 id="t-revelado">Color o blanco y negro</h2>
+      <p>
+        Algunas fotos piden blanco y negro. Desliza sobre el beso en la orilla para ver las dos versiones que editó
+        Clara.
+      </p>
+    </div>
+    <figure class="comparar" data-comparar style="--corte: 50%">
+      <img class="capa" src={color.grande} srcset={color.srcset} sizes="(max-width: 900px) 92vw, 44vw" alt={color.alt} loading="lazy" decoding="async" width={color.ancho} height={color.alto} />
+      <img class="capa bn" src={bn.src} alt={`${color.alt}, en blanco y negro`} loading="lazy" decoding="async" width={color.ancho} height={color.alto} />
+      <span class="linea" aria-hidden="true"></span>
+      <label class="oculto" for="corte-bn">Desliza para pasar de la versión en blanco y negro a la de color</label>
+      <input id="corte-bn" type="range" min="0" max="100" value="50" data-corte-bn />
+    </figure>
+  </section>
+)}
+
+<style>
+  /* ───────── Hoja de contactos ───────── */
+  .hoja-boda {
+    background: var(--pelicula);
+    color: var(--papel);
+    padding: clamp(4rem, 9vw, 7rem) 0 clamp(3rem, 6vw, 5rem);
+  }
+  .hoja-cab {
+    padding: 0 var(--margen);
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 1rem 4rem;
+    align-items: end;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .hoja-cab h2 {
+    margin: 0;
+    font: 400 clamp(2.6rem, 7vw, 6rem)/0.95 var(--serif);
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  .hoja-cab p { margin: 0; max-width: 42ch; color: #c3c6c9; line-height: 1.55; }
+
+  .hoja-mesa { overflow-x: auto; padding: 0 var(--margen) .5rem; scrollbar-width: thin; }
+  .hoja-mesa:focus-visible { outline-offset: -2px; }
+  .hoja-tiras {
+    --f: max(44px, calc((min(100vw, 1600px) - 2 * var(--margen) - 22 * 4px - 1.5rem) / 23));
+    width: max-content;
+    margin-inline: auto;
+    display: grid;
+    gap: .55rem;
+  }
+  .tira { background: #0d0d0d; padding: 0 .75rem; border-radius: 2px; color: var(--ambar); }
+  .canto {
+    display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+    height: 1.1rem;
+    font: 500 .58rem/1 var(--borde); letter-spacing: .08em; white-space: nowrap;
+  }
+  .perf { flex: 1; height: .38rem; background: repeating-linear-gradient(90deg, #2a2a2a 0 .55rem, transparent .55rem 1rem); border-radius: 2px; }
+  .numeros { justify-content: flex-start; gap: 4px; }
+  .numeros span { flex: 0 0 var(--f); text-align: center; opacity: .8; }
+  .cuadros { display: grid; grid-template-columns: repeat(23, var(--f)); gap: 4px; }
+  .cuadro {
+    position: relative;
+    display: block;
+    width: var(--f);
+    aspect-ratio: 3 / 2;
+    background-image: var(--hoja);
+    background-size: 2300% 1000%;
+    background-position: var(--x) var(--y);
+    border-radius: 1px;
+    filter: saturate(.55) brightness(.8);
+    transition: filter .3s;
+  }
+  @media (min-resolution: 2dppx) { .cuadro { background-image: var(--hoja-g); } }
+  .vacio { background: none; }
+  .elegido { filter: none; z-index: 1; }
+  .elegido:hover, .elegido:focus-visible { filter: brightness(1.15); }
+  .hoja-tiras:hover .cuadro:not(.elegido) { filter: saturate(.35) brightness(.55); }
+
+  .marca {
+    position: absolute; inset: -22% -18%;
+    width: 136%; height: 144%;
+    overflow: visible; pointer-events: none;
+  }
+  .marca path {
+    fill: none; stroke: var(--lapiz); stroke-width: 9;
+    stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 1; stroke-dashoffset: 0;
+    filter: url(#cera);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .hoja-tiras:not(.vista) .marca path { stroke-dashoffset: 1; }
+    :global(.js) .hoja-tiras.vista .marca path {
+      animation: trazar .7s cubic-bezier(.6, .1, .3, 1) both;
+      animation-delay: calc(var(--orden, 0) * 70ms);
+    }
+  }
+  @keyframes trazar { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+  /* ───────── Carrete ───────── */
+  .carrete { background: var(--pelicula); color: var(--papel); }
+  .carrete-fijo { position: relative; }
+  .carrete-cab {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .75rem 2rem;
+    padding: 1.25rem var(--margen) 1rem;
+  }
+  .capitulos { display: flex; flex-wrap: wrap; gap: .3rem 1.4rem; list-style: none; margin: 0; padding: 0; }
+  .capitulos a {
+    font-size: .9375rem; color: #8f9397; text-decoration: none; position: relative; padding-bottom: .2rem;
+    transition: color .25s;
+  }
+  .capitulos a:hover { color: var(--papel); }
+  .capitulos a[aria-current='true'] { color: var(--papel); }
+  .capitulos a[aria-current='true']::after {
+    content: ''; position: absolute; left: -4%; right: -4%; bottom: -.1rem; height: 3px;
+    background: var(--lapiz); border-radius: 2px; rotate: -1.5deg;
+  }
+  .contador { margin: 0; font: 500 1.05rem/1 var(--borde); color: var(--ambar); letter-spacing: .06em; }
+
+  .pista {
+    --alto: min(62vh, 640px);
+    display: flex;
+    align-items: center;
+    gap: clamp(.75rem, 1.6vw, 1.25rem);
+    padding: 2.2rem var(--margen) 2.4rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--margen);
+    scrollbar-width: none;
+    /* perforaciones de la película arriba y abajo */
+    background:
+      repeating-linear-gradient(90deg, #262626 0 1.1rem, transparent 1.1rem 2rem) 0 .7rem / 100% .7rem no-repeat,
+      repeating-linear-gradient(90deg, #262626 0 1.1rem, transparent 1.1rem 2rem) 0 calc(100% - .7rem) / 100% .7rem no-repeat;
+  }
+  .pista::-webkit-scrollbar { display: none; }
+
+  .cap-titulo {
+    flex: 0 0 auto;
+    width: clamp(15rem, 24vw, 22rem);
+    padding-right: clamp(1rem, 3vw, 3rem);
+    scroll-snap-align: start;
+  }
+  .cap-titulo h3 {
+    margin: 0 0 .9rem;
+    font: 400 clamp(2.6rem, 5.5vw, 5rem)/0.95 var(--serif);
+    letter-spacing: -0.025em;
+  }
+  .cap-titulo p { margin: 0; color: #b5b9bc; max-width: 22ch; line-height: 1.5; }
+
+  .foto { flex: 0 0 auto; margin: 0; scroll-snap-align: center; }
+  .foto button { display: block; padding: 0; border: 0; background: #111; cursor: zoom-in; }
+  .foto img { height: var(--alto); width: auto; max-width: 78vw; object-fit: cover; }
+  .foto.horizontal img { height: var(--alto); }
+  .foto figcaption {
+    display: flex; justify-content: space-between;
+    padding-top: .55rem;
+    font: 500 .72rem/1 var(--borde); color: var(--ambar); letter-spacing: .08em;
+  }
+
+  /* Escritorio: el scroll vertical mueve la película en horizontal */
+  :global(.carrete-pin) .carrete-fijo {
+    position: sticky; top: 0;
+    height: 100vh; height: 100svh;
+    display: flex; flex-direction: column; justify-content: center;
+    overflow: hidden;
+  }
+  :global(.carrete-pin) .pista {
+    overflow: visible;
+    width: max-content;
+    scroll-snap-type: none;
+    will-change: transform;
+    background-size: auto .7rem;
+  }
+
+  /* ───────── Revelado ───────── */
+  .revelado {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: center;
+    padding: clamp(5rem, 11vw, 9rem) var(--margen);
+  }
+  .revelado h2 {
+    margin: 0 0 1.25rem;
+    font: 400 clamp(2.4rem, 6vw, 5rem)/0.95 var(--serif);
+    letter-spacing: -0.025em;
+  }
+  .revelado p { margin: 0; max-width: 36ch; font-size: var(--t-1); line-height: 1.45; }
+  .comparar {
+    position: relative; margin: 0;
+    aspect-ratio: 2 / 3; height: min(80vh, 56rem); max-width: 100%; justify-self: center;
+    overflow: hidden; background: var(--pelicula);
+    user-select: none; touch-action: pan-y;
+  }
+  .comparar .capa { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .comparar .bn { clip-path: inset(0 calc(100% - var(--corte)) 0 0); }
+  .linea {
+    position: absolute; top: 0; bottom: 0; left: var(--corte); width: 2px; translate: -1px 0;
+    background: var(--papel); pointer-events: none;
+  }
+  .linea::after {
+    content: ''; position: absolute; top: 50%; left: 50%; width: 2.75rem; height: 2.75rem;
+    translate: -50% -50%; border-radius: 50%;
+    background: radial-gradient(circle, var(--papel) 0 34%, var(--pelicula) 36% 44%, var(--papel) 46%);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+  }
+  .comparar input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
+  .comparar:has(input:focus-visible) .linea::after { outline: 2px solid var(--lapiz); outline-offset: 3px; }
+
+  @media (max-width: 900px) {
+    .hoja-cab, .revelado { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .pista { --alto: 58vh; }
+    .cap-titulo { width: 72vw; }
+    .capitulos { gap: .25rem 1rem; }
+    .capitulos a { font-size: .8125rem; }
+  }
+</style>
+
+<script>
+  // Las marcas de la hoja de contactos se dibujan, por orden, al llegar a ella
+  const hojaTiras = document.querySelector<HTMLElement>('[data-hoja-boda]');
+  if (hojaTiras) {
+    hojaTiras.querySelectorAll<SVGPathElement>('.elegido .marca path').forEach((p, i) => p.style.setProperty('--orden', String(i)));
+    new IntersectionObserver((entradas, obs) => {
+      if (entradas.some((e) => e.isIntersecting)) {
+        hojaTiras.classList.add('vista');
+        obs.disconnect();
+      }
+    }, { rootMargin: '0px 0px -25% 0px' }).observe(hojaTiras);
+  }
+
+  // Carrete
+  const carrete = document.querySelector<HTMLElement>('[data-carrete]');
+  const pista = carrete?.querySelector<HTMLElement>('[data-pista]');
+  if (carrete && pista) {
+    const fotos = [...pista.querySelectorAll<HTMLElement>('[data-fg]')];
+    const enlaces = [...carrete.querySelectorAll<HTMLAnchorElement>('[data-cap-enlace]')];
+    const contador = carrete.querySelector<HTMLElement>('[data-contador]')!;
+    const amplio = matchMedia('(min-width: 761px) and (prefers-reduced-motion: no-preference)');
+    let fijado = false;
+    let recorrido = 0;
+
+    const medir = () => {
+      fijado = amplio.matches;
+      document.documentElement.classList.toggle('carrete-pin', fijado);
+      if (fijado) {
+        recorrido = Math.max(0, pista.scrollWidth - innerWidth);
+        carrete.style.height = `${recorrido + innerHeight}px`;
+      } else {
+        carrete.style.height = '';
+        pista.style.transform = '';
+      }
+      actualizar();
+    };
+
+    // Indica en la cabecera qué momento del día y qué fotograma están en el centro
+    const marcarActivo = () => {
+      const centro = innerWidth / 2;
+      let mejor = fotos[0];
+      let dist = Infinity;
+      for (const f of fotos) {
+        const r = f.getBoundingClientRect();
+        const d = Math.abs(r.left + r.width / 2 - centro);
+        if (d < dist) { dist = d; mejor = f; }
+      }
+      if (!mejor) return;
+      contador.textContent = String(mejor.dataset.fg).padStart(3, '0');
+      const cap = mejor.dataset.capDe;
+      enlaces.forEach((a) => a.setAttribute('aria-current', String(a.dataset.capEnlace === cap)));
+    };
+
+    let raf = 0;
+    const actualizar = () => {
+      raf = 0;
+      if (fijado) {
+        const inicio = carrete.offsetTop;
+        const p = Math.min(Math.max(scrollY - inicio, 0), recorrido);
+        pista.style.transform = `translate3d(${-p}px,0,0)`;
+      }
+      marcarActivo();
+    };
+    const pedir = () => { if (!raf) raf = requestAnimationFrame(actualizar); };
+
+    // Ir a un capítulo o a un fotograma concreto (enlaces de la hoja y de la cabecera)
+    const irA = (el: HTMLElement) => {
+      if (fijado) {
+        const x = el.offsetLeft - (innerWidth - el.offsetWidth) / 2;
+        scrollTo({ top: carrete.offsetTop + Math.min(Math.max(x, 0), recorrido), behavior: 'smooth' });
+      } else {
+        carrete.scrollIntoView({ behavior: 'smooth' });
+        pista.scrollTo({ left: el.offsetLeft - (pista.clientWidth - el.offsetWidth) / 2, behavior: 'smooth' });
+      }
+    };
+    document.addEventListener('click', (e) => {
+      const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#fg-"], a[href^="#cap-"]');
+      if (!a) return;
+      const destino = document.getElementById(a.getAttribute('href')!.slice(1));
+      if (!destino || !pista.contains(destino)) return;
+      e.preventDefault();
+      irA(destino);
+    });
+
+    addEventListener('scroll', pedir, { passive: true });
+    pista.addEventListener('scroll', pedir, { passive: true });
+    addEventListener('resize', medir);
+    amplio.addEventListener('change', medir);
+    pista.querySelectorAll('img').forEach((img) => img.addEventListener('load', medir, { once: true }));
+    medir();
+  }
+
+  // Revelado: color / blanco y negro
+  document.querySelectorAll<HTMLElement>('[data-comparar]').forEach((fig) => {
+    const input = fig.querySelector<HTMLInputElement>('[data-corte-bn]')!;
+    const fijar = (v: number) => fig.style.setProperty('--corte', `${Math.min(100, Math.max(0, v))}%`);
+    input.addEventListener('input', () => fijar(+input.value));
+    fig.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      const r = fig.getBoundingClientRect();
+      const v = ((e.clientX - r.left) / r.width) * 100;
+      input.value = String(Math.round(v));
+      fijar(v);
+    });
+  });
+</script>

@@ -46,6 +46,7 @@ export const especialidades: Especialidad[] = [
     nombre: 'Bodas',
     busqueda: 'Fotógrafa de bodas',
     categorias: ['Bodas'],
+    portada: 'boda-beso-arco.jpg',
     resumen: 'Vuestro día contado de principio a fin, sin poses forzadas.',
     descripcion:
       'Clara Rocca, fotógrafa de bodas y modelo profesional. Reportajes naturales para parejas que no se sienten cómodas delante de una cámara.',

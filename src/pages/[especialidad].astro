@@ -3,6 +3,7 @@ import { ruta } from '../lib/ruta';
 import Base from '../layouts/Base.astro';
 import Tira from '../components/Tira.astro';
 import Trabajo from '../components/Trabajo.astro';
+import BodaReal from '../components/BodaReal.astro';
 import Contacto from '../components/Contacto.astro';
 import { sitio } from '../config/sitio';
 import { especialidades, type Especialidad } from '../config/especialidades';
@@ -82,7 +83,14 @@ if (sitio.url) {
     </div>
   </section>
 
-  <Trabajo fotos={fotos} titulo={e.nombre} />
+  {e.slug === 'bodas' && fotos.some((f) => f.fotograma) ? (
+    <>
+      <BodaReal fotos={fotos} />
+      <Trabajo fotos={fotos} soloVisor />
+    </>
+  ) : (
+    <Trabajo fotos={fotos} titulo={e.nombre} />
+  )}
 
   <section class="preguntas" aria-labelledby="t-preguntas">
     <h2 class="titulo-seccion" id="t-preguntas">Preguntas frecuentes</h2>

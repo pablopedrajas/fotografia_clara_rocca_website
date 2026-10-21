@@ -1,14 +1,19 @@
 ---
 import type { Foto } from '../lib/fotos';
 
-interface Props { fotos: Foto[]; titulo?: string }
-const { fotos, titulo = 'Trabajo' } = Astro.props;
+interface Props {
+  fotos: Foto[];
+  titulo?: string;
+  /** Solo el visor a pantalla completa, sin la galería (cuando la página ya muestra las fotos de otra forma) */
+  soloVisor?: boolean;
+}
+const { fotos, titulo = 'Trabajo', soloVisor = false } = Astro.props;
 
 const categorias = [...new Set(fotos.map((f) => f.categoria))];
 const datosVisor = fotos.map(({ id, alt, grande, srcset, categoria }) => ({ id, alt, grande, srcset, categoria }));
 ---
 
-{fotos.length > 0 && (
+{!soloVisor && fotos.length > 0 && (
   <section class="trabajo" id="trabajo" aria-labelledby="t-trabajo">
     <div class="cabecera">
       <h2 class="titulo-seccion" id="t-trabajo">{titulo}</h2>

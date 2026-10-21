@@ -25,6 +25,10 @@ interface DatosFoto {
   lado?: Lado;
   seleccionada?: boolean;
   orden?: number;
+  /** Momento del día dentro de un reportaje (p. ej. «La ceremonia») */
+  capitulo?: string;
+  /** Posición en la hoja de contactos completa del reportaje (1, 2, 3…) */
+  fotograma?: number;
 }
 
 export interface Foto {
@@ -34,6 +38,8 @@ export interface Foto {
   categoria: string;
   lado: Lado;
   seleccionada: boolean;
+  capitulo?: string;
+  fotograma?: number;
   ancho: number;
   alto: number;
   vertical: boolean;
@@ -75,6 +81,8 @@ export async function cargarFotos(): Promise<Foto[]> {
         categoria: d.categoria ?? 'Retrato',
         lado: d.lado ?? 'detras',
         seleccionada: d.seleccionada ?? false,
+        capitulo: d.capitulo,
+        fotograma: d.fotograma,
         orden: d.orden ?? 1000 + i,
         ancho: img.width,
         alto: img.height,
