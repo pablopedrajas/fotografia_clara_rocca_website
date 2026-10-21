@@ -23,6 +23,8 @@ const jsonld = [
     titulo={`Sobre ${sitio.nombre}`}
     actual="Sobre Clara"
     entradilla={`Fotógrafa y modelo en ${ciudad}. Más de diez años delante de la cámara y cinco detrás.`}
+    fotos={[fotos.find((f) => f.archivo === 'modelo-campana-moda-raqueta.jpg'), fotos.find((f) => f.archivo === 'londres-noria-farolas.jpg')]}
+    fotosEnMovil
   />
   <DosLados fotos={fotos} />
   <Especialidades fotos={fotos} />

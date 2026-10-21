@@ -33,7 +33,12 @@ const ciudad = sitio.contacto.ciudad;
           <a href={ruta(`/${e.slug}/`)}>
             <span class="nombre">{e.nombre}</span>
             <span class="resumen">{e.resumen}</span>
-            <span class="ir" aria-hidden="true">Ver {e.nombre.toLowerCase()}</span>
+            {lote.length > 0 && (
+              <span class="miniaturas" aria-hidden="true">
+                {lote.map((f) => <img src={f.micro} alt="" width={f.ancho} height={f.alto} loading="lazy" decoding="async" />)}
+              </span>
+            )}
+            <span class="ir" aria-hidden="true">Ver más</span>
           </a>
           {lote.length > 0 && (
             <div class="abanico" aria-hidden="true" data-abanico>
@@ -67,7 +72,8 @@ const ciudad = sitio.contacto.ciudad;
   li + li { border-top: 1px solid #c9cbc6; }
   a {
     display: grid;
-    grid-template-columns: minmax(0, 6fr) minmax(0, 4fr) auto;
+    /* Columnas fijas: todos los nombres, resúmenes y enlaces quedan alineados entre filas */
+    grid-template-columns: minmax(0, 6fr) minmax(0, 4fr) 6.5rem;
     align-items: center;
     gap: 1rem 2rem;
     padding: clamp(1rem, 2.5vw, 1.75rem) 0;
@@ -78,9 +84,25 @@ const ciudad = sitio.contacto.ciudad;
     letter-spacing: -0.025em;
     transition: translate .4s var(--ease), color .3s;
   }
-  .resumen { max-width: 32ch; color: var(--grafito-suave); line-height: 1.45; }
-  .ir { font-size: .9375rem; white-space: nowrap; opacity: 0; translate: -.5rem 0; transition: opacity .3s, translate .3s var(--ease); }
+  .resumen { justify-self: start; max-width: 32ch; color: var(--grafito-suave); line-height: 1.45; }
+  .ir { justify-self: end; font-size: .9375rem; white-space: nowrap; opacity: 0; translate: -.5rem 0; transition: opacity .3s, translate .3s var(--ease); }
   .ir::after { content: ''; display: inline-block; width: 1.4rem; height: 2px; margin-left: .5rem; vertical-align: middle; background: var(--lapiz); }
+
+  .miniaturas { display: none; }
+  @media (min-width: 1200px) {
+    a { grid-template-columns: minmax(0, 6fr) minmax(0, 4fr) 12rem 6.5rem; }
+    .miniaturas { display: flex; justify-content: center; transition: opacity .3s; }
+    .miniaturas img {
+      width: clamp(3.5rem, 4.2vw, 5.5rem);
+      aspect-ratio: 4 / 5; object-fit: cover;
+      border: .25rem solid #fbfbf8;
+      box-shadow: 0 8px 18px -8px rgba(0, 0, 0, .45);
+      rotate: -4deg;
+    }
+    .miniaturas img + img { margin-left: -1rem; rotate: 3deg; }
+    .miniaturas img:nth-child(3) { rotate: -1deg; }
+    li.activa .miniaturas { opacity: 0; }
+  }
 
   a:hover .nombre, a:focus-visible .nombre { translate: .35em 0; }
   a:hover .ir, a:focus-visible .ir { opacity: 1; translate: 0 0; }
@@ -124,6 +146,7 @@ const ciudad = sitio.contacto.ciudad;
   }
   @media (max-width: 720px) {
     a { grid-template-columns: 1fr; gap: .4rem; }
+    .ir { justify-self: start; }
   }
 </style>
 

@@ -27,6 +27,9 @@ const h1 = ciudad ? `${e.busqueda} en ${ciudad}` : e.busqueda;
 const titulo = `${h1} · ${sitio.nombre}`;
 const descripcion = ciudad ? `${e.descripcion} En ${ciudad}.` : e.descripcion;
 const otras = especialidades.filter((o) => o.slug !== e.slug);
+// Dos copias para la cabecera: la portada de la especialidad y otra vertical distinta
+const primeraCab = fotos.find((f) => f.archivo === e.portada) ?? fotos.find((f) => f.vertical) ?? fotos[0];
+const fotosCabecera = [primeraCab, fotos.filter((f) => f !== primeraCab && f.vertical).at(Math.floor(fotos.length / 3)) ?? fotos.find((f) => f !== primeraCab)];
 const urlPagina = sitio.url ? new URL(`/${e.slug}/`, sitio.url).href : undefined;
 
 const jsonld: object[] = [
@@ -64,7 +67,7 @@ if (sitio.url) {
 ---
 
 <Base titulo={titulo} descripcion={descripcion} ogFoto={fotos.find((f) => f.archivo === e.portada) ?? fotos.find((f) => f.seleccionada) ?? fotos[0]} jsonld={jsonld} hayTrabajo={todas.length > 0}>
-  <Cabecera titulo={h1} actual={e.nombre} entradilla={e.entradilla} />
+  <Cabecera titulo={h1} actual={e.nombre} entradilla={e.entradilla} fotos={fotosCabecera} />
 
   <Tira fotos={fotos} portada={e.portada} />
 
@@ -154,9 +157,11 @@ if (sitio.url) {
     gap: 1rem;
     padding: 1.15rem 0;
     font: 400 var(--t-1)/1.3 var(--serif);
+    overflow-wrap: break-word;
   }
+  .lista, details { min-width: 0; }
   summary::-webkit-details-marker { display: none; }
-  summary::after { content: '+'; font-family: var(--sans); color: var(--lapiz); transition: rotate .3s var(--ease); }
+  summary::after { content: '+'; flex: none; width: 1em; margin-right: .2em; text-align: center; font-family: var(--sans); color: var(--lapiz); transition: rotate .3s var(--ease); }
   details[open] summary::after { rotate: 45deg; }
   details p { margin: 0 0 1.25rem; max-width: 60ch; color: var(--grafito-suave); line-height: 1.65; }
 

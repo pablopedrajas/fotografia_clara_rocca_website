@@ -1,31 +1,65 @@
 ---
-/** Cabecera de las páginas interiores: migas, título grande y entradilla. */
+/**
+ * Cabecera de las páginas interiores: migas, título grande y entradilla.
+ * Con `fotos`, dos copias reveladas ocupan el lado derecho en pantallas anchas
+ * (y en móvil solo si `fotosEnMovil`).
+ */
 import { ruta } from '../lib/ruta';
 import { sitio } from '../config/sitio';
+import type { Foto } from '../lib/fotos';
 
-interface Props { titulo: string; actual: string; entradilla?: string }
-const { titulo, actual, entradilla } = Astro.props;
+interface Props {
+  titulo: string;
+  actual: string;
+  entradilla?: string;
+  fotos?: (Foto | undefined)[];
+  fotosEnMovil?: boolean;
+}
+const { titulo, actual, entradilla, fotos = [], fotosEnMovil = false } = Astro.props;
+const copias = fotos.filter((f): f is Foto => !!f).slice(0, 2);
 ---
 
-<header class="cabecera">
-  <p class="migas"><a href={ruta('/')}>{sitio.nombre}</a> <span aria-hidden="true">/</span> {actual}</p>
-  <h1>{titulo}</h1>
-  {entradilla && <p class="entradilla">{entradilla}</p>}
-  <slot />
+<header class:list={['cabecera', { 'con-fotos': copias.length > 0, 'fotos-movil': fotosEnMovil }]}>
+  <div class="texto">
+    <p class="migas"><a href={ruta('/')}>{sitio.nombre}</a> <span aria-hidden="true">/</span> {actual}</p>
+    <h1>{titulo}</h1>
+    {entradilla && <p class="entradilla">{entradilla}</p>}
+    <slot />
+  </div>
+  {copias.length > 0 && (
+    <div class="fotos" aria-hidden="true">
+      {copias.map((f, i) => (
+        <span class:list={['copia', i === 0 ? 'grande' : 'pequena']}>
+          <img
+            src={f.mini}
+            srcset={f.srcset}
+            sizes={i === 0 ? '(max-width: 1000px) 45vw, 24vw' : '(max-width: 1000px) 40vw, 15vw'}
+            alt=""
+            loading={fotosEnMovil ? 'eager' : 'lazy'}
+            width={f.ancho}
+            height={f.alto}
+            decoding="async"
+          />
+        </span>
+      ))}
+    </div>
+  )}
 </header>
 
 <style>
   .cabecera {
     padding: clamp(7rem, 14vw, 10rem) var(--margen) clamp(1rem, 3vw, 2rem);
     display: grid;
-    gap: clamp(1rem, 2.5vw, 1.75rem);
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
   }
+  .texto { display: grid; gap: clamp(1rem, 2.5vw, 1.75rem); align-content: center; }
   .migas { margin: 0; font-size: .9375rem; color: var(--grafito-suave); }
   .migas a { color: var(--grafito); text-decoration-color: var(--lapiz); text-underline-offset: .25em; }
   h1 {
     margin: 0;
     max-width: 12ch;
-    font: 400 clamp(3.25rem, 11vw, 10rem)/0.88 var(--serif);
+    font: 400 clamp(3.25rem, 9.5vw, 10rem)/0.88 var(--serif);
     font-optical-sizing: auto;
     letter-spacing: -0.035em;
     text-wrap: balance;
@@ -35,5 +69,31 @@ const { titulo, actual, entradilla } = Astro.props;
     max-width: 40ch;
     font-size: clamp(var(--t-0), 2.4vw, var(--t-1));
     line-height: 1.45;
+  }
+
+  .fotos { position: relative; display: none; }
+  .copia {
+    display: block;
+    background: #fbfbf8;
+    padding: .55rem .55rem 2rem;
+    box-shadow: 0 22px 44px -18px rgba(0, 0, 0, .45), 0 0 0 1px rgba(0, 0, 0, .04);
+  }
+  .copia img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  .grande { width: clamp(14rem, 24vw, 30rem); rotate: 3deg; margin-left: auto; }
+  .pequena {
+    position: absolute; left: 0; bottom: -1.5rem;
+    width: clamp(9rem, 14vw, 18rem);
+    rotate: -6deg;
+  }
+
+  @media (min-width: 1000px) {
+    .cabecera.con-fotos { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+    .con-fotos .fotos { display: block; padding: 0 0 1.5rem clamp(5rem, 9vw, 11rem); }
+  }
+  @media (max-width: 999px) {
+    .fotos-movil .fotos { display: flex; gap: 0; align-items: flex-start; padding: .5rem 0 1rem; }
+    .fotos-movil .copia { position: static; width: 52%; }
+    .fotos-movil .pequena { width: 44%; margin: 2.5rem 0 0 -6%; }
+    .fotos-movil .grande { margin: 0; }
   }
 </style>

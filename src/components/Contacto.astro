@@ -64,7 +64,8 @@ const telLimpio = telefono.replace(/[^\d+]/g, '');
   .intro p { max-width: 34ch; font-size: var(--t-1); line-height: 1.45; margin: 0 0 2rem; color: #c9cbcd; }
   .vias { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
   .vias a {
-    font: 400 var(--t-2)/1.2 var(--serif);
+    font: 400 clamp(1.35rem, 6.5vw, var(--t-2))/1.2 var(--serif);
+    overflow-wrap: anywhere;
     text-decoration: none;
     background: linear-gradient(var(--lapiz), var(--lapiz)) 0 100% / 0 2px no-repeat;
     transition: background-size .35s var(--ease);

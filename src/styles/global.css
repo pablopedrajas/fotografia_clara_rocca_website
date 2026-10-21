@@ -29,10 +29,15 @@
 *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+/* En pantallas grandes (27", 4K) todo crece en proporción en vez de quedarse pequeño */
+@media (min-width: 1500px) {
+  html { font-size: min(calc(100% + (100vw - 1500px) / 150), 137.5%); }
+}
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 body {
   margin: 0;
+  overflow-x: clip;
   background: var(--papel);
   color: var(--grafito);
   font: 400 var(--t-0)/1.6 var(--sans);

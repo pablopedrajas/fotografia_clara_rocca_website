@@ -18,6 +18,8 @@ const jsonld = [pagina('ContactPage', `Contacto · ${sitio.nombre}`, '/contacto/
     titulo="Contacto y reservas"
     actual="Contacto"
     entradilla="Cuéntale a Clara la fecha y el tipo de sesión. Te responderá con disponibilidad y presupuesto."
+    fotos={[fotos.find((f) => f.archivo === 'boda-beso-arco.jpg'), fotos.find((f) => f.archivo === 'modelo-campana-moda-abrazo.jpg')]}
+    fotosEnMovil
   />
   <Contacto />
 </Base>

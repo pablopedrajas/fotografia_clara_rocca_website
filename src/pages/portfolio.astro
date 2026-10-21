@@ -24,7 +24,8 @@ const jsonld = [
     titulo="Portfolio de fotografía"
     actual="Portfolio"
     entradilla="Todo el trabajo de Clara en un mismo sitio. Filtra por tipo de sesión y toca cualquier foto para verla a pantalla completa."
+    fotos={[fotos.find((f) => f.archivo === 'boda-novios-rocas.jpg'), fotos.find((f) => f.archivo === 'cala-aguas-turquesas.jpg')]}
   />
-  <Trabajo fotos={fotos} titulo="Todas las fotos" tituloOculto />
+  <Trabajo fotos={fotos} titulo="Todas las fotos" tituloOculto inmediatas={6} />
   <Contacto />
 </Base>
