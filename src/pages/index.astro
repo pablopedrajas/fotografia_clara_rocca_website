@@ -12,7 +12,7 @@ const fotos = sinModelo(todas);
 const f = (a: string) => fotos.find((x) => x.archivo === a);
 const { ciudad } = sitio.contacto;
 const titulo = `${sitio.nombre} · Fotografía de bodas en ${ciudad || 'España'}`;
-const descripcion = `Fotógrafa de bodas en ${ciudad}: bodas reales contadas con mirada de revista, de los preparativos a la fiesta. También bautizos, comuniones, book y marcas.`;
+const descripcion = `Fotógrafa de bodas en ${ciudad}: vuestra boda tal y como la vivisteis, de los preparativos a la fiesta. También bautizos, comuniones y book de modelo.`;
 
 // La selección de Clara para la portada
 const intro = { grande: retratoDeClara(todas) ?? f('boda-novios-retrato-rocas.jpg'), pequena: f('boda-anillos-manos.jpg') };
@@ -42,8 +42,7 @@ const iDer = img(lados.der, '(max-width: 800px) 40vw, 16vw');
       <h2 id="t-intro" class="intro-titulo">Hola, soy Clara</h2>
       <p>
         Fotografío bodas en la playa y en la ciudad. Llevo más de diez años en el sector y sé lo que se siente delante
-        de la cámara: por eso consigo que estéis cómodos y que las fotos se parezcan a vosotros, con la luz y la calma
-        de una revista.
+        de la cámara: por eso consigo que estéis cómodos y que las fotos se parezcan a vosotros.
       </p>
       <a class="enlace-linea" href={ruta('/sobre-clara/')}>Conoce a Clara</a>
     </div>
