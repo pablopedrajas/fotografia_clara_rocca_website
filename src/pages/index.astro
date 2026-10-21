@@ -4,13 +4,14 @@ import { ruta } from '../lib/ruta';
 import { sitio } from '../config/sitio';
 import { cargarFotos, sinModelo, retratoDeClara, type Foto } from '../lib/fotos';
 import Portada from '../components/Portada.astro';
-import Especialidades from '../components/Especialidades.astro';
+import { especialidades } from '../config/especialidades';
 import Contacto from '../components/Contacto.astro';
 
 const todas = await cargarFotos();
 const fotos = sinModelo(todas);
 const f = (a: string) => fotos.find((x) => x.archivo === a);
 const { ciudad } = sitio.contacto;
+const pasosBoda = especialidades.find((e) => e.slug === 'bodas')?.pasos ?? [];
 const titulo = `${sitio.nombre} · Fotografía de bodas en ${ciudad || 'España'}`;
 const descripcion = `Fotógrafa de bodas en ${ciudad}: vuestra boda tal y como la vivisteis, de los preparativos a la fiesta. También bautizos, comuniones y book de modelo.`;
 
@@ -78,7 +79,25 @@ const iDer = img(lados.der, '(max-width: 800px) 40vw, 16vw');
     </div>
   </section>
 
-  <Especialidades fotos={fotos} />
+  <!-- Cómo trabaja en una boda -->
+  {pasosBoda.length > 0 && (
+    <section class="pasos" aria-labelledby="t-pasos">
+      <header class="pasos-cabecera revela">
+        <span class="antetitulo">Cómo trabaja</span>
+        <h2 id="t-pasos" class="titulo-seccion">Vuestra boda con Clara</h2>
+      </header>
+      <ol>
+        {pasosBoda.map((p, i) => (
+          <li class="revela" style={`transition-delay:${i * 0.12}s`}>
+            <span class="numero" aria-hidden="true">{['I', 'II', 'III', 'IV', 'V'][i]}</span>
+            <h3>{p.titulo}</h3>
+            <p>{p.texto}</p>
+          </li>
+        ))}
+      </ol>
+      <a class="enlace-solo pasos-mas revela" href={ruta('/bodas/#preguntas')}>Preguntas frecuentes</a>
+    </section>
+  )}
 
   <!-- Los dos lados -->
   <section class="lados" aria-labelledby="t-lados">
@@ -165,6 +184,22 @@ const iDer = img(lados.der, '(max-width: 800px) 40vw, 16vw');
     color: inherit; text-decoration: none; padding-bottom: .45rem; border-bottom: 1px solid currentColor;
   }
 
+  /* ── Cómo trabaja ── */
+  .pasos { padding: clamp(5rem, 11vw, 9rem) var(--margen); display: grid; justify-items: center; text-align: center; }
+  .pasos-cabecera { margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+  .pasos-cabecera .titulo-seccion { margin: 0; }
+  .pasos ol {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2rem, 5vw, 5rem);
+    max-width: 90rem; width: 100%;
+  }
+  .pasos li { display: grid; justify-items: center; align-content: start; gap: .9rem; padding-top: 2rem; border-top: 1px solid var(--linea); }
+  .numero { font: 300 2.2rem/1 var(--serif); letter-spacing: .1em; }
+  .pasos h3 { margin: 0; font: 400 1.35rem/1.25 var(--serif); text-transform: uppercase; letter-spacing: .14em; }
+  .pasos li p { margin: 0; max-width: 32ch; color: var(--grafito-suave); line-height: 1.6; }
+  .pasos-mas { margin-top: clamp(2.5rem, 5vw, 4rem); }
+
   /* ── Delante y detrás ── */
   .lados {
     display: grid;
@@ -201,6 +236,7 @@ const iDer = img(lados.der, '(max-width: 800px) 40vw, 16vw');
   .banda-sub { font: 500 .72rem/1 var(--sans); letter-spacing: .26em; text-transform: uppercase; padding-bottom: .45rem; border-bottom: 1px solid #fff; }
 
   @media (max-width: 800px) {
+    .pasos ol { grid-template-columns: 1fr; }
     .intro { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
     .intro-texto { grid-column: 1 / -1; grid-row: 1; margin-bottom: 1rem; padding-bottom: 1.5rem; }
     .intro-grande { grid-column: 1 / span 2; grid-row: 2; width: 82%; }
