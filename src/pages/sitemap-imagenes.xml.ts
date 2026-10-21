@@ -13,7 +13,7 @@ export const GET: APIRoute = async () => {
   const abs = (p: string) => new URL(p, sitio.url).href;
 
   const paginas = [
-    { loc: abs('/'), fotos },
+    { loc: abs('/portfolio/'), fotos },
     ...especialidades.map((e) => ({ loc: abs(`/${e.slug}/`), fotos: fotos.filter((f) => e.categorias.includes(f.categoria)) })),
   ];
 

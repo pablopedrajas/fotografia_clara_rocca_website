@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Cabecera from '../components/Cabecera.astro';
+import DosLados from '../components/DosLados.astro';
+import Especialidades from '../components/Especialidades.astro';
+import Contacto from '../components/Contacto.astro';
+import { sitio } from '../config/sitio';
+import { cargarFotos } from '../lib/fotos';
+import { migas, pagina, idPersona } from '../lib/negocio';
+
+const fotos = await cargarFotos();
+const { ciudad } = sitio.contacto;
+const titulo = `Sobre ${sitio.nombre} · Fotógrafa y modelo en ${ciudad}`;
+const descripcion = `${sitio.nombre} lleva más de diez años en el sector como modelo y cinco como fotógrafa. Estudió Diseño Gráfico y trabaja en ${ciudad}.`;
+const jsonld = [
+  pagina('AboutPage', `Sobre ${sitio.nombre}`, '/sobre-clara/', { mainEntity: { '@id': idPersona } }),
+  migas('Sobre Clara', '/sobre-clara/'),
+].filter((d) => d !== null);
+---
+
+<Base titulo={titulo} descripcion={descripcion} ogFoto={fotos.find((f) => f.archivo === 'modelo-campana-moda-sentada.jpg')} jsonld={jsonld} hayTrabajo>
+  <Cabecera
+    titulo={`Sobre ${sitio.nombre}`}
+    actual="Sobre Clara"
+    entradilla={`Fotógrafa y modelo en ${ciudad}. Más de diez años delante de la cámara y cinco detrás.`}
+  />
+  <DosLados fotos={fotos} />
+  <Especialidades fotos={fotos} />
+  <Contacto />
+</Base>

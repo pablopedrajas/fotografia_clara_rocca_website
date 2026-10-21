@@ -1,0 +1,39 @@
+---
+/** Cabecera de las páginas interiores: migas, título grande y entradilla. */
+import { ruta } from '../lib/ruta';
+import { sitio } from '../config/sitio';
+
+interface Props { titulo: string; actual: string; entradilla?: string }
+const { titulo, actual, entradilla } = Astro.props;
+---
+
+<header class="cabecera">
+  <p class="migas"><a href={ruta('/')}>{sitio.nombre}</a> <span aria-hidden="true">/</span> {actual}</p>
+  <h1>{titulo}</h1>
+  {entradilla && <p class="entradilla">{entradilla}</p>}
+  <slot />
+</header>
+
+<style>
+  .cabecera {
+    padding: clamp(7rem, 14vw, 10rem) var(--margen) clamp(1rem, 3vw, 2rem);
+    display: grid;
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+  }
+  .migas { margin: 0; font-size: .9375rem; color: var(--grafito-suave); }
+  .migas a { color: var(--grafito); text-decoration-color: var(--lapiz); text-underline-offset: .25em; }
+  h1 {
+    margin: 0;
+    max-width: 12ch;
+    font: 400 clamp(3.25rem, 11vw, 10rem)/0.88 var(--serif);
+    font-optical-sizing: auto;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+  .entradilla {
+    margin: 0;
+    max-width: 40ch;
+    font-size: clamp(var(--t-0), 2.4vw, var(--t-1));
+    line-height: 1.45;
+  }
+</style>

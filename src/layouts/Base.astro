@@ -78,9 +78,17 @@ const datos = [negocio(), ...jsonld];
           ))}
         </ul>
       </nav>
+      <nav aria-label="Más páginas">
+        <ul>
+          {[['/', 'Portada'], ['/portfolio/', 'Portfolio'], ['/sobre-clara/', 'Sobre Clara'], ['/contacto/', 'Contacto']].map(([p, t]) => (
+            <li><a href={ruta(p)} aria-current={Astro.url.pathname === ruta(p) ? 'page' : undefined}>{t}</a></li>
+          ))}
+          {instagram && <li><a href={`https://www.instagram.com/${instagram}/`} rel="noopener">Instagram</a></li>}
+        </ul>
+      </nav>
       <p>
         <span>© {new Date().getFullYear()} {sitio.nombre}</span>
-        <span>Todas las fotografías son propiedad de {sitio.nombre}.</span>
+        <span>Fotografías de {sitio.nombre}, salvo las campañas en las que aparece como modelo.</span>
       </p>
     </footer>
   </body>

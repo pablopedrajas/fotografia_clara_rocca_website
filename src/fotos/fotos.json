@@ -399,5 +399,30 @@
     "capitulo": "Familia",
     "fotograma": 230,
     "orden": 55
+  },
+  "modelo-campana-moda-cuclillas.jpg": {
+    "alt": "Clara Rocca posa en cuclillas como modelo en una campaña de moda en estudio, con chaqueta negra y falda plisada a rayas",
+    "categoria": "Modelo",
+    "lado": "delante",
+    "orden": 60,
+    "seleccionada": true
+  },
+  "modelo-campana-moda-sentada.jpg": {
+    "alt": "Clara Rocca sentada en el suelo del estudio, abrazada a sus rodillas, en una campaña de moda con calcetines blancos y merceditas negras",
+    "categoria": "Modelo",
+    "lado": "delante",
+    "orden": 61
+  },
+  "modelo-campana-moda-raqueta.jpg": {
+    "alt": "Clara Rocca sonríe con una raqueta de tenis detrás de la cabeza en una sesión de moda de inspiración deportiva",
+    "categoria": "Modelo",
+    "lado": "delante",
+    "orden": 62
+  },
+  "modelo-campana-moda-abrazo.jpg": {
+    "alt": "Clara Rocca, modelo, sentada con los brazos cruzados sobre las rodillas y una sonrisa abierta en una campaña de moda en estudio",
+    "categoria": "Modelo",
+    "lado": "delante",
+    "orden": 63
   }
 }

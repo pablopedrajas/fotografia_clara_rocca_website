@@ -11,6 +11,8 @@ import { especialidades } from '../config/especialidades';
     <p>La página que buscas no existe o ha cambiado de sitio. Puedes volver a la portada o ir directamente a una especialidad.</p>
     <ul>
       <li><a href={ruta('/')}>Portada</a></li>
+      <li><a href={ruta('/portfolio/')}>Portfolio</a></li>
+      <li><a href={ruta('/contacto/')}>Contacto</a></li>
       {especialidades.map((e) => <li><a href={ruta(`/${e.slug}/`)}>{e.nombre}</a></li>)}
     </ul>
   </section>

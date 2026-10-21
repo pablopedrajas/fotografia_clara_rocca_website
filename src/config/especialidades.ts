@@ -186,10 +186,50 @@ export const especialidades: Especialidad[] = [
     ],
   },
   {
+    slug: 'modelo-para-marcas',
+    nombre: 'Modelo para marcas',
+    busqueda: 'Modelo para marcas',
+    categorias: ['Modelo', 'Gastronomía'],
+    portada: 'modelo-campana-moda-cuclillas.jpg',
+    resumen: 'Campañas de moda, producto y redes, delante o detrás de la cámara.',
+    descripcion:
+      'Clara Rocca, modelo con más de diez años en el sector y fotógrafa, para campañas de moda, catálogos, producto y contenido de marca.',
+    entradilla:
+      'Más de diez años posando para marcas. Clara sabe lo que necesita una campaña porque la ha vivido desde los dos lados de la cámara.',
+    parrafos: [
+      'Como modelo, Clara trabaja en campañas de moda, catálogos y contenido para redes. Llega a la sesión sabiendo moverse, cambiar de pose entre disparo y disparo y sacar partido a la ropa o al producto, que es lo que hace que una jornada de estudio rinda.',
+      'Como fotógrafa, hace sesiones para marcas y negocios: producto, gastronomía, espacios y retratos del equipo. Estudió Diseño Gráfico, así que piensa cada foto según dónde se va a usar: la web, una ficha de producto, un cartel o una publicación en Instagram.',
+      'Puedes contar con ella para una cosa o para la otra. Cuéntale qué quieres comunicar y te propondrá cómo enfocarlo.',
+    ],
+    pasos: [
+      { titulo: 'Le cuentas el proyecto', texto: 'Qué marca o producto es, dónde se van a usar las fotos y en qué fechas.' },
+      { titulo: 'Propuesta', texto: 'Clara te responde con disponibilidad, enfoque y presupuesto, ya sea como modelo o como fotógrafa.' },
+      { titulo: 'La sesión', texto: 'En estudio o en exteriores. Si posa, trabaja con la dirección de tu equipo; si fotografía, dirige ella la sesión.' },
+      { titulo: 'Las fotos', texto: 'Si la sesión la fotografía ella, recibes las fotos editadas y adaptadas a los formatos que vayas a usar.' },
+    ],
+    preguntas: [
+      {
+        pregunta: '¿Clara trabaja como modelo para marcas?',
+        respuesta:
+          'Sí. Lleva más de diez años en el sector como modelo, sobre todo en moda. Escríbele con la fecha, el tipo de campaña y el uso que tendrán las fotos.',
+      },
+      {
+        pregunta: '¿También hace fotos de producto o para restaurantes?',
+        respuesta: 'Sí. Hace sesiones para marcas y negocios: producto, platos, espacios y retratos para la web o las redes sociales.',
+      },
+      {
+        pregunta: '¿Cómo pido presupuesto?',
+        respuesta:
+          'Escribe a Clara contando qué marca es, si necesitas modelo o fotógrafa y para cuándo. Te responderá con disponibilidad y presupuesto.',
+      },
+    ],
+  },
+  {
     slug: 'book-de-modelo',
     nombre: 'Book de modelo',
     busqueda: 'Book de modelo',
-    categorias: ['Book de modelo'],
+    categorias: ['Book de modelo', 'Modelo'],
+    portada: 'modelo-campana-moda-raqueta.jpg',
     resumen: 'Un book hecho por alguien que también trabaja como modelo.',
     descripcion:
       'Book de fotos para modelos con Clara Rocca, fotógrafa y modelo profesional con más de diez años de experiencia en el sector.',

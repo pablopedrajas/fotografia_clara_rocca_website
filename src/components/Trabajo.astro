@@ -6,8 +6,10 @@ interface Props {
   titulo?: string;
   /** Solo el visor a pantalla completa, sin la galería (cuando la página ya muestra las fotos de otra forma) */
   soloVisor?: boolean;
+  /** El título solo para lectores de pantalla (cuando la página ya tiene uno grande encima) */
+  tituloOculto?: boolean;
 }
-const { fotos, titulo = 'Trabajo', soloVisor = false } = Astro.props;
+const { fotos, titulo = 'Trabajo', soloVisor = false, tituloOculto = false } = Astro.props;
 
 const categorias = [...new Set(fotos.map((f) => f.categoria))];
 const datosVisor = fotos.map(({ id, alt, grande, srcset, categoria }) => ({ id, alt, grande, srcset, categoria }));
@@ -16,7 +18,7 @@ const datosVisor = fotos.map(({ id, alt, grande, srcset, categoria }) => ({ id, 
 {!soloVisor && fotos.length > 0 && (
   <section class="trabajo" id="trabajo" aria-labelledby="t-trabajo">
     <div class="cabecera">
-      <h2 class="titulo-seccion" id="t-trabajo">{titulo}</h2>
+      <h2 class:list={['titulo-seccion', { oculto: tituloOculto }]} id="t-trabajo">{titulo}</h2>
       {categorias.length > 1 && (
         <div class="filtros" role="group" aria-label="Filtrar por tipo de sesión" data-filtros>
           <button aria-pressed="true" data-cat="">Todo</button>

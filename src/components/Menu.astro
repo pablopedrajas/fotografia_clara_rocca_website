@@ -31,6 +31,7 @@ const apartadosBoda = [
 ];
 const otras = especialidades.filter((e) => e.slug !== 'bodas');
 const ruta_actual = Astro.url.pathname;
+const actual = (p: string) => (ruta_actual === ruta(p) ? 'page' : undefined);
 ---
 
 <nav class="barra" aria-label="Principal" data-menu>
@@ -72,9 +73,9 @@ const ruta_actual = Astro.url.pathname;
         </ul>
       </div>
     </li>
-    {hayTrabajo && <li><a href={ruta('/#trabajo')}>Trabajo</a></li>}
-    <li><a href={ruta('/#dos-lados')}>Sobre Clara</a></li>
-    {hayContacto && <li><a class="cta" href="#contacto">Reservar sesión</a></li>}
+    {hayTrabajo && <li><a href={ruta('/portfolio/')} aria-current={actual('/portfolio/')}>Portfolio</a></li>}
+    <li><a href={ruta('/sobre-clara/')} aria-current={actual('/sobre-clara/')}>Sobre Clara</a></li>
+    {hayContacto && <li><a class="cta" href={ruta('/contacto/')}>Reservar sesión</a></li>}
   </ul>
 
   <!-- Móvil -->
@@ -92,10 +93,11 @@ const ruta_actual = Astro.url.pathname;
       {otras.map((e) => <li><a href={ruta(`/${e.slug}/`)}>{e.nombre}</a></li>)}
     </ul>
     <ul class="medianas">
-      {hayTrabajo && <li><a href={ruta('/#trabajo')}>Trabajo</a></li>}
-      <li><a href={ruta('/#dos-lados')}>Sobre Clara</a></li>
+      {hayTrabajo && <li><a href={ruta('/portfolio/')}>Portfolio</a></li>}
+      <li><a href={ruta('/sobre-clara/')}>Sobre Clara</a></li>
+      {hayContacto && <li><a href={ruta('/contacto/')}>Contacto</a></li>}
     </ul>
-    {hayContacto && <a class="cta grande" href="#contacto">Reservar sesión</a>}
+    {hayContacto && <a class="cta grande" href={ruta('/contacto/')}>Reservar sesión</a>}
   </div>
 </nav>
 
@@ -121,6 +123,7 @@ const ruta_actual = Astro.url.pathname;
     background: none; border: 0; padding: .3rem 0; cursor: pointer;
     display: inline-flex; align-items: center; gap: .35rem;
   }
+  .enlaces > li > a[aria-current='page'] { text-decoration: underline; text-decoration-color: var(--lapiz); text-underline-offset: .3em; }
   .enlaces > li > a:not(.cta):hover { text-decoration: underline; text-decoration-color: var(--lapiz); text-underline-offset: .3em; }
 
   /* «Bodas» destaca: subrayado de lápiz graso permanente */

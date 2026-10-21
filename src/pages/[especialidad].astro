@@ -1,6 +1,7 @@
 ---
 import { ruta } from '../lib/ruta';
 import Base from '../layouts/Base.astro';
+import Cabecera from '../components/Cabecera.astro';
 import Tira from '../components/Tira.astro';
 import Trabajo from '../components/Trabajo.astro';
 import BodaReal from '../components/BodaReal.astro';
@@ -16,7 +17,10 @@ export function getStaticPaths() {
 
 const { e } = Astro.props as { e: Especialidad };
 const todas = await cargarFotos();
-const fotos = todas.filter((f) => e.categorias.includes(f.categoria));
+// Primero las fotos de la categoría principal de la especialidad
+const fotos = todas
+  .filter((f) => e.categorias.includes(f.categoria))
+  .sort((a, b) => e.categorias.indexOf(a.categoria) - e.categorias.indexOf(b.categoria));
 const ciudad = sitio.contacto.ciudad;
 
 const h1 = ciudad ? `${e.busqueda} en ${ciudad}` : e.busqueda;
@@ -60,11 +64,7 @@ if (sitio.url) {
 ---
 
 <Base titulo={titulo} descripcion={descripcion} ogFoto={fotos.find((f) => f.archivo === e.portada) ?? fotos.find((f) => f.seleccionada) ?? fotos[0]} jsonld={jsonld} hayTrabajo={todas.length > 0}>
-  <header class="cabecera">
-    <p class="migas"><a href={ruta('/')}>{sitio.nombre}</a> <span aria-hidden="true">/</span> {e.nombre}</p>
-    <h1>{h1}</h1>
-    <p class="entradilla">{e.entradilla}</p>
-  </header>
+  <Cabecera titulo={h1} actual={e.nombre} entradilla={e.entradilla} />
 
   <Tira fotos={fotos} portada={e.portada} />
 
@@ -117,28 +117,6 @@ if (sitio.url) {
 </Base>
 
 <style>
-  .cabecera {
-    padding: clamp(7rem, 14vw, 10rem) var(--margen) clamp(1rem, 3vw, 2rem);
-    display: grid;
-    gap: clamp(1rem, 2.5vw, 1.75rem);
-  }
-  .migas { margin: 0; font-size: .9375rem; color: var(--grafito-suave); }
-  .migas a { color: var(--grafito); text-decoration-color: var(--lapiz); text-underline-offset: .25em; }
-  h1 {
-    margin: 0;
-    max-width: 12ch;
-    font: 400 clamp(3.25rem, 11vw, 10rem)/0.88 var(--serif);
-    font-optical-sizing: auto;
-    letter-spacing: -0.035em;
-    text-wrap: balance;
-  }
-  .entradilla {
-    margin: 0;
-    max-width: 40ch;
-    font-size: clamp(var(--t-0), 2.4vw, var(--t-1));
-    line-height: 1.45;
-  }
-
   .cuerpo {
     display: grid;
     grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);

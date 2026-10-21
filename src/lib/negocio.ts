@@ -56,3 +56,28 @@ export function negocio() {
     ],
   };
 }
+
+/** Migas de pan para Google: Portada › página */
+export function migas(nombre: string, camino: string) {
+  if (!sitio.url) return null;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: sitio.nombre, item: new URL('/', sitio.url).href },
+      { '@type': 'ListItem', position: 2, name: nombre, item: new URL(camino, sitio.url).href },
+    ],
+  };
+}
+
+/** Página web concreta (AboutPage, ContactPage, CollectionPage…) enlazada al negocio */
+export function pagina(tipo: string, nombre: string, camino: string, extra: object = {}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': tipo,
+    name: nombre,
+    ...(sitio.url && { url: new URL(camino, sitio.url).href }),
+    about: { '@id': idNegocio },
+    ...extra,
+  };
+}

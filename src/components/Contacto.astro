@@ -106,6 +106,15 @@ const telLimpio = telefono.replace(/[^\d+]/g, '');
 
 <script>
   const form = document.querySelector<HTMLFormElement>('[data-form]');
+  // Fotos que la persona reveló en el visor de la portada
+  try {
+    const guardadas = JSON.parse(sessionStorage.getItem('clara-fotos-elegidas') || '[]') as string[];
+    const area = form?.querySelector<HTMLTextAreaElement>('textarea');
+    if (area && guardadas.length && !area.value) {
+      area.value = `Me han gustado estas fotos de tu web:\n${guardadas.map((a) => `- ${a}`).join('\n')}\n\n`;
+      sessionStorage.removeItem('clara-fotos-elegidas');
+    }
+  } catch { /* sin almacenamiento */ }
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
     const d = new FormData(form);

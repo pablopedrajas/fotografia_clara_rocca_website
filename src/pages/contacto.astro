@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import Cabecera from '../components/Cabecera.astro';
+import Contacto from '../components/Contacto.astro';
+import { sitio } from '../config/sitio';
+import { cargarFotos } from '../lib/fotos';
+import { migas, pagina } from '../lib/negocio';
+
+const fotos = await cargarFotos();
+const { ciudad } = sitio.contacto;
+const titulo = `Contacto y reservas · ${sitio.nombre}, fotógrafa en ${ciudad}`;
+const descripcion = `Escribe a ${sitio.nombre} para reservar tu boda, bautizo, comunión, book o sesión para tu marca en ${ciudad}. Te responderá con disponibilidad y presupuesto.`;
+const jsonld = [pagina('ContactPage', `Contacto · ${sitio.nombre}`, '/contacto/'), migas('Contacto', '/contacto/')].filter((d) => d !== null);
+---
+
+<Base titulo={titulo} descripcion={descripcion} ogFoto={fotos.find((f) => f.archivo === 'boda-beso-arco.jpg')} jsonld={jsonld} hayTrabajo>
+  <Cabecera
+    titulo="Contacto y reservas"
+    actual="Contacto"
+    entradilla="Cuéntale a Clara la fecha y el tipo de sesión. Te responderá con disponibilidad y presupuesto."
+  />
+  <Contacto />
+</Base>
