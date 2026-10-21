@@ -4,28 +4,40 @@ import Cabecera from '../components/Cabecera.astro';
 import Trabajo from '../components/Trabajo.astro';
 import Contacto from '../components/Contacto.astro';
 import { sitio } from '../config/sitio';
-import { cargarFotos, sinModelo } from '../lib/fotos';
+import { cargarFotos } from '../lib/fotos';
 import { migas, pagina } from '../lib/negocio';
 
-const fotos = sinModelo(await cargarFotos());
+// Solo bodas. Primero la portada y la selección de Clara; después, el resto del reportaje
+const SELECCION = [
+  'boda-novios-corriendo-cesped.jpg', 'boda-novios-retrato-rocas.jpg', 'boda-arco-cala-sillas.jpg', 'boda-novios-beso-rocas.jpg',
+  'boda-primera-mirada-bn.jpg', 'boda-novia-orilla-cala.jpg', 'boda-vestido-percha-bn.jpg', 'boda-novios-bajo-arco.jpg',
+  'boda-espalda-encaje-bn.jpg', 'boda-novios-abrazo-orilla.jpg', 'boda-ceremonia-oficiante.jpg', 'boda-novios-arco-sonrisa.jpg',
+  'boda-novia-zapato.jpg', 'boda-novia-nino-sofa.jpg', 'boda-novio-abrazo-nina.jpg', 'boda-novio-ninos-orilla.jpg',
+];
+const puesto = (a: string) => (SELECCION.includes(a) ? SELECCION.indexOf(a) : SELECCION.length);
+const fotos = (await cargarFotos())
+  .filter((f) => f.categoria === 'Bodas')
+  .map((f, i) => ({ f, i }))
+  .sort((a, b) => puesto(a.f.archivo) - puesto(b.f.archivo) || a.i - b.i)
+  .map(({ f }) => f);
 const { ciudad } = sitio.contacto;
-const titulo = `Portfolio de fotografía · ${sitio.nombre}, fotógrafa en ${ciudad}`;
-const descripcion = `Portfolio de ${sitio.nombre}: bodas, viajes, paisaje, arquitectura, retrato y gastronomía. Fotógrafa y modelo en ${ciudad}.`;
+const titulo = `Portfolio de bodas · ${sitio.nombre}, fotógrafa de bodas en ${ciudad}`;
+const descripcion = `Portfolio de bodas de ${sitio.nombre}, fotógrafa de bodas en ${ciudad}: ceremonias en la playa, retratos de pareja, preparativos y familia.`;
 const jsonld = [
-  pagina('CollectionPage', `Portfolio de ${sitio.nombre}`, '/portfolio/', {
+  pagina('CollectionPage', `Portfolio de bodas de ${sitio.nombre}`, '/portfolio/', {
     ...(sitio.url && { image: fotos.slice(0, 12).map((f) => new URL(f.grande, sitio.url).href) }),
   }),
   migas('Portfolio', '/portfolio/'),
 ].filter((d) => d !== null);
 ---
 
-<Base titulo={titulo} descripcion={descripcion} ogFoto={fotos.find((f) => f.archivo === 'boda-novios-risas.jpg')} jsonld={jsonld} hayTrabajo>
+<Base titulo={titulo} descripcion={descripcion} ogFoto={fotos.find((f) => f.archivo === 'boda-novios-corriendo-cesped.jpg')} jsonld={jsonld} hayTrabajo>
   <Cabecera
-    titulo="Portfolio de fotografía"
+    titulo="Portfolio de bodas"
     actual="Portfolio"
-    entradilla="Todo el trabajo de Clara en un mismo sitio. Filtra por tipo de sesión y toca cualquier foto para verla a pantalla completa."
-    fotos={[fotos.find((f) => f.archivo === 'boda-novios-rocas.jpg'), fotos.find((f) => f.archivo === 'cala-aguas-turquesas.jpg')]}
+    entradilla="Bodas reales fotografiadas por Clara, de los preparativos al último abrazo. Toca cualquier foto para verla a pantalla completa."
+    fotos={[fotos.find((f) => f.archivo === 'boda-novios-rocas.jpg'), fotos.find((f) => f.archivo === 'boda-novia-orilla-cala.jpg')]}
   />
-  <Trabajo fotos={fotos} titulo="Todas las fotos" tituloOculto inmediatas={6} />
+  <Trabajo fotos={fotos} titulo="Fotos de boda" tituloOculto inmediatas={6} />
   <Contacto />
 </Base>

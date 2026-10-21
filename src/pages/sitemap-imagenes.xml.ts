@@ -13,7 +13,7 @@ export const GET: APIRoute = async () => {
   const abs = (p: string) => new URL(p, sitio.url).href;
 
   const paginas = [
-    { loc: abs('/portfolio/'), fotos: sinModelo(fotos) },
+    { loc: abs('/portfolio/'), fotos: fotos.filter((f) => f.categoria === 'Bodas') },
     { loc: abs('/sobre-clara/'), fotos: [retratoDeClara(fotos)].filter((f) => f !== undefined) },
     ...especialidades.map((e) => ({ loc: abs(`/${e.slug}/`), fotos: fotos.filter((f) => e.categorias.includes(f.categoria)) })),
   ];

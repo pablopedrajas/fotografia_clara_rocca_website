@@ -151,7 +151,8 @@ const { email, instagram } = sitio.contacto;
     content: ''; position: absolute; left: 0; right: .22em; bottom: .15rem; height: 1px;
     background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease);
   }
-  .enlace:hover::after, .enlace[aria-current='page']::after, .destacado::after { transform: scaleX(1); }
+  /* Solo se subraya la página en la que estás (y el enlace bajo el ratón) */
+  .enlace:hover::after, .enlace[aria-current='page']::after { transform: scaleX(1); }
   .abrir { display: inline-flex; align-items: center; gap: .75rem; }
   .hamburguesa { display: grid; gap: 5px; width: 1.4rem; }
   .hamburguesa i { display: block; height: 1px; background: currentColor; }
