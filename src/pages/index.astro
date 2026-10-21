@@ -16,7 +16,7 @@ const titulo = `${sitio.nombre} · Fotografía de bodas en ${ciudad || 'España'
 const descripcion = `Fotógrafa de bodas en ${ciudad}: vuestra boda tal y como la vivisteis, de los preparativos a la fiesta. También bautizos, comuniones y book de modelo.`;
 
 // La selección de Clara para la portada
-const intro = { grande: retratoDeClara(todas) ?? f('boda-novios-retrato-rocas.jpg'), pequena: f('boda-anillos-manos.jpg') };
+const intro = { grande: retratoDeClara(todas) ?? f('boda-novios-retrato-rocas.jpg') };
 const plano = f('boda-arco-cala-sillas.jpg');
 const boda = f('boda-novia-nino-sofa.jpg');
 const lados = { izq: f('boda-vestido-percha-bn.jpg'), centro: f('boda-primera-mirada-bn.jpg'), der: f('boda-novia-orilla-cala.jpg') };
@@ -25,7 +25,6 @@ const banda = [f('boda-novios-beso-rocas.jpg'), f('boda-espalda-encaje-bn.jpg'),
 const img = (foto: Foto | undefined, sizes: string) =>
   foto ? { src: foto.mini, srcset: foto.srcset, sizes, width: foto.ancho, height: foto.alto, alt: foto.alt } : null;
 const iIntroG = img(intro.grande, '(max-width: 800px) 80vw, 34vw');
-const iIntroP = img(intro.pequena, '(max-width: 800px) 45vw, 20vw');
 const iBoda = img(boda, '(max-width: 900px) 100vw, 60vw');
 const iIzq = img(lados.izq, '(max-width: 800px) 40vw, 18vw');
 const iCentro = img(lados.centro, '(max-width: 800px) 90vw, 40vw');
@@ -47,7 +46,6 @@ const iDer = img(lados.der, '(max-width: 800px) 40vw, 16vw');
       </p>
       <a class="enlace-linea" href={ruta('/sobre-clara/')}>Conoce a Clara</a>
     </div>
-    {iIntroP && <img {...iIntroP} class="intro-pequena revela" loading="lazy" decoding="async" />}
   </section>
 
   <!-- Plano general a sangre -->
@@ -143,20 +141,9 @@ const iDer = img(lados.der, '(max-width: 800px) 40vw, 16vw');
     margin: 0 auto;
   }
   .intro-grande { grid-column: 1; grid-row: 1 / span 2; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-  .intro-texto { grid-column: 2; grid-row: 1; align-self: end; max-width: 32rem; display: grid; justify-items: start; padding-bottom: clamp(2rem, 5vw, 4rem); }
+  .intro-texto { grid-column: 2; grid-row: 1 / span 2; align-self: center; max-width: 32rem; display: grid; justify-items: start; padding-bottom: clamp(2rem, 5vw, 4rem); }
   .intro-titulo { margin: 0 0 1.4rem; font: 300 clamp(1.8rem, 3vw, 2.9rem)/1.2 var(--serif); font-style: italic; }
   .intro-texto p { margin: 0 0 2rem; color: var(--grafito-suave); }
-  /* La foto pequeña se monta sobre el borde de la grande */
-  .intro-pequena {
-    grid-column: 2; grid-row: 2;
-    align-self: end;
-    width: min(70%, 22rem);
-    aspect-ratio: 4 / 5; object-fit: cover;
-    margin-left: calc(-1 * clamp(5rem, 12vw, 13rem));
-    margin-bottom: calc(-1 * clamp(2rem, 5vw, 4rem));
-    outline: clamp(.5rem, 1vw, .9rem) solid var(--papel);
-    position: relative;
-  }
 
   /* ── Plano general ── */
   .plano { position: relative; height: min(88svh, 62vw); min-height: 24rem; overflow: hidden; color: #fff; }
@@ -239,8 +226,7 @@ const iDer = img(lados.der, '(max-width: 800px) 40vw, 16vw');
     .pasos ol { grid-template-columns: 1fr; }
     .intro { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
     .intro-texto { grid-column: 1 / -1; grid-row: 1; margin-bottom: 1rem; padding-bottom: 1.5rem; }
-    .intro-grande { grid-column: 1 / span 2; grid-row: 2; width: 82%; }
-    .intro-pequena { grid-column: 2; grid-row: 2; justify-self: end; width: 62%; margin: 0 0 -2.5rem; }
+    .intro-grande { grid-column: 1 / span 2; grid-row: 2; width: 100%; }
 
     .bodas { grid-template-columns: 1fr; padding: 2rem 0 4rem; }
     .bodas-texto { padding: 0 var(--margen); }
