@@ -2,25 +2,26 @@
    Papel baritado frío, negro de película, ámbar de la impresión
    del borde del negativo y rojo de lápiz graso.                     */
 :root {
-  --papel: #e9eae6;
-  --papel-hondo: #dcded9;
+  /* Blanco cálido, negro y grises: el lenguaje de las revistas de novia */
+  --papel: #faf9f6;
+  --papel-hondo: #efede8;
   --pelicula: #000;
-  --ambar: #e7a93a;
-  --lapiz: #d2342b;
-  --grafito: #232528;
-  --grafito-suave: #5e6266;
+  --ambar: #e7a93a;          /* solo en la hoja de contactos de bodas */
+  --lapiz: #141414;          /* acento: negro, sin colores */
+  --grafito: #141414;
+  --grafito-suave: #6e6a64;
+  --linea: #dedbd4;
 
-  --serif: 'Bodoni Moda Variable', 'Didot', 'Bodoni 72', Georgia, serif;
-  --sans: 'Hanken Grotesk Variable', system-ui, sans-serif;
+  --serif: 'Cormorant Garamond Variable', 'Cormorant Garamond', Garamond, 'Times New Roman', serif;
+  --sans: 'Hanken Grotesk Variable', 'Helvetica Neue', Arial, sans-serif;
   --borde: 'Doto', ui-monospace, monospace;
 
-  /* escala tipográfica 4:3 */
-  --t-0: 1.0625rem;
-  --t-1: 1.4167rem;
-  --t-2: 1.8889rem;
-  --t-3: 2.5185rem;
+  --t-0: 1.1875rem;
+  --t-1: 1.45rem;
+  --t-2: 1.9rem;
+  --t-3: 2.6rem;
 
-  --margen: clamp(1rem, 4vw, 3.5rem);
+  --margen: clamp(1.25rem, 4.5vw, 4.5rem);
   --ease: cubic-bezier(.2, .7, .1, 1);
 }
 
@@ -40,7 +41,7 @@ body {
   overflow-x: clip;
   background: var(--papel);
   color: var(--grafito);
-  font: 400 var(--t-0)/1.6 var(--sans);
+  font: 400 var(--t-0)/1.6 var(--serif);
   font-kerning: normal;
   -webkit-font-smoothing: antialiased;
 }
@@ -68,10 +69,42 @@ button { font: inherit; color: inherit; }
 }
 .saltar:focus { top: 1rem; }
 
-/* Títulos de sección: Bodoni a gran tamaño, alineados a la izquierda */
+/* Títulos de sección: mayúsculas finas y muy espaciadas */
 .titulo-seccion {
-  font: 400 clamp(2.6rem, 8vw, 6.5rem)/0.95 var(--serif);
-  font-optical-sizing: auto;
-  letter-spacing: -0.02em;
+  font: 300 clamp(1.9rem, 4.2vw, 3.6rem)/1.15 var(--serif);
+  text-transform: uppercase;
+  letter-spacing: .16em;
   margin: 0 0 clamp(1.5rem, 4vw, 3rem);
+}
+
+/* Etiqueta pequeña en mayúsculas (sans), como en las revistas */
+.antetitulo {
+  display: block;
+  font: 500 .72rem/1.5 var(--sans);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--grafito-suave);
+  margin: 0 0 1.25rem;
+}
+
+/* Enlace-botón: mayúsculas pequeñas con línea fina */
+.enlace-linea {
+  display: inline-flex; align-items: center; gap: .8rem;
+  font: 500 .75rem/1 var(--sans);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--grafito);
+  padding: 1.1rem 1.9rem;
+  border: 1px solid currentColor;
+  transition: background .3s, color .3s;
+}
+.enlace-linea:hover, .enlace-linea:focus-visible { background: var(--grafito); color: var(--papel); }
+.enlace-linea.claro { color: #fff; }
+.enlace-linea.claro:hover { background: #fff; color: var(--grafito); }
+
+/* Aparición suave al hacer scroll (solo con JS y sin «reducir movimiento») */
+@media (prefers-reduced-motion: no-preference) {
+  .js .revela { opacity: 0; translate: 0 2.5rem; transition: opacity 1.1s var(--ease), translate 1.1s var(--ease); }
+  .js .revela.visto { opacity: 1; translate: 0 0; }
 }

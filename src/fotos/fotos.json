@@ -424,5 +424,35 @@
     "categoria": "Modelo",
     "lado": "delante",
     "orden": 63
+  },
+  "boda-novios-corriendo-cesped.jpg": {
+    "alt": "Los novios corren de la mano por el césped al atardecer, con el velo y la falda del vestido al viento",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 0
+  },
+  "modelo-estudio-body-negro.jpg": {
+    "alt": "Clara Rocca posa en estudio con body negro y medias, con la melena en movimiento",
+    "categoria": "Modelo",
+    "lado": "delante",
+    "orden": 64
+  },
+  "modelo-retrato-beauty.jpg": {
+    "alt": "Retrato beauty de Clara Rocca de tres cuartos, con la mano en el pelo y la mirada hacia un lado",
+    "categoria": "Modelo",
+    "lado": "delante",
+    "orden": 65
+  },
+  "modelo-campana-sandalias-playa.jpg": {
+    "alt": "Clara Rocca, con gafas de sol y bañador, sentada en una hamaca de playa en una campaña de sandalias",
+    "categoria": "Modelo",
+    "lado": "delante",
+    "orden": 66
+  },
+  "modelo-banador-blanco-sol.jpg": {
+    "alt": "Clara Rocca con bañador blanco, recostada al sol sobre un suelo de baldosas hidráulicas",
+    "categoria": "Modelo",
+    "lado": "delante",
+    "orden": 67
   }
 }

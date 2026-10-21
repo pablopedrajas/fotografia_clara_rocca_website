@@ -2,77 +2,197 @@
 import Base from '../layouts/Base.astro';
 import { ruta } from '../lib/ruta';
 import { sitio } from '../config/sitio';
-import { cargarFotos } from '../lib/fotos';
-import Visor from '../components/Visor.astro';
+import { cargarFotos, type Foto } from '../lib/fotos';
+import Portada from '../components/Portada.astro';
 import Especialidades from '../components/Especialidades.astro';
-import Trabajo from '../components/Trabajo.astro';
 import Contacto from '../components/Contacto.astro';
 
 const fotos = await cargarFotos();
+const f = (a: string) => fotos.find((x) => x.archivo === a);
 const { ciudad } = sitio.contacto;
-const titulo = `${sitio.nombre} · Fotógrafa en ${ciudad || 'España'} | Bodas, viajes y book`;
-const descripcion = `Fotógrafa y modelo en ${ciudad}. Bodas en la playa, bautizos, comuniones, book de modelo, viajes y campañas para marcas, con más de diez años en el sector.`;
+const titulo = `${sitio.nombre} · Fotografía de bodas en ${ciudad || 'España'}`;
+const descripcion = `Fotógrafa de bodas en ${ciudad}: bodas reales contadas con mirada de revista, de los preparativos a la fiesta. También bautizos, comuniones, book y marcas.`;
 
-// Los dos lados de Clara: una foto suya y una en la que posa ella
-const detras = fotos.find((f) => f.lado === 'detras' && f.seleccionada) ?? fotos.find((f) => f.lado === 'detras');
-const delante = fotos.find((f) => f.lado === 'delante' && f.seleccionada) ?? fotos.find((f) => f.lado === 'delante');
+const intro = { grande: f('boda-novia-ventana.jpg'), pequena: f('boda-anillos-manos.jpg') };
+const boda = f('boda-novios-risas.jpg');
+const lados = { izq: f('reportaje-artesana-fieltro.jpg'), centro: f('modelo-campana-moda-sentada.jpg'), der: f('salzburgo-cupula-catedral.jpg') };
+const banda = [f('boda-novios-espaldas-mar.jpg'), f('viena-iglesia-san-pedro.jpg'), f('boda-novia-caricia.jpg')].filter((x): x is Foto => !!x);
+
+const img = (foto: Foto | undefined, sizes: string) =>
+  foto ? { src: foto.mini, srcset: foto.srcset, sizes, width: foto.ancho, height: foto.alto, alt: foto.alt } : null;
+const iIntroG = img(intro.grande, '(max-width: 800px) 80vw, 34vw');
+const iIntroP = img(intro.pequena, '(max-width: 800px) 45vw, 20vw');
+const iBoda = img(boda, '(max-width: 900px) 100vw, 60vw');
+const iIzq = img(lados.izq, '(max-width: 800px) 40vw, 18vw');
+const iCentro = img(lados.centro, '(max-width: 800px) 90vw, 40vw');
+const iDer = img(lados.der, '(max-width: 800px) 40vw, 16vw');
 ---
 
-<Base
-  titulo={titulo}
-  descripcion={descripcion}
-  ogFoto={fotos.find((f) => f.archivo === 'boda-beso-arco.jpg') ?? fotos[0]}
-  hayTrabajo={fotos.length > 0}
->
-  <Visor fotos={fotos} />
-  <Especialidades fotos={fotos} />
+<Base titulo={titulo} descripcion={descripcion} ogFoto={f('boda-novios-corriendo-cesped.jpg') ?? fotos[0]} hayTrabajo={fotos.length > 0} menuSobreFoto>
+  <Portada fotos={fotos} />
 
-  <section class="sobre" aria-labelledby="t-sobre">
-    <div class="copias" aria-hidden="true">
-      {detras && <figure class="copia uno"><img src={detras.mini} alt="" width={detras.ancho} height={detras.alto} loading="lazy" decoding="async" /><figcaption>Detrás</figcaption></figure>}
-      {delante && <figure class="copia dos"><img src={delante.mini} alt="" width={delante.ancho} height={delante.alto} loading="lazy" decoding="async" /><figcaption>Delante</figcaption></figure>}
+  <!-- Presentación -->
+  <section class="intro" aria-labelledby="t-intro">
+    {iIntroG && <img {...iIntroG} class="intro-grande revela" loading="lazy" decoding="async" />}
+    <div class="intro-texto revela">
+      <span class="antetitulo">Fotógrafa en {ciudad}</span>
+      <h2 id="t-intro" class="intro-titulo">Fotografía natural con mirada de revista</h2>
+      <p>
+        Bodas, familias, viajes y marcas. Más de diez años en el sector: delante del objetivo como modelo y, desde
+        hace cinco, detrás como fotógrafa. Por eso sabe cómo hacer que estés cómoda y salgas como eres.
+      </p>
+      <a class="enlace-linea" href={ruta('/sobre-clara/')}>Conoce a Clara</a>
     </div>
-    <div class="texto">
-      <h2 class="titulo-seccion" id="t-sobre">Los dos lados de la cámara</h2>
-      <p>{sitio.sobre[0]}</p>
-      <ul class="enlaces">
-        <li><a href={ruta('/sobre-clara/')}>Conoce a Clara</a></li>
-        <li><a href={ruta('/portfolio/')}>Ver el portfolio completo</a></li>
-        <li><a href={ruta('/modelo-para-marcas/')}>Clara como modelo</a></li>
-      </ul>
+    {iIntroP && <img {...iIntroP} class="intro-pequena revela" loading="lazy" decoding="async" />}
+    <p class="palabra" aria-hidden="true">Mirar despacio</p>
+  </section>
+
+  <!-- Bodas -->
+  <section class="bodas" aria-labelledby="t-bodas">
+    {iBoda && <img {...iBoda} class="bodas-foto revela" loading="lazy" decoding="async" />}
+    <div class="bodas-texto revela">
+      <span class="antetitulo">Bodas</span>
+      <h2 id="t-bodas" class="titulo-seccion">Vuestro día, contado entero</h2>
+      <p>
+        De los nervios de los preparativos al último abrazo. Clara trabaja con discreción en los momentos importantes y
+        dirige con calma los retratos de pareja, porque sabe lo que se siente delante de la cámara.
+      </p>
+      <div class="acciones">
+        <a class="enlace-linea" href={ruta('/bodas/#boda-real')}>Ver una boda real</a>
+        <a class="enlace-solo" href={ruta('/bodas/#contacto')}>Consultar tu fecha</a>
+      </div>
     </div>
   </section>
 
-  <Trabajo fotos={fotos} soloVisor />
+  <Especialidades fotos={fotos} excluir={['bodas']} />
+
+  <!-- Los dos lados -->
+  <section class="lados" aria-labelledby="t-lados">
+    <h2 id="t-lados" class="lados-titulo revela"><span>Delante</span><span>y detrás</span></h2>
+    {iIzq && <img {...iIzq} class="lados-izq revela" loading="lazy" decoding="async" />}
+    {iCentro && <img {...iCentro} class="lados-centro revela" loading="lazy" decoding="async" />}
+    {iDer && <img {...iDer} class="lados-der revela" loading="lazy" decoding="async" />}
+    <div class="lados-texto revela">
+      <p>{sitio.sobre[0]}</p>
+      <a class="enlace-linea" href={ruta('/sobre-clara/')}>Sobre Clara</a>
+    </div>
+  </section>
+
+  <!-- Banda a sangre -->
+  {banda.length === 3 && (
+    <a class="banda" href={ruta('/portfolio/')}>
+      {banda.map((b) => (
+        <img src={b.mini} srcset={b.srcset} sizes="(max-width: 700px) 100vw, 34vw" alt={b.alt} width={b.ancho} height={b.alto} loading="lazy" decoding="async" />
+      ))}
+      <span class="banda-texto">
+        <span class="banda-titulo">Portfolio</span>
+        <span class="banda-sub">Ver todas las fotos</span>
+      </span>
+    </a>
+  )}
+
   <Contacto />
 </Base>
 
 <style>
-  .sobre {
+  /* ── Presentación ── */
+  .intro {
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: clamp(2.5rem, 6vw, 6rem);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 1fr) minmax(0, 5fr);
+    grid-template-rows: auto auto auto;
+    gap: 0 clamp(1.5rem, 4vw, 4rem);
+    padding: clamp(5rem, 11vw, 10rem) var(--margen) clamp(4rem, 8vw, 7rem);
+    max-width: 110rem;
+    margin: 0 auto;
+  }
+  .intro-grande { grid-column: 1; grid-row: 1 / span 3; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; max-width: 34rem; }
+  .intro-texto { grid-column: 3; grid-row: 1; justify-self: end; text-align: right; max-width: 30rem; display: grid; justify-items: end; }
+  .intro-titulo { margin: 0 0 1.4rem; font: 300 clamp(1.7rem, 2.8vw, 2.6rem)/1.2 var(--serif); font-style: italic; }
+  .intro-texto p { margin: 0 0 2rem; color: var(--grafito-suave); }
+  .intro-pequena { grid-column: 3; grid-row: 3; justify-self: end; width: min(100%, 22rem); aspect-ratio: 4 / 5; object-fit: cover; margin-top: clamp(2rem, 5vw, 4rem); }
+  .palabra {
+    grid-column: 1 / -1; grid-row: 2;
+    align-self: center;
+    margin: clamp(2rem, 5vw, 4rem) 0;
+    position: relative; z-index: 1;
+    text-align: center;
+    font: 300 clamp(2.6rem, 8.5vw, 9.5rem)/1 var(--serif);
+    letter-spacing: .3em; margin-right: -.3em;
+    text-transform: uppercase;
+    color: var(--grafito);
+    pointer-events: none;
+  }
+
+  /* ── Bodas ── */
+  .bodas {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
     align-items: center;
-    padding: clamp(3rem, 8vw, 7rem) var(--margen) clamp(5rem, 10vw, 8rem);
+    gap: clamp(2rem, 6vw, 6rem);
+    padding: clamp(3rem, 7vw, 6rem) var(--margen) clamp(3rem, 7vw, 6rem) 0;
   }
-  .copias { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: start; max-width: 30rem; }
-  .copia { margin: 0; background: #fbfbf8; padding: .55rem .55rem 2.2rem; box-shadow: 0 18px 36px -14px rgba(0, 0, 0, .4); position: relative; }
-  .copia img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-  .copia figcaption { position: absolute; left: .7rem; bottom: .55rem; font: 500 .75rem/1 var(--borde); letter-spacing: .12em; text-transform: uppercase; color: var(--lapiz); }
-  .uno { rotate: -5deg; }
-  .dos { rotate: 4deg; margin-top: 2.5rem; margin-left: -1.5rem; }
-  .texto p { max-width: 46ch; font-size: var(--t-1); line-height: 1.5; margin: 0 0 1.75rem; }
-  .enlaces { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
-  .enlaces a {
-    font: 400 var(--t-2)/1.2 var(--serif);
-    text-decoration: none;
-    background: linear-gradient(var(--lapiz), var(--lapiz)) 0 100% / 0 2px no-repeat;
-    transition: background-size .35s var(--ease);
+  .bodas-foto { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+  .bodas-texto p { margin: 0 0 2.2rem; color: var(--grafito-suave); max-width: 36ch; }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; }
+  .enlace-solo {
+    font: 500 .72rem/1 var(--sans); letter-spacing: .22em; text-transform: uppercase;
+    color: inherit; text-decoration: none; padding-bottom: .45rem; border-bottom: 1px solid currentColor;
   }
-  .enlaces a::after { content: ' →'; color: var(--lapiz); }
-  .enlaces a:hover, .enlaces a:focus-visible { background-size: 100% 2px; }
-  @media (max-width: 900px) {
-    .sobre { grid-template-columns: 1fr; }
-    .copias { max-width: 22rem; }
+
+  /* ── Delante y detrás ── */
+  .lados {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) minmax(0, 3fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: start;
+    padding: clamp(4rem, 9vw, 8rem) var(--margen);
+    max-width: 110rem; margin: 0 auto;
+  }
+  .lados-titulo {
+    grid-column: 1 / -1;
+    margin: 0 0 clamp(1rem, 3vw, 2.5rem);
+    display: grid; justify-items: center; gap: .1em;
+    font: 300 clamp(2.4rem, 6.5vw, 6.5rem)/1.05 var(--serif);
+    letter-spacing: .32em; text-transform: uppercase;
+  }
+  .lados-titulo span { margin-right: -.32em; }
+  .lados-izq { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; margin-top: 2rem; }
+  .lados-centro { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; margin-top: clamp(4rem, 9vw, 8rem); }
+  .lados-der { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; }
+  .lados-texto { grid-column: 2; text-align: center; display: grid; justify-items: center; }
+  .lados-texto p { margin: 0 0 2rem; max-width: 46ch; color: var(--grafito-suave); }
+
+  /* ── Banda a sangre ── */
+  .banda { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); color: #fff; text-decoration: none; }
+  .banda img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; transition: filter .6s; }
+  .banda:hover img { filter: brightness(.75); }
+  .banda-texto {
+    position: absolute; inset: 0;
+    display: grid; place-content: center; justify-items: center; gap: 1rem;
+    background: rgba(0, 0, 0, .18);
+  }
+  .banda-titulo { font: 300 clamp(2.2rem, 6vw, 6rem)/1 var(--serif); letter-spacing: .3em; margin-right: -.3em; text-transform: uppercase; }
+  .banda-sub { font: 500 .72rem/1 var(--sans); letter-spacing: .26em; text-transform: uppercase; padding-bottom: .45rem; border-bottom: 1px solid #fff; }
+
+  @media (max-width: 800px) {
+    .intro { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .intro-texto { grid-column: 1 / -1; grid-row: 1; justify-self: start; text-align: left; justify-items: start; margin-bottom: 2.5rem; }
+    .intro-grande { grid-column: 1 / span 2; grid-row: 2; width: 82%; }
+    .palabra { grid-row: 3; font-size: clamp(2rem, 11vw, 3.5rem); letter-spacing: .2em; margin-right: -.2em; }
+    .intro-pequena { grid-column: 2; grid-row: 2; align-self: end; justify-self: end; width: 70%; margin: 0 0 -3rem; }
+
+    .bodas { grid-template-columns: 1fr; padding: 2rem 0 4rem; }
+    .bodas-texto { padding: 0 var(--margen); }
+
+    .lados { grid-template-columns: 1fr 1fr; }
+    .lados-centro { grid-column: 1 / -1; grid-row: 3; margin-top: 0; }
+    .lados-izq { grid-row: 2; margin-top: 3rem; }
+    .lados-der { grid-row: 2; }
+    .lados-texto { grid-column: 1 / -1; }
+
+    .banda { grid-template-columns: 1fr 1fr; }
+    .banda img:nth-child(3) { display: none; }
+    .banda-titulo { font-size: clamp(1.8rem, 9vw, 3rem); letter-spacing: .2em; margin-right: -.2em; }
   }
 </style>

@@ -190,7 +190,7 @@ export const especialidades: Especialidad[] = [
     nombre: 'Modelo para marcas',
     busqueda: 'Modelo para marcas',
     categorias: ['Modelo', 'Gastronomía'],
-    portada: 'modelo-campana-moda-cuclillas.jpg',
+    portada: 'modelo-campana-sandalias-playa.jpg',
     resumen: 'Campañas de moda, producto y redes, delante o detrás de la cámara.',
     descripcion:
       'Clara Rocca, modelo con más de diez años en el sector y fotógrafa, para campañas de moda, catálogos, producto y contenido de marca.',
@@ -229,7 +229,7 @@ export const especialidades: Especialidad[] = [
     nombre: 'Book de modelo',
     busqueda: 'Book de modelo',
     categorias: ['Book de modelo', 'Modelo'],
-    portada: 'modelo-campana-moda-raqueta.jpg',
+    portada: 'modelo-estudio-body-negro.jpg',
     resumen: 'Un book hecho por alguien que también trabaja como modelo.',
     descripcion:
       'Book de fotos para modelos con Clara Rocca, fotógrafa y modelo profesional con más de diez años de experiencia en el sector.',

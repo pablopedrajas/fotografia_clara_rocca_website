@@ -184,7 +184,8 @@ const trazos = [
   }
   .hoja-cab h2 {
     margin: 0;
-    font: 400 clamp(2.6rem, 7vw, 6rem)/0.95 var(--serif);
+    font: 300 clamp(2rem, 4.6vw, 4.2rem)/1.12 var(--serif);
+    text-transform: uppercase; letter-spacing: .12em;
     letter-spacing: -0.025em;
     text-wrap: balance;
   }
@@ -233,7 +234,7 @@ const trazos = [
     overflow: visible; pointer-events: none;
   }
   .marca path {
-    fill: none; stroke: var(--lapiz); stroke-width: 9;
+    fill: none; stroke: #d2342b; stroke-width: 9;
     stroke-linecap: round; stroke-linejoin: round;
     stroke-dasharray: 1; stroke-dashoffset: 0;
     filter: url(#cera);
@@ -256,14 +257,14 @@ const trazos = [
   }
   .capitulos { display: flex; flex-wrap: wrap; gap: .3rem 1.4rem; list-style: none; margin: 0; padding: 0; }
   .capitulos a {
-    font-size: .9375rem; color: #8f9397; text-decoration: none; position: relative; padding-bottom: .2rem;
+    font: 500 .68rem/1.4 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: #8f9397; text-decoration: none; position: relative; padding-bottom: .3rem;
     transition: color .25s;
   }
   .capitulos a:hover { color: var(--papel); }
   .capitulos a[aria-current='true'] { color: var(--papel); }
   .capitulos a[aria-current='true']::after {
     content: ''; position: absolute; left: -4%; right: -4%; bottom: -.1rem; height: 3px;
-    background: var(--lapiz); border-radius: 2px; rotate: -1.5deg;
+    background: #fff; border-radius: 0; rotate: 0deg; height: 1px;
   }
   .contador { margin: 0; font: 500 1.05rem/1 var(--borde); color: var(--ambar); letter-spacing: .06em; }
 
@@ -292,7 +293,8 @@ const trazos = [
   }
   .cap-titulo h3 {
     margin: 0 0 .9rem;
-    font: 400 clamp(2.6rem, 5.5vw, 5rem)/0.95 var(--serif);
+    font: 300 clamp(2rem, 4vw, 3.6rem)/1.1 var(--serif);
+    text-transform: uppercase; letter-spacing: .12em;
     letter-spacing: -0.025em;
   }
   .cap-titulo p { margin: 0; color: #b5b9bc; max-width: 22ch; line-height: 1.5; }
@@ -332,7 +334,8 @@ const trazos = [
   }
   .revelado h2 {
     margin: 0 0 1.25rem;
-    font: 400 clamp(2.4rem, 6vw, 5rem)/0.95 var(--serif);
+    font: 300 clamp(2rem, 4.6vw, 4.2rem)/1.12 var(--serif);
+    text-transform: uppercase; letter-spacing: .12em;
     letter-spacing: -0.025em;
   }
   .revelado p { margin: 0; max-width: 36ch; font-size: var(--t-1); line-height: 1.45; }
@@ -355,7 +358,7 @@ const trazos = [
     box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
   }
   .comparar input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
-  .comparar:has(input:focus-visible) .linea::after { outline: 2px solid var(--lapiz); outline-offset: 3px; }
+  .comparar:has(input:focus-visible) .linea::after { outline: 2px solid #fff; outline-offset: 3px; }
 
   @media (max-width: 900px) {
     .hoja-cab, .revelado { grid-template-columns: 1fr; }

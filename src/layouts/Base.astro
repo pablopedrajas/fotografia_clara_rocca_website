@@ -1,6 +1,7 @@
 ---
 import { ruta } from '../lib/ruta';
-import '@fontsource-variable/bodoni-moda/opsz.css';
+import '@fontsource-variable/cormorant-garamond/wght.css';
+import '@fontsource-variable/cormorant-garamond/wght-italic.css';
 import '@fontsource-variable/hanken-grotesk';
 import '@fontsource/doto/latin-500.css';
 import '../styles/global.css';
@@ -17,9 +18,11 @@ interface Props {
   jsonld?: object[];
   /** Si hay fotos en la web, el menú enlaza a «Trabajo» */
   hayTrabajo?: boolean;
+  /** La página empieza con una foto a sangre: menú transparente encima */
+  menuSobreFoto?: boolean;
 }
 
-const { titulo, descripcion, ogFoto, jsonld = [], hayTrabajo = false } = Astro.props;
+const { titulo, descripcion, ogFoto, jsonld = [], hayTrabajo = false, menuSobreFoto = false } = Astro.props;
 const { email, telefono, instagram } = sitio.contacto;
 const hayContacto = email || telefono || instagram;
 const canonica = sitio.url ? new URL(Astro.url.pathname, sitio.url).href : undefined;
@@ -47,7 +50,7 @@ const datos = [negocio(), ...jsonld];
     <meta name="twitter:card" content="summary_large_image" />
     {ogImagen && <meta name="twitter:image" content={ogImagen} />}
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <meta name="theme-color" content="#e9eae6" />
+    <meta name="theme-color" content="#faf9f6" />
     <link rel="icon" href={ruta('/favicon.svg')} type="image/svg+xml" />
     <script is:inline>document.documentElement.classList.add('js');</script>
     {datos.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
@@ -64,13 +67,15 @@ const datos = [negocio(), ...jsonld];
       </filter>
     </svg>
 
-    <Menu hayTrabajo={hayTrabajo} hayContacto={!!hayContacto} />
+    <Menu hayTrabajo={hayTrabajo} hayContacto={!!hayContacto} sobreFoto={menuSobreFoto} />
 
     <main id="principal">
       <slot />
     </main>
 
     <footer class="pie">
+      <a class="pie-marca" href={ruta('/')}>{sitio.nombre}</a>
+      <p class="pie-lema">Fotógrafa y modelo{sitio.contacto.ciudad && ` · ${sitio.contacto.ciudad}`}</p>
       <nav aria-label="Especialidades">
         <ul>
           {especialidades.map((e) => (
@@ -86,25 +91,51 @@ const datos = [negocio(), ...jsonld];
           {instagram && <li><a href={`https://www.instagram.com/${instagram}/`} rel="noopener">Instagram</a></li>}
         </ul>
       </nav>
-      <p>
+      <p class="legal">
         <span>© {new Date().getFullYear()} {sitio.nombre}</span>
         <span>Fotografías de {sitio.nombre}, salvo las campañas en las que aparece como modelo.</span>
       </p>
     </footer>
+
+    <script>
+      // Aparición suave de los bloques marcados con .revela
+      const bloques = document.querySelectorAll('.revela');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((es) => es.forEach((e) => {
+          if (e.isIntersecting) { e.target.classList.add('visto'); io.unobserve(e.target); }
+        }), { rootMargin: '0px 0px -8% 0px' });
+        bloques.forEach((b) => io.observe(b));
+      } else bloques.forEach((b) => b.classList.add('visto'));
+    </script>
   </body>
 </html>
 
 <style>
   .pie {
     display: grid;
-    gap: 1.5rem;
-    padding: 2.5rem var(--margen) 1.5rem;
-    font-size: .875rem;
-    color: var(--grafito-suave);
+    justify-items: center;
+    text-align: center;
+    gap: 1.6rem;
+    padding: clamp(4rem, 9vw, 7rem) var(--margen) 2rem;
+    border-top: 1px solid var(--linea);
   }
-  .pie ul { display: flex; flex-wrap: wrap; gap: .5rem 1.75rem; list-style: none; margin: 0; padding: 0; }
-  .pie ul a { color: var(--grafito); text-underline-offset: .25em; text-decoration-color: var(--lapiz); }
-  .pie ul a:not(:hover) { text-decoration: none; }
-  .pie ul a[aria-current='page'] { text-decoration: underline; text-decoration-color: var(--lapiz); }
-  .pie p { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem; margin: 0; }
+  .pie-marca {
+    font: 300 clamp(1.6rem, 3vw, 2.4rem)/1 var(--serif);
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin-right: -.32em;
+  }
+  .pie-lema { margin: -.6rem 0 1rem; font: 500 .7rem/1.4 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--grafito-suave); }
+  .pie ul { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem 2rem; list-style: none; margin: 0; padding: 0; }
+  .pie ul a {
+    font: 500 .7rem/1.6 var(--sans); letter-spacing: .18em; text-transform: uppercase;
+    color: var(--grafito); text-decoration: none;
+    border-bottom: 1px solid transparent; transition: border-color .3s;
+  }
+  .pie ul a:hover, .pie ul a[aria-current='page'] { border-bottom-color: currentColor; }
+  .legal {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 2rem;
+    margin: 1.5rem 0 0; font-size: .95rem; font-style: italic; color: var(--grafito-suave);
+  }
 </style>

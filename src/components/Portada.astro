@@ -1,0 +1,165 @@
+---
+/**
+ * Portada a sangre con efecto de profundidad: la foto de fondo, el nombre de Clara
+ * encima y, por delante del nombre, la pareja recortada de la misma foto.
+ * Las tres capas usan el mismo encuadre (object-fit y object-position), así que
+ * la pareja recortada cae exactamente sobre la de la foto.
+ */
+import { getImage } from 'astro:assets';
+import { ruta } from '../lib/ruta';
+import type { Foto } from '../lib/fotos';
+import { sitio } from '../config/sitio';
+import recorte from '../assets/portada/novios-recorte.png';
+
+interface Props { fotos: Foto[] }
+const { fotos } = Astro.props;
+const fondo = fotos.find((f) => f.archivo === 'boda-novios-corriendo-cesped.jpg') ?? fotos.find((f) => !f.vertical) ?? fotos[0];
+
+const anchosRecorte = [800, 1200, recorte.width];
+const variantes = await Promise.all(anchosRecorte.map((w) => getImage({ src: recorte, width: w, format: 'webp', quality: 82 })));
+const srcsetRecorte = variantes.map((v, i) => `${v.src} ${anchosRecorte[i]}w`).join(', ');
+const ciudad = sitio.contacto.ciudad;
+const hayEmail = !!sitio.contacto.email;
+---
+
+<section class="heroe" aria-labelledby="t-heroe" data-heroe>
+  <div class="escena">
+    <img
+      class="capa fondo"
+      src={fondo.grande}
+      srcset={fondo.srcset}
+      sizes="100vw"
+      alt={fondo.alt}
+      width={fondo.ancho}
+      height={fondo.alto}
+      fetchpriority="high"
+      decoding="async"
+    />
+    <div class="velo" aria-hidden="true"></div>
+    <p class="nombre" aria-hidden="true">{sitio.nombre}</p>
+    <img
+      class="capa delante"
+      src={variantes[1].src}
+      srcset={srcsetRecorte}
+      sizes="100vw"
+      alt=""
+      width={recorte.width}
+      height={recorte.height}
+      decoding="async"
+      data-delante
+    />
+  </div>
+
+  <span class="marco" aria-hidden="true"></span>
+
+  <div class="arriba">
+    <h1 id="t-heroe">
+      <span class="oculto">{sitio.nombre}, </span>Fotógrafa de bodas{ciudad && ` en ${ciudad}`}
+    </h1>
+  </div>
+
+  <div class="abajo">
+    <p class="frase">Bodas reales, contadas con mirada de revista</p>
+    <div class="acciones">
+      <a class="enlace-linea claro" href={ruta('/bodas/')}>Ver bodas</a>
+      {hayEmail && <a class="enlace-solo" href={ruta('/bodas/#contacto')}>Consultar tu fecha</a>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .heroe {
+    position: relative;
+    height: 100svh;
+    min-height: 36rem;
+    overflow: hidden;
+    background: #2b3326;
+    color: #fff;
+  }
+  .escena { position: absolute; inset: 0; animation: acercar 18s ease-out both; }
+  @keyframes acercar { from { scale: 1.08; } to { scale: 1; } }
+  .capa {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    /* La pareja está en el centro-derecha y abajo: el encuadre la mantiene a la vista */
+    object-position: 58% 72%;
+  }
+  .delante { opacity: 0; transition: opacity 1.2s ease; }
+  .delante.lista { opacity: 1; }
+  .velo {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(rgba(0, 0, 0, .32), transparent 28%),
+      linear-gradient(transparent 60%, rgba(0, 0, 0, .42));
+  }
+
+  /* El nombre, gigante y fino, queda por detrás de los novios */
+  .nombre {
+    position: absolute; left: 0; right: 0; top: 47%;
+    translate: 0 -50%;
+    margin: 0;
+    text-align: center;
+    font: 300 clamp(3.2rem, 10.6vw, 13rem)/.9 var(--serif);
+    letter-spacing: .1em;
+    padding-left: .1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, .93);
+    text-shadow: 0 4px 40px rgba(0, 0, 0, .18);
+  }
+
+  /* Marco fino, como el paspartú de una lámina */
+  .marco {
+    position: absolute;
+    inset: clamp(.75rem, 1.6vw, 1.5rem);
+    border: 1px solid rgba(255, 255, 255, .45);
+    pointer-events: none;
+  }
+
+  .arriba {
+    position: absolute; left: 0; right: 0; top: clamp(6.5rem, 15vh, 9rem);
+    text-align: center;
+    padding: 0 var(--margen);
+  }
+  h1 {
+    margin: 0;
+    font: 500 clamp(.66rem, .85vw, .8rem)/1.6 var(--sans);
+    letter-spacing: .36em;
+    padding-left: .36em;
+    text-transform: uppercase;
+  }
+
+  .abajo {
+    position: absolute; left: 0; bottom: clamp(2.75rem, 7vh, 4.5rem);
+    display: grid; justify-items: start; gap: 1.4rem;
+    padding: 0 calc(var(--margen) + 1rem);
+    max-width: 34rem;
+  }
+  .frase { margin: 0; font: italic 300 clamp(1.3rem, 2vw, 1.9rem)/1.3 var(--serif); text-shadow: 0 1px 12px rgba(0, 0, 0, .3); }
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2.2rem; }
+  .enlace-solo {
+    font: 500 .72rem/1 var(--sans); letter-spacing: .22em; text-transform: uppercase;
+    color: #fff; text-decoration: none; padding-bottom: .45rem; border-bottom: 1px solid #fff;
+  }
+
+  @media (max-width: 900px), (max-width: 1100px) and (orientation: portrait) {
+    .nombre { white-space: normal; font-size: clamp(3.4rem, 19vw, 7rem); line-height: .95; top: 44%; }
+    .abajo { right: 0; max-width: none; justify-items: center; text-align: center; padding: 0 var(--margen); }
+    .acciones { justify-content: center; }
+    .velo { background: linear-gradient(rgba(0, 0, 0, .32), transparent 28%), linear-gradient(transparent 55%, rgba(0, 0, 0, .6)); }
+    .capa { object-position: 57% 70%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .escena { animation: none; }
+  }
+</style>
+
+<script>
+  // La pareja recortada aparece en cuanto carga, sin saltos
+  const delante = document.querySelector<HTMLImageElement>('[data-delante]');
+  if (delante) {
+    const mostrar = () => delante.classList.add('lista');
+    delante.complete && delante.naturalWidth ? mostrar() : delante.addEventListener('load', mostrar, { once: true });
+  }
+</script>

@@ -2,7 +2,6 @@
 import { ruta } from '../lib/ruta';
 import Base from '../layouts/Base.astro';
 import Cabecera from '../components/Cabecera.astro';
-import Tira from '../components/Tira.astro';
 import Trabajo from '../components/Trabajo.astro';
 import BodaReal from '../components/BodaReal.astro';
 import Contacto from '../components/Contacto.astro';
@@ -69,8 +68,6 @@ if (sitio.url) {
 <Base titulo={titulo} descripcion={descripcion} ogFoto={fotos.find((f) => f.archivo === e.portada) ?? fotos.find((f) => f.seleccionada) ?? fotos[0]} jsonld={jsonld} hayTrabajo={todas.length > 0}>
   <Cabecera titulo={h1} actual={e.nombre} entradilla={e.entradilla} fotos={fotosCabecera} />
 
-  <Tira fotos={fotos} portada={e.portada} />
-
   <section class="cuerpo" id="como-trabaja" aria-label={`Cómo trabaja Clara en ${e.nombre.toLowerCase()}`}>
     <div class="parrafos">
       {e.parrafos.map((p) => <p>{p}</p>)}
@@ -123,58 +120,68 @@ if (sitio.url) {
   .cuerpo {
     display: grid;
     grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-    gap: clamp(2rem, 6vw, 6rem);
-    padding: clamp(3rem, 7vw, 6rem) var(--margen) clamp(5rem, 10vw, 8rem);
+    gap: clamp(2.5rem, 7vw, 8rem);
+    padding: clamp(4rem, 8vw, 7rem) var(--margen) clamp(5rem, 10vw, 8rem);
+    max-width: 110rem;
+    margin: 0 auto;
   }
-  .parrafos p { max-width: 58ch; margin: 0 0 1.1em; line-height: 1.7; }
-  .pasos h2 { font: 400 var(--t-2)/1.15 var(--serif); margin: 0 0 1.5rem; }
-  .pasos ol { list-style: none; margin: 0; padding: 0; counter-reset: paso; display: grid; gap: 1.5rem; }
+  .parrafos p { max-width: 56ch; margin: 0 0 1.2em; line-height: 1.7; font-size: clamp(1.2rem, 1.4vw, 1.35rem); }
+  .parrafos p:first-child::first-letter {
+    float: left; font: 300 4.6em/.8 var(--serif); padding: .08em .12em 0 0;
+  }
+  .pasos h2 {
+    font: 500 .72rem/1.4 var(--sans); letter-spacing: .24em; text-transform: uppercase;
+    color: var(--grafito-suave); margin: .4rem 0 2rem;
+  }
+  .pasos ol { list-style: none; margin: 0; padding: 0; counter-reset: paso; display: grid; gap: 0; }
   .pasos li {
     counter-increment: paso;
     display: grid;
-    grid-template-columns: 2.5rem 1fr;
+    grid-template-columns: 3.5rem 1fr;
     column-gap: .75rem;
+    padding: 1.4rem 0;
+    border-top: 1px solid var(--linea);
   }
-  /* Los pasos se numeran como el borde de la película */
   .pasos li::before {
-    content: counter(paso);
+    content: counter(paso, upper-roman);
     grid-row: span 2;
-    font: 500 1.35rem/1.2 var(--borde);
-    color: var(--lapiz);
+    font: 300 1.5rem/1.1 var(--serif);
+    letter-spacing: .1em;
   }
-  .pasos h3 { margin: 0 0 .25rem; font-size: var(--t-0); font-weight: 600; }
+  .pasos h3 { margin: 0 0 .3rem; font: 400 1.3rem/1.25 var(--serif); text-transform: uppercase; letter-spacing: .1em; }
   .pasos li p { margin: 0; color: var(--grafito-suave); line-height: 1.55; }
 
-  .preguntas { padding: 0 var(--margen) clamp(4rem, 9vw, 7rem); }
-  .lista { max-width: 50rem; }
-  details { border-top: 1px solid #c9cbc6; }
-  details:last-child { border-bottom: 1px solid #c9cbc6; }
+  .preguntas { padding: clamp(2rem, 5vw, 4rem) var(--margen) clamp(4rem, 9vw, 7rem); display: grid; justify-items: center; }
+  .preguntas .titulo-seccion { text-align: center; }
+  .lista { width: min(100%, 52rem); }
+  details { border-top: 1px solid var(--linea); }
+  details:last-child { border-bottom: 1px solid var(--linea); }
   summary {
     cursor: pointer;
     list-style: none;
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-    padding: 1.15rem 0;
-    font: 400 var(--t-1)/1.3 var(--serif);
+    padding: 1.4rem 0;
+    font: 400 clamp(1.25rem, 1.8vw, 1.5rem)/1.3 var(--serif);
     overflow-wrap: break-word;
   }
   .lista, details { min-width: 0; }
   summary::-webkit-details-marker { display: none; }
-  summary::after { content: '+'; flex: none; width: 1em; margin-right: .2em; text-align: center; font-family: var(--sans); color: var(--lapiz); transition: rotate .3s var(--ease); }
+  summary::after { content: '+'; flex: none; width: 1em; margin-right: .2em; text-align: center; font: 300 1.6rem/1 var(--serif); transition: rotate .3s var(--ease); }
   details[open] summary::after { rotate: 45deg; }
-  details p { margin: 0 0 1.25rem; max-width: 60ch; color: var(--grafito-suave); line-height: 1.65; }
+  details p { margin: 0 0 1.5rem; max-width: 60ch; color: var(--grafito-suave); line-height: 1.65; }
 
-  .otras { padding: 0 var(--margen) clamp(4rem, 9vw, 7rem); }
-  .otras h2 { font-size: var(--t-0); font-weight: 600; margin: 0 0 .75rem; }
-  .otras ul { display: flex; flex-wrap: wrap; gap: .5rem 2.25rem; list-style: none; margin: 0; padding: 0; }
+  .otras { padding: 0 var(--margen) clamp(4rem, 9vw, 7rem); text-align: center; }
+  .otras h2 { font: 500 .72rem/1.4 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--grafito-suave); margin: 0 0 1.5rem; }
+  .otras ul { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem 2.5rem; list-style: none; margin: 0; padding: 0; }
   .otras a {
-    font: 400 var(--t-2)/1.2 var(--serif);
+    font: 300 clamp(1.3rem, 2vw, 1.8rem)/1.2 var(--serif);
+    text-transform: uppercase; letter-spacing: .12em;
     text-decoration: none;
-    background: linear-gradient(var(--lapiz), var(--lapiz)) 0 100% / 0 2px no-repeat;
-    transition: background-size .35s var(--ease);
+    border-bottom: 1px solid transparent; transition: border-color .3s;
   }
-  .otras a:hover, .otras a:focus-visible { background-size: 100% 2px; }
+  .otras a:hover, .otras a:focus-visible { border-bottom-color: currentColor; font-style: italic; }
 
   @media (max-width: 900px) {
     .cuerpo { grid-template-columns: 1fr; }
