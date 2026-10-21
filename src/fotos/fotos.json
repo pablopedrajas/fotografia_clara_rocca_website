@@ -264,7 +264,7 @@
     "orden": 38
   },
   "boda-primer-beso.jpg": {
-    "alt": "Los novios se besan al encontrarse junto al mar",
+    "alt": "Los novios se besan al encontrarse junto al mar, en blanco y negro",
     "categoria": "Bodas",
     "lado": "detras",
     "capitulo": "La llegada",
@@ -352,7 +352,7 @@
     "orden": 49
   },
   "boda-abrazo-invitada.jpg": {
-    "alt": "La novia abraza emocionada a una invitada",
+    "alt": "La novia abraza emocionada a una invitada, en blanco y negro",
     "categoria": "Bodas",
     "lado": "detras",
     "capitulo": "Abrazos",
@@ -454,5 +454,95 @@
     "categoria": "Modelo",
     "lado": "delante",
     "orden": 67
+  },
+  "boda-vestido-percha-bn.jpg": {
+    "alt": "El vestido de novia colgado de una percha mientras la novia se prepara, en blanco y negro",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 40
+  },
+  "boda-espalda-encaje-bn.jpg": {
+    "alt": "Detalle de la espalda de encaje del vestido mientras abrochan a la novia, en blanco y negro",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 41
+  },
+  "boda-novia-zapato.jpg": {
+    "alt": "La novia se calza recogiendo la falda del vestido",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 42
+  },
+  "boda-novia-nino-sofa.jpg": {
+    "alt": "La novia sonríe a un niño sentado a su lado antes de la ceremonia",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 43
+  },
+  "boda-arco-cala-sillas.jpg": {
+    "alt": "El arco de tul de la ceremonia y las sillas blancas en una cala junto al mar",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 44
+  },
+  "boda-novia-orilla-cala.jpg": {
+    "alt": "La novia, de pie en la orilla de una cala, con la cola del vestido sobre la arena",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 45
+  },
+  "boda-novios-arco-sonrisa.jpg": {
+    "alt": "Los novios, de la mano junto al arco, sonríen frente al mar",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 46
+  },
+  "boda-ceremonia-oficiante.jpg": {
+    "alt": "Los novios sentados frente al oficiante durante la ceremonia en la playa",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 47
+  },
+  "boda-novio-abrazo-nina.jpg": {
+    "alt": "El novio abraza a una niña junto al arco de la ceremonia",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 48
+  },
+  "boda-novios-bajo-arco.jpg": {
+    "alt": "Los novios se miran sonrientes bajo el arco de tul y flores",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 49
+  },
+  "boda-primera-mirada-bn.jpg": {
+    "alt": "La novia sonríe al novio al encontrarse en el camino a la cala, en blanco y negro",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 50
+  },
+  "boda-novios-retrato-rocas.jpg": {
+    "alt": "Retrato de los novios abrazados frente a las rocas de la cala",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 51
+  },
+  "boda-novios-beso-rocas.jpg": {
+    "alt": "Los novios se besan sobre las rocas con la cola del vestido extendida",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 52
+  },
+  "boda-novios-abrazo-orilla.jpg": {
+    "alt": "Los novios abrazados en la orilla, con la cala al fondo",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 53
+  },
+  "boda-novio-ninos-orilla.jpg": {
+    "alt": "El novio con tres niños en la orilla de la playa",
+    "categoria": "Bodas",
+    "lado": "detras",
+    "orden": 54
   }
 }

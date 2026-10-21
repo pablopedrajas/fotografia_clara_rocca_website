@@ -46,7 +46,7 @@ export const especialidades: Especialidad[] = [
     nombre: 'Bodas',
     busqueda: 'Fotógrafa de bodas',
     categorias: ['Bodas'],
-    portada: 'boda-beso-arco.jpg',
+    portada: 'boda-novios-arco-sonrisa.jpg',
     resumen: 'Vuestro día contado de principio a fin, sin poses forzadas.',
     descripcion:
       'Fotógrafa de bodas en la playa y en la ciudad. Mira una boda real entera, de los preparativos a la foto de familia, y pide disponibilidad para tu fecha.',
