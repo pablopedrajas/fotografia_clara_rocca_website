@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import { sitio } from '../config/sitio';
-import { especialidades } from '../config/especialidades';
 import { cargarFotos } from '../lib/fotos';
 import HojaContactos from '../components/HojaContactos.astro';
 import Especialidades from '../components/Especialidades.astro';
@@ -10,30 +9,15 @@ import Trabajo from '../components/Trabajo.astro';
 import Contacto from '../components/Contacto.astro';
 
 const fotos = await cargarFotos();
-const { email, instagram, ciudad } = sitio.contacto;
-const titulo = `${sitio.nombre} · Fotógrafa y modelo${ciudad ? ` en ${ciudad}` : ''}`;
-
-const jsonld = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: sitio.nombre,
-    jobTitle: ['Fotógrafa', 'Modelo'],
-    description: sitio.descripcion,
-    knowsAbout: especialidades.map((e) => e.busqueda),
-    ...(sitio.url && { url: sitio.url }),
-    ...(email && { email }),
-    ...(ciudad && { address: { '@type': 'PostalAddress', addressLocality: ciudad, addressCountry: 'ES' } }),
-    ...(instagram && { sameAs: [`https://instagram.com/${instagram}`] }),
-  },
-];
+const { ciudad } = sitio.contacto;
+const titulo = `${sitio.nombre} · Fotógrafa en ${ciudad || 'España'} | Bodas, viajes y book`;
+const descripcion = `Fotógrafa y modelo en ${ciudad}. Bodas en la playa, bautizos, comuniones, book de modelo y fotografía de viajes, con más de diez años en el sector.`;
 ---
 
 <Base
   titulo={titulo}
-  descripcion={sitio.descripcion}
-  ogFoto={fotos.find((f) => f.seleccionada) ?? fotos[0]}
-  jsonld={jsonld}
+  descripcion={descripcion}
+  ogFoto={fotos.find((f) => f.archivo === 'boda-beso-arco.jpg') ?? fotos[0]}
   hayTrabajo={fotos.length > 0}
 >
   <HojaContactos fotos={fotos} />

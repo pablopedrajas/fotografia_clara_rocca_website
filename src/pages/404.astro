@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import { ruta } from '../lib/ruta';
+import { especialidades } from '../config/especialidades';
+---
+
+<Base titulo="Página no encontrada · Clara Rocca" descripcion="Esta página no existe. Vuelve a la portada o elige una especialidad.">
+  <section class="no-esta">
+    <p class="cuadro" aria-hidden="true">✕</p>
+    <h1>Este fotograma se veló</h1>
+    <p>La página que buscas no existe o ha cambiado de sitio. Puedes volver a la portada o ir directamente a una especialidad.</p>
+    <ul>
+      <li><a href={ruta('/')}>Portada</a></li>
+      {especialidades.map((e) => <li><a href={ruta(`/${e.slug}/`)}>{e.nombre}</a></li>)}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .no-esta { min-height: 80vh; padding: clamp(8rem, 16vw, 12rem) var(--margen) 5rem; max-width: 60rem; }
+  .cuadro {
+    width: 7rem; aspect-ratio: 3 / 2; display: grid; place-items: center; margin: 0 0 2rem;
+    background: var(--pelicula); color: var(--lapiz); font-size: 2.5rem;
+  }
+  h1 { font: 400 clamp(2.8rem, 8vw, 6rem)/0.95 var(--serif); letter-spacing: -0.03em; margin: 0 0 1.25rem; }
+  p { max-width: 46ch; font-size: var(--t-1); line-height: 1.45; }
+  ul { display: flex; flex-wrap: wrap; gap: .5rem 2rem; list-style: none; padding: 0; margin: 2rem 0 0; }
+  a { font: 400 var(--t-2)/1.2 var(--serif); text-decoration-color: var(--lapiz); text-underline-offset: .2em; }
+</style>

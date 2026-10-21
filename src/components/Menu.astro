@@ -1,0 +1,265 @@
+---
+/**
+ * Menú principal.
+ * «Bodas» es la entrada destacada: abre un panel propio con los apartados de la
+ * página de bodas, una tira con fotos de boda y el acceso directo a reservar fecha.
+ */
+import { ruta } from '../lib/ruta';
+import { sitio } from '../config/sitio';
+import { especialidades } from '../config/especialidades';
+import { cargarFotos } from '../lib/fotos';
+
+interface Props { hayTrabajo: boolean; hayContacto: boolean }
+const { hayTrabajo, hayContacto } = Astro.props;
+
+const fotos = await cargarFotos();
+const deBoda = ['boda-beso-arco.jpg', 'boda-novia-emocionada.jpg', 'boda-anillos-manos.jpg']
+  .map((a) => fotos.find((f) => f.archivo === a))
+  .filter((f) => f !== undefined);
+const hayBoda = fotos.some((f) => f.fotograma);
+
+const apartadosBoda = [
+  { href: '/bodas/', texto: 'Fotógrafa de bodas', detalle: 'Cómo trabaja Clara el día de tu boda' },
+  ...(hayBoda
+    ? [
+        { href: '/bodas/#boda-real', texto: 'Una boda real, entera', detalle: 'Las 230 fotos de un solo día' },
+        { href: '/bodas/#momentos', texto: 'Momento a momento', detalle: 'De los preparativos a la foto de familia' },
+        { href: '/bodas/#color-o-blanco-y-negro', texto: 'Color o blanco y negro', detalle: 'La misma foto, dos versiones' },
+      ]
+    : []),
+  { href: '/bodas/#preguntas', texto: 'Preguntas frecuentes', detalle: 'Lo que suelen preguntar las parejas' },
+];
+const otras = especialidades.filter((e) => e.slug !== 'bodas');
+const ruta_actual = Astro.url.pathname;
+---
+
+<nav class="barra" aria-label="Principal" data-menu>
+  <a class="marca-nombre" href={ruta('/')}>{sitio.nombre}</a>
+
+  <ul class="enlaces">
+    <li class="desplegable bodas" data-desplegable>
+      <button aria-expanded="false" aria-controls="panel-bodas" class:list={{ actual: ruta_actual.startsWith(ruta('/bodas/')) }}>
+        Bodas <span class="flecha" aria-hidden="true"></span>
+      </button>
+      <div class="panel panel-bodas" id="panel-bodas" hidden>
+        <ul class="apartados">
+          {apartadosBoda.map((a) => (
+            <li>
+              <a href={ruta(a.href)}>
+                <span class="t">{a.texto}</span>
+                <span class="d">{a.detalle}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        {deBoda.length > 0 && (
+          <a class="mini-tira" href={ruta('/bodas/#boda-real')} aria-label="Ver una boda real de principio a fin">
+            {deBoda.map((f) => <img src={f!.mini} alt="" width={f!.ancho} height={f!.alto} loading="lazy" decoding="async" />)}
+            <span class="pie-tira">Bodas en {sitio.contacto.ciudad || 'la playa'}</span>
+          </a>
+        )}
+        {hayContacto && <a class="reservar-fecha" href={ruta('/bodas/#contacto')}>Consultar disponibilidad para tu fecha</a>}
+      </div>
+    </li>
+
+    <li class="desplegable" data-desplegable>
+      <button aria-expanded="false" aria-controls="panel-especialidades">
+        Especialidades <span class="flecha" aria-hidden="true"></span>
+      </button>
+      <div class="panel panel-lista" id="panel-especialidades" hidden>
+        <ul>
+          {otras.map((e) => <li><a href={ruta(`/${e.slug}/`)}>{e.nombre}</a></li>)}
+        </ul>
+      </div>
+    </li>
+    {hayTrabajo && <li><a href={ruta('/#trabajo')}>Trabajo</a></li>}
+    <li><a href={ruta('/#dos-lados')}>Sobre Clara</a></li>
+    {hayContacto && <li><a class="cta" href="#contacto">Reservar sesión</a></li>}
+  </ul>
+
+  <!-- Móvil -->
+  <div class="movil">
+    <a class="bodas-movil" href={ruta('/bodas/')}>Bodas</a>
+    <button class="abrir" aria-expanded="false" aria-controls="menu-movil" data-abrir-menu>Menú</button>
+  </div>
+  <div class="menu-movil" id="menu-movil" hidden data-menu-movil>
+    <p class="grupo">Bodas</p>
+    <ul class="grandes">
+      {apartadosBoda.map((a) => <li><a href={ruta(a.href)}>{a.texto}</a></li>)}
+    </ul>
+    <p class="grupo">Más especialidades</p>
+    <ul class="medianas">
+      {otras.map((e) => <li><a href={ruta(`/${e.slug}/`)}>{e.nombre}</a></li>)}
+    </ul>
+    <ul class="medianas">
+      {hayTrabajo && <li><a href={ruta('/#trabajo')}>Trabajo</a></li>}
+      <li><a href={ruta('/#dos-lados')}>Sobre Clara</a></li>
+    </ul>
+    {hayContacto && <a class="cta grande" href="#contacto">Reservar sesión</a>}
+  </div>
+</nav>
+
+<style>
+  .barra {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 30;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem var(--margen);
+    background: var(--papel);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .06);
+  }
+  .barra a { text-decoration: none; }
+  .marca-nombre { font: 500 1.35rem/1 var(--serif); letter-spacing: -0.01em; white-space: nowrap; }
+
+  .enlaces { display: flex; align-items: center; gap: clamp(.9rem, 2.2vw, 1.9rem); list-style: none; margin: 0; padding: 0; }
+  .enlaces > li > a, .desplegable > button {
+    font-size: .9375rem;
+    background: none; border: 0; padding: .3rem 0; cursor: pointer;
+    display: inline-flex; align-items: center; gap: .35rem;
+  }
+  .enlaces > li > a:not(.cta):hover { text-decoration: underline; text-decoration-color: var(--lapiz); text-underline-offset: .3em; }
+
+  /* «Bodas» destaca: subrayado de lápiz graso permanente */
+  .bodas > button { font-weight: 600; position: relative; }
+  .bodas > button::after {
+    content: ''; position: absolute; left: -4%; right: 1.1rem; bottom: 0; height: 3px;
+    background: var(--lapiz); border-radius: 2px; rotate: -2deg;
+  }
+  .desplegable > button.actual { text-decoration: underline; text-underline-offset: .3em; }
+  .flecha {
+    width: .45rem; height: .45rem;
+    border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+    rotate: 45deg; translate: 0 -2px;
+    transition: rotate .2s;
+  }
+  .desplegable > button[aria-expanded='true'] .flecha { rotate: 225deg; translate: 0 2px; }
+
+  .desplegable { position: relative; }
+  .panel {
+    position: absolute;
+    top: calc(100% + 1rem);
+    left: 50%;
+    translate: -50% 0;
+    background: var(--papel);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, .16), 0 0 0 1px rgba(0, 0, 0, .06);
+    padding: 1.25rem;
+  }
+  .panel[hidden] { display: none; }
+  .panel-bodas {
+    width: min(44rem, 90vw);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 13rem;
+    gap: 1.25rem 1.5rem;
+  }
+  .apartados { list-style: none; margin: 0; padding: 0; display: grid; gap: .2rem; }
+  .apartados a { display: grid; gap: .1rem; padding: .55rem .7rem; border-radius: 2px; }
+  .apartados a:hover, .apartados a:focus-visible { background: var(--papel-hondo); }
+  .apartados .t { font: 400 1.3rem/1.15 var(--serif); }
+  .apartados .d { font-size: .85rem; color: var(--grafito-suave); }
+
+  .mini-tira {
+    background: var(--pelicula);
+    padding: .55rem .5rem .4rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .3rem;
+    align-content: start;
+    align-self: start;
+    rotate: 1.5deg;
+    transition: rotate .3s var(--ease);
+  }
+  .mini-tira:hover { rotate: -1deg; }
+  .mini-tira img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; }
+  .pie-tira { grid-column: 1 / -1; font: 500 .62rem/1.4 var(--borde); color: var(--ambar); letter-spacing: .08em; padding-top: .2rem; }
+  .reservar-fecha {
+    grid-column: 1 / -1;
+    background: var(--pelicula); color: var(--papel);
+    padding: .8rem 1rem; text-align: center; font-weight: 600;
+  }
+  .reservar-fecha:hover { background: var(--lapiz); }
+
+  .panel-lista { min-width: 13rem; }
+  .panel-lista ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
+  .panel-lista a { display: block; padding: .5rem .7rem; font: 400 1.2rem/1.2 var(--serif); }
+  .panel-lista a:hover { background: var(--papel-hondo); }
+
+  .enlaces > li > a.cta, .cta { background: var(--pelicula); color: var(--papel); padding: .55rem 1rem; white-space: nowrap; }
+  .enlaces > li > a.cta:hover, .cta:hover { background: var(--lapiz); }
+
+  .movil, .menu-movil { display: none; }
+
+  @media (max-width: 860px) {
+    .enlaces { display: none; }
+    .movil { display: flex; align-items: center; gap: 1rem; }
+    .bodas-movil { font-weight: 600; position: relative; }
+    .bodas-movil::after { content: ''; position: absolute; left: -6%; right: -6%; bottom: -3px; height: 3px; background: var(--lapiz); border-radius: 2px; rotate: -2deg; }
+    .abrir { background: var(--pelicula); color: var(--papel); border: 0; padding: .55rem 1rem; font-weight: 600; cursor: pointer; }
+    .menu-movil:not([hidden]) {
+      display: block;
+      position: fixed; inset: 4.1rem 0 0;
+      overflow-y: auto;
+      background: var(--papel);
+      padding: 1.5rem var(--margen) 3rem;
+    }
+    .grupo { margin: 1.25rem 0 .4rem; font-size: .85rem; color: var(--grafito-suave); }
+    .menu-movil ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .15rem; }
+    .grandes a { display: block; padding: .3rem 0; font: 400 1.9rem/1.15 var(--serif); }
+    .medianas { margin-bottom: .75rem !important; }
+    .medianas a { display: block; padding: .3rem 0; font-size: 1.15rem; }
+    .cta.grande { display: block; text-align: center; margin-top: 1.5rem; padding: 1rem; }
+  }
+</style>
+
+<script>
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  if (menu) {
+    const desplegables = [...menu.querySelectorAll<HTMLElement>('[data-desplegable]')];
+    const fino = matchMedia('(hover: hover) and (pointer: fine)');
+
+    const cerrar = (d: HTMLElement) => {
+      d.querySelector('button')!.setAttribute('aria-expanded', 'false');
+      d.querySelector<HTMLElement>('.panel')!.hidden = true;
+    };
+    const abrir = (d: HTMLElement) => {
+      desplegables.filter((o) => o !== d).forEach(cerrar);
+      d.querySelector('button')!.setAttribute('aria-expanded', 'true');
+      d.querySelector<HTMLElement>('.panel')!.hidden = false;
+    };
+
+    desplegables.forEach((d) => {
+      const boton = d.querySelector('button')!;
+      boton.addEventListener('click', () => (boton.getAttribute('aria-expanded') === 'true' ? cerrar(d) : abrir(d)));
+      let t = 0;
+      d.addEventListener('mouseenter', () => { if (fino.matches) { clearTimeout(t); abrir(d); } });
+      d.addEventListener('mouseleave', () => { if (fino.matches) t = window.setTimeout(() => cerrar(d), 180); });
+      d.addEventListener('focusout', (e) => { if (!d.contains(e.relatedTarget as Node)) cerrar(d); });
+      d.querySelectorAll('.panel a').forEach((a) => a.addEventListener('click', () => cerrar(d)));
+    });
+
+    document.addEventListener('click', (e) => {
+      desplegables.forEach((d) => { if (!d.contains(e.target as Node)) cerrar(d); });
+    });
+
+    // Menú de móvil
+    const botonMovil = menu.querySelector<HTMLButtonElement>('[data-abrir-menu]')!;
+    const panelMovil = menu.querySelector<HTMLElement>('[data-menu-movil]')!;
+    const fijarMovil = (abierto: boolean) => {
+      botonMovil.setAttribute('aria-expanded', String(abierto));
+      botonMovil.textContent = abierto ? 'Cerrar' : 'Menú';
+      panelMovil.hidden = !abierto;
+      document.documentElement.style.overflow = abierto ? 'hidden' : '';
+    };
+    botonMovil.addEventListener('click', () => fijarMovil(panelMovil.hidden));
+    panelMovil.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => fijarMovil(false)));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      desplegables.forEach(cerrar);
+      if (!panelMovil.hidden) { fijarMovil(false); botonMovil.focus(); }
+    });
+  }
+</script>

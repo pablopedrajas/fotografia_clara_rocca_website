@@ -49,11 +49,12 @@ export const especialidades: Especialidad[] = [
     portada: 'boda-beso-arco.jpg',
     resumen: 'Vuestro día contado de principio a fin, sin poses forzadas.',
     descripcion:
-      'Clara Rocca, fotógrafa de bodas y modelo profesional. Reportajes naturales para parejas que no se sienten cómodas delante de una cámara.',
+      'Fotógrafa de bodas en la playa y en la ciudad. Mira una boda real entera, de los preparativos a la foto de familia, y pide disponibilidad para tu fecha.',
     entradilla:
       'La mayoría de las parejas nunca se han puesto delante de una cámara profesional. Clara sí: es modelo profesional y sabe cómo haceros olvidar que está ahí.',
     parrafos: [
-      'Una boda pasa deprisa. Clara la cuenta entera: los preparativos, la ceremonia, las miradas que nadie más ve y la fiesta hasta el final. Trabaja con discreción durante los momentos importantes y dirige con calma cuando toca hacer los retratos de pareja.',
+      'Una boda pasa deprisa. Clara la cuenta entera: los botones del vestido, los nervios de la espera, la llegada, los votos, los abrazos y la última foto de familia. Trabaja con discreción durante los momentos importantes y dirige con calma cuando toca hacer los retratos de pareja.',
+      'Más abajo tienes una boda real en la playa contada así, con la hoja de contactos completa del día: 230 fotos editadas, en el orden en que se hicieron, para que veas lo que de verdad recibe una pareja y no solo cinco fotos escogidas.',
       'Su experiencia como modelo se nota en esos minutos de retrato: os dice dónde mirar, qué hacer con las manos y cómo colocaros para que la luz os favorezca, sin que parezca una sesión de estudio.',
     ],
     pasos: [
@@ -66,6 +67,21 @@ export const especialidades: Especialidad[] = [
         pregunta: '¿Y si no nos gusta posar?',
         respuesta:
           'Es lo más habitual y no es un problema. Clara ha estado al otro lado de la cámara y sabe guiaros con indicaciones sencillas. La mayor parte del reportaje se hace sin que tengáis que posar.',
+      },
+      {
+        pregunta: '¿Hace bodas en la playa?',
+        respuesta:
+          'Sí. En esta página puedes ver una boda celebrada en una cala, contada de principio a fin: los preparativos, la ceremonia frente al mar y los retratos de pareja en la orilla.',
+      },
+      {
+        pregunta: '¿Las fotos se entregan en color o en blanco y negro?',
+        respuesta:
+          'Clara edita el reportaje en color y, cuando una foto lo pide, prepara también su versión en blanco y negro. Más arriba tienes un ejemplo para comparar las dos.',
+      },
+      {
+        pregunta: '¿Puedo ver una boda completa y no solo una selección?',
+        respuesta:
+          'Sí. La hoja de contactos de esta página muestra las 230 fotos editadas de una misma boda, en orden. Las marcadas en rojo son las que se ven en grande en el apartado «momento a momento».',
       },
       {
         pregunta: '¿Cómo reservamos la fecha?',

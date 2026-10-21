@@ -8,6 +8,7 @@ import Contacto from '../components/Contacto.astro';
 import { sitio } from '../config/sitio';
 import { especialidades, type Especialidad } from '../config/especialidades';
 import { cargarFotos } from '../lib/fotos';
+import { idNegocio } from '../lib/negocio';
 
 export function getStaticPaths() {
   return especialidades.map((e) => ({ params: { especialidad: e.slug }, props: { e } }));
@@ -31,7 +32,8 @@ const jsonld: object[] = [
     name: h1,
     serviceType: e.busqueda,
     description: descripcion,
-    provider: { '@type': 'Person', name: sitio.nombre, jobTitle: ['Fotógrafa', 'Modelo'] },
+    provider: { '@id': idNegocio },
+    ...(sitio.url && fotos.length > 0 && { image: fotos.slice(0, 8).map((f) => new URL(f.grande, sitio.url).href) }),
     ...(ciudad && { areaServed: { '@type': 'City', name: ciudad } }),
     ...(urlPagina && { url: urlPagina }),
   },
@@ -57,7 +59,7 @@ if (sitio.url) {
 }
 ---
 
-<Base titulo={titulo} descripcion={descripcion} ogFoto={fotos[0]} jsonld={jsonld} hayTrabajo={todas.length > 0}>
+<Base titulo={titulo} descripcion={descripcion} ogFoto={fotos.find((f) => f.archivo === e.portada) ?? fotos.find((f) => f.seleccionada) ?? fotos[0]} jsonld={jsonld} hayTrabajo={todas.length > 0}>
   <header class="cabecera">
     <p class="migas"><a href={ruta('/')}>{sitio.nombre}</a> <span aria-hidden="true">/</span> {e.nombre}</p>
     <h1>{h1}</h1>
@@ -66,7 +68,7 @@ if (sitio.url) {
 
   <Tira fotos={fotos} portada={e.portada} />
 
-  <section class="cuerpo" aria-label={`Cómo trabaja Clara en ${e.nombre.toLowerCase()}`}>
+  <section class="cuerpo" id="como-trabaja" aria-label={`Cómo trabaja Clara en ${e.nombre.toLowerCase()}`}>
     <div class="parrafos">
       {e.parrafos.map((p) => <p>{p}</p>)}
     </div>
@@ -92,7 +94,7 @@ if (sitio.url) {
     <Trabajo fotos={fotos} titulo={e.nombre} />
   )}
 
-  <section class="preguntas" aria-labelledby="t-preguntas">
+  <section class="preguntas" id="preguntas" aria-labelledby="t-preguntas">
     <h2 class="titulo-seccion" id="t-preguntas">Preguntas frecuentes</h2>
     <div class="lista">
       {e.preguntas.map((p, i) => (

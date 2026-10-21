@@ -59,7 +59,7 @@ const trazos = [
 ];
 ---
 
-<section class="hoja-boda" aria-labelledby="t-hoja-boda" style={`--hoja:url(${hojaWebp.src});--hoja-g:url(${hojaWebpG.src})`}>
+<section class="hoja-boda" id="boda-real" aria-labelledby="t-hoja-boda" style={`--hoja:url(${hojaWebp.src});--hoja-g:url(${hojaWebpG.src})`}>
   <div class="hoja-cab">
     <h2 id="t-hoja-boda">Una boda, de principio a fin</h2>
     <p>
@@ -106,7 +106,7 @@ const trazos = [
   </div>
 </section>
 
-<section class="carrete" aria-labelledby="t-carrete" data-carrete>
+<section class="carrete" id="momentos" aria-labelledby="t-carrete" data-carrete>
   <div class="carrete-fijo">
     <header class="carrete-cab">
       <h2 id="t-carrete" class="oculto">El día, momento a momento</h2>
@@ -149,7 +149,7 @@ const trazos = [
 </section>
 
 {color && (
-  <section class="revelado" aria-labelledby="t-revelado">
+  <section class="revelado" id="color-o-blanco-y-negro" aria-labelledby="t-revelado">
     <div class="revelado-texto">
       <h2 id="t-revelado">Color o blanco y negro</h2>
       <p>

@@ -43,8 +43,10 @@ export interface Foto {
   ancho: number;
   alto: number;
   vertical: boolean;
-  /** WebP pequeño para miniaturas y la hoja de contactos */
+  /** WebP pequeño para miniaturas */
   mini: string;
+  /** WebP muy ligero para los fotogramas de las hojas de contactos */
+  micro: string;
   srcset: string;
   grande: string;
 }
@@ -69,7 +71,8 @@ export async function cargarFotos(): Promise<Foto[]> {
       const img = mod.default;
       const anchos = ANCHOS.filter((w) => w < img.width).concat(img.width).slice(0, 4);
 
-      const [mini, ...variantes] = await Promise.all([
+      const [micro, mini, ...variantes] = await Promise.all([
+        getImage({ src: img, width: Math.min(img.height > img.width ? 300 : 360, img.width), format: 'webp', quality: 62 }),
         getImage({ src: img, width: Math.min(640, img.width), format: 'webp', quality: 72 }),
         ...anchos.map((w) => getImage({ src: img, width: w, format: 'webp', quality: 82 })),
       ]);
@@ -88,6 +91,7 @@ export async function cargarFotos(): Promise<Foto[]> {
         alto: img.height,
         vertical: img.height > img.width,
         mini: mini.src,
+        micro: micro.src,
         srcset: variantes.map((v, k) => `${v.src} ${anchos[k]}w`).join(', '),
         grande: variantes[variantes.length - 1].src,
       };
