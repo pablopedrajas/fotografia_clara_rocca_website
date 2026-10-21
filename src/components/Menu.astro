@@ -136,6 +136,7 @@ const { email, instagram } = sitio.contacto;
   }
 
   .enlace, .abrir {
+    display: inline-block;
     font: 500 .7rem/1 var(--sans);
     letter-spacing: .22em;
     text-transform: uppercase;
@@ -160,7 +161,7 @@ const { email, instagram } = sitio.contacto;
   .reservar:hover { background: var(--grafito); color: var(--papel); border-color: var(--grafito); }
 
   /* Desplegable de bodas */
-  .bodas-desp { position: relative; }
+  .bodas-desp { position: relative; display: flex; align-items: center; }
   .desplegable {
     position: absolute; left: -1.25rem; top: 100%;
     min-width: 15rem;
