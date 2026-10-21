@@ -50,8 +50,6 @@ const hayEmail = !!sitio.contacto.email;
     />
   </div>
 
-  <span class="marco" aria-hidden="true"></span>
-
   <div class="arriba">
     <h1 id="t-heroe">
       <span class="oculto">{sitio.nombre}, </span>Fotógrafa de bodas{ciudad && ` en ${ciudad}`}
@@ -109,14 +107,6 @@ const hayEmail = !!sitio.contacto.email;
     text-shadow: 0 4px 40px rgba(0, 0, 0, .18);
   }
 
-  /* Marco fino, como el paspartú de una lámina */
-  .marco {
-    position: absolute;
-    inset: clamp(.75rem, 1.6vw, 1.5rem);
-    border: 1px solid rgba(255, 255, 255, .45);
-    pointer-events: none;
-  }
-
   .arriba {
     position: absolute; left: 0; right: 0; top: clamp(6.5rem, 15vh, 9rem);
     text-align: center;
@@ -128,6 +118,7 @@ const hayEmail = !!sitio.contacto.email;
     letter-spacing: .36em;
     padding-left: .36em;
     text-transform: uppercase;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, .45);
   }
 
   .abajo {
