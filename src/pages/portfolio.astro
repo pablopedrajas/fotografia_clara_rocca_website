@@ -4,13 +4,13 @@ import Cabecera from '../components/Cabecera.astro';
 import Trabajo from '../components/Trabajo.astro';
 import Contacto from '../components/Contacto.astro';
 import { sitio } from '../config/sitio';
-import { cargarFotos } from '../lib/fotos';
+import { cargarFotos, sinModelo } from '../lib/fotos';
 import { migas, pagina } from '../lib/negocio';
 
-const fotos = await cargarFotos();
+const fotos = sinModelo(await cargarFotos());
 const { ciudad } = sitio.contacto;
 const titulo = `Portfolio de fotografía · ${sitio.nombre}, fotógrafa en ${ciudad}`;
-const descripcion = `Portfolio de ${sitio.nombre}: bodas, viajes, paisaje, arquitectura, retrato, gastronomía y campañas de moda. Fotógrafa y modelo en ${ciudad}.`;
+const descripcion = `Portfolio de ${sitio.nombre}: bodas, viajes, paisaje, arquitectura, retrato y gastronomía. Fotógrafa y modelo en ${ciudad}.`;
 const jsonld = [
   pagina('CollectionPage', `Portfolio de ${sitio.nombre}`, '/portfolio/', {
     ...(sitio.url && { image: fotos.slice(0, 12).map((f) => new URL(f.grande, sitio.url).href) }),

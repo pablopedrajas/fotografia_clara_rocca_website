@@ -186,26 +186,25 @@ export const especialidades: Especialidad[] = [
     ],
   },
   {
-    slug: 'modelo-para-marcas',
-    nombre: 'Modelo para marcas',
-    busqueda: 'Modelo para marcas',
-    categorias: ['Modelo', 'Gastronomía'],
-    portada: 'modelo-campana-sandalias-playa.jpg',
-    resumen: 'Campañas de moda, producto y redes, delante o detrás de la cámara.',
+    slug: 'book-de-modelo',
+    nombre: 'Book de modelo',
+    busqueda: 'Book de modelo',
+    categorias: ['Book de modelo', 'Modelo'],
+    portada: 'modelo-estudio-body-negro.jpg',
+    resumen: 'El trabajo de Clara como modelo y books para quien empieza.',
     descripcion:
-      'Clara Rocca, modelo con más de diez años en el sector y fotógrafa, para campañas de moda, catálogos, producto y contenido de marca.',
+      'El book de Clara Rocca como modelo: campañas de moda, baño y calzado. Disponible para marcas y también hace books para modelos que empiezan.',
     entradilla:
-      'Más de diez años posando para marcas. Clara sabe lo que necesita una campaña porque la ha vivido desde los dos lados de la cámara.',
+      'Más de diez años delante de la cámara. Aquí está el trabajo de Clara como modelo: campañas en estudio y en exteriores para moda, baño y calzado.',
     parrafos: [
-      'Como modelo, Clara trabaja en campañas de moda, catálogos y contenido para redes. Llega a la sesión sabiendo moverse, cambiar de pose entre disparo y disparo y sacar partido a la ropa o al producto, que es lo que hace que una jornada de estudio rinda.',
-      'Como fotógrafa, hace sesiones para marcas y negocios: producto, gastronomía, espacios y retratos del equipo. Estudió Diseño Gráfico, así que piensa cada foto según dónde se va a usar: la web, una ficha de producto, un cartel o una publicación en Instagram.',
-      'Puedes contar con ella para una cosa o para la otra. Cuéntale qué quieres comunicar y te propondrá cómo enfocarlo.',
+      'Clara trabaja como modelo en campañas de moda, catálogos y contenido para redes. Llega a la sesión sabiendo moverse, cambiar de pose entre disparo y disparo y sacar partido a la ropa o al producto, que es lo que hace que una jornada de estudio rinda.',
+      'Si tienes una marca y buscas modelo para una campaña, escríbele con la fecha, el tipo de sesión y el uso que tendrán las fotos.',
+      'También hace books para quien empieza: como modelo sabe qué fotos tiene que tener un book y te enseña a posar durante la propia sesión.',
     ],
     pasos: [
-      { titulo: 'Le cuentas el proyecto', texto: 'Qué marca o producto es, dónde se van a usar las fotos y en qué fechas.' },
-      { titulo: 'Propuesta', texto: 'Clara te responde con disponibilidad, enfoque y presupuesto, ya sea como modelo o como fotógrafa.' },
-      { titulo: 'La sesión', texto: 'En estudio o en exteriores. Si posa, trabaja con la dirección de tu equipo; si fotografía, dirige ella la sesión.' },
-      { titulo: 'Las fotos', texto: 'Si la sesión la fotografía ella, recibes las fotos editadas y adaptadas a los formatos que vayas a usar.' },
+      { titulo: 'Le cuentas el proyecto', texto: 'Una campaña para tu marca o un book para empezar como modelo: qué necesitas, para qué y en qué fechas.' },
+      { titulo: 'Propuesta', texto: 'Clara te responde con disponibilidad, enfoque y presupuesto.' },
+      { titulo: 'La sesión', texto: 'En estudio o en exteriores. En una campaña trabaja con la dirección de tu equipo; en un book te dirige ella foto a foto.' },
     ],
     preguntas: [
       {
@@ -214,45 +213,14 @@ export const especialidades: Especialidad[] = [
           'Sí. Lleva más de diez años en el sector como modelo, sobre todo en moda. Escríbele con la fecha, el tipo de campaña y el uso que tendrán las fotos.',
       },
       {
-        pregunta: '¿También hace fotos de producto o para restaurantes?',
-        respuesta: 'Sí. Hace sesiones para marcas y negocios: producto, platos, espacios y retratos para la web o las redes sociales.',
-      },
-      {
-        pregunta: '¿Cómo pido presupuesto?',
-        respuesta:
-          'Escribe a Clara contando qué marca es, si necesitas modelo o fotógrafa y para cuándo. Te responderá con disponibilidad y presupuesto.',
-      },
-    ],
-  },
-  {
-    slug: 'book-de-modelo',
-    nombre: 'Book de modelo',
-    busqueda: 'Book de modelo',
-    categorias: ['Book de modelo', 'Modelo'],
-    portada: 'modelo-estudio-body-negro.jpg',
-    resumen: 'Un book hecho por alguien que también trabaja como modelo.',
-    descripcion:
-      'Book de fotos para modelos con Clara Rocca, fotógrafa y modelo profesional con más de diez años de experiencia en el sector.',
-    entradilla:
-      'Clara también trabaja como modelo. Sabe qué fotos tiene que tener un book y cómo moverse delante de la cámara para conseguirlas.',
-    parrafos: [
-      'Un book necesita variedad: retratos limpios, cuerpo entero, distintos planos y estilos. Clara planifica la sesión para cubrir todo lo necesario sin repetir fotos parecidas.',
-      'Si estás empezando, te enseña a posar durante la propia sesión: dónde poner el peso, cómo colocar las manos y cómo cambiar de expresión entre disparo y disparo. Es la parte que más agradecen quienes nunca han trabajado con un fotógrafo.',
-    ],
-    pasos: [
-      { titulo: 'Preparáis la sesión', texto: 'Habláis de para qué es el book, qué estilos quieres mostrar y qué ropa llevar.' },
-      { titulo: 'La sesión', texto: 'Clara te dirige foto a foto y te enseña a posar mientras trabajáis.' },
-      { titulo: 'La entrega', texto: 'Recibes las fotos seleccionadas y editadas, listas para enviar a agencias o para tus redes.' },
-    ],
-    preguntas: [
-      {
-        pregunta: '¿Necesito experiencia como modelo?',
+        pregunta: '¿Necesito experiencia para hacer un book?',
         respuesta:
           'No. Muchas personas hacen su primer book con Clara precisamente porque, al ser modelo, sabe enseñar a posar desde cero.',
       },
       {
-        pregunta: '¿Cómo reservo la sesión?',
-        respuesta: 'Escribe a Clara contándole para qué necesitas el book y te responderá con disponibilidad y presupuesto.',
+        pregunta: '¿Cómo pido presupuesto?',
+        respuesta:
+          'Escribe a Clara contando si buscas modelo para una campaña o un book, y para cuándo. Te responderá con disponibilidad y presupuesto.',
       },
     ],
   },

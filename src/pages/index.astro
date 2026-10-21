@@ -2,12 +2,12 @@
 import Base from '../layouts/Base.astro';
 import { ruta } from '../lib/ruta';
 import { sitio } from '../config/sitio';
-import { cargarFotos, type Foto } from '../lib/fotos';
+import { cargarFotos, sinModelo, type Foto } from '../lib/fotos';
 import Portada from '../components/Portada.astro';
 import Especialidades from '../components/Especialidades.astro';
 import Contacto from '../components/Contacto.astro';
 
-const fotos = await cargarFotos();
+const fotos = sinModelo(await cargarFotos());
 const f = (a: string) => fotos.find((x) => x.archivo === a);
 const { ciudad } = sitio.contacto;
 const titulo = `${sitio.nombre} · Fotografía de bodas en ${ciudad || 'España'}`;
@@ -15,7 +15,7 @@ const descripcion = `Fotógrafa de bodas en ${ciudad}: bodas reales contadas con
 
 const intro = { grande: f('boda-novia-ventana.jpg'), pequena: f('boda-anillos-manos.jpg') };
 const boda = f('boda-novios-risas.jpg');
-const lados = { izq: f('reportaje-artesana-fieltro.jpg'), centro: f('modelo-campana-moda-sentada.jpg'), der: f('salzburgo-cupula-catedral.jpg') };
+const lados = { izq: f('boda-preparativos-puno-camisa.jpg'), centro: f('boda-novios-sentados-mar.jpg'), der: f('boda-cola-vestido-arena.jpg') };
 const banda = [f('boda-novios-espaldas-mar.jpg'), f('viena-iglesia-san-pedro.jpg'), f('boda-novia-caricia.jpg')].filter((x): x is Foto => !!x);
 
 const img = (foto: Foto | undefined, sizes: string) =>
@@ -63,16 +63,19 @@ const iDer = img(lados.der, '(max-width: 800px) 40vw, 16vw');
     </div>
   </section>
 
-  <Especialidades fotos={fotos} excluir={['bodas']} />
+  <Especialidades fotos={fotos} />
 
   <!-- Los dos lados -->
   <section class="lados" aria-labelledby="t-lados">
-    <h2 id="t-lados" class="lados-titulo revela"><span>Delante</span><span>y detrás</span></h2>
+    <h2 id="t-lados" class="lados-titulo revela"><span>Sin poses</span><span>forzadas</span></h2>
     {iIzq && <img {...iIzq} class="lados-izq revela" loading="lazy" decoding="async" />}
     {iCentro && <img {...iCentro} class="lados-centro revela" loading="lazy" decoding="async" />}
     {iDer && <img {...iDer} class="lados-der revela" loading="lazy" decoding="async" />}
     <div class="lados-texto revela">
-      <p>{sitio.sobre[0]}</p>
+      <p>
+        Clara trabaja con discreción mientras pasan las cosas importantes y dirige con calma cuando toca hacer los
+        retratos: dónde mirar, qué hacer con las manos y cómo colocaros para que la luz os favorezca.
+      </p>
       <a class="enlace-linea" href={ruta('/sobre-clara/')}>Sobre Clara</a>
     </div>
   </section>

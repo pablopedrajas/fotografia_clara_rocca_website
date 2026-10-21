@@ -102,3 +102,6 @@ export async function cargarFotos(): Promise<Foto[]> {
   cache = lista.map(({ orden, ...f }, i) => ({ ...f, id: `f${i}` }));
   return cache;
 }
+
+/** Las fotos de Clara como modelo solo se enseñan en su página de book, nunca mezcladas con su trabajo */
+export const sinModelo = (fotos: Foto[]) => fotos.filter((f) => f.categoria !== 'Modelo');

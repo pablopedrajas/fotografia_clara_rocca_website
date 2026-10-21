@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/modelo-para-marcas", "destination": "/book-de-modelo/", "permanent": true },
+    { "source": "/modelo-para-marcas/", "destination": "/book-de-modelo/", "permanent": true }
+  ]
+}

@@ -5,10 +5,10 @@ import DosLados from '../components/DosLados.astro';
 import Especialidades from '../components/Especialidades.astro';
 import Contacto from '../components/Contacto.astro';
 import { sitio } from '../config/sitio';
-import { cargarFotos } from '../lib/fotos';
+import { cargarFotos, sinModelo } from '../lib/fotos';
 import { migas, pagina, idPersona } from '../lib/negocio';
 
-const fotos = await cargarFotos();
+const fotos = sinModelo(await cargarFotos());
 const { ciudad } = sitio.contacto;
 const titulo = `Sobre ${sitio.nombre} · Fotógrafa y modelo en ${ciudad}`;
 const descripcion = `${sitio.nombre} lleva más de diez años en el sector como modelo y cinco como fotógrafa. Estudió Diseño Gráfico y trabaja en ${ciudad}.`;
@@ -18,12 +18,12 @@ const jsonld = [
 ].filter((d) => d !== null);
 ---
 
-<Base titulo={titulo} descripcion={descripcion} ogFoto={fotos.find((f) => f.archivo === 'modelo-campana-moda-sentada.jpg')} jsonld={jsonld} hayTrabajo>
+<Base titulo={titulo} descripcion={descripcion} ogFoto={fotos.find((f) => f.archivo === 'boda-novios-corriendo-cesped.jpg')} jsonld={jsonld} hayTrabajo>
   <Cabecera
     titulo={`Sobre ${sitio.nombre}`}
     actual="Sobre Clara"
     entradilla={`Fotógrafa y modelo en ${ciudad}. Más de diez años delante de la cámara y cinco detrás.`}
-    fotos={[fotos.find((f) => f.archivo === 'modelo-campana-moda-raqueta.jpg'), fotos.find((f) => f.archivo === 'londres-noria-farolas.jpg')]}
+    fotos={[fotos.find((f) => f.archivo === 'boda-novia-ventana.jpg'), fotos.find((f) => f.archivo === 'londres-noria-farolas.jpg')]}
     fotosEnMovil
   />
   <DosLados fotos={fotos} />

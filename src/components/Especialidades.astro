@@ -31,7 +31,7 @@ const sinFoto = lista.filter((x) => !x.foto);
     <h2 class="titulo-seccion" id="t-especialidades">{titulo}</h2>
   </header>
 
-  <ul class="tarjetas" style={`--n:${Math.min(conFoto.length, 4)}`}>
+  <ul class:list={['tarjetas', { pocas: conFoto.length <= 2 }]} style={`--n:${Math.min(conFoto.length, 4)}`}>
     {conFoto.map(({ e, foto }, i) => (
       <li class="revela" style={`transition-delay:${i * 0.12}s`}>
         <a href={ruta(`/${e.slug}/`)}>
@@ -76,6 +76,7 @@ const sinFoto = lista.filter((x) => !x.foto);
     gap: clamp(1.5rem, 3.5vw, 3.5rem);
     max-width: 100rem;
   }
+  .tarjetas.pocas { max-width: 64rem; }
   /* Ritmo editorial: las tarjetas pares bajan un poco */
   .tarjetas li:nth-child(even) { margin-top: clamp(0rem, 6vw, 6rem); }
   .tarjetas a { display: grid; gap: .9rem; text-decoration: none; color: inherit; }
