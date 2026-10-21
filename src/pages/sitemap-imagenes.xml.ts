@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { sitio } from '../config/sitio';
 import { especialidades } from '../config/especialidades';
-import { cargarFotos, sinModelo } from '../lib/fotos';
+import { cargarFotos, sinModelo, retratoDeClara } from '../lib/fotos';
 
 /** Sitemap de imágenes: ayuda a que las fotos de Clara aparezcan en Google Imágenes. */
 const escapar = (t: string) =>
@@ -14,6 +14,7 @@ export const GET: APIRoute = async () => {
 
   const paginas = [
     { loc: abs('/portfolio/'), fotos: sinModelo(fotos) },
+    { loc: abs('/sobre-clara/'), fotos: [retratoDeClara(fotos)].filter((f) => f !== undefined) },
     ...especialidades.map((e) => ({ loc: abs(`/${e.slug}/`), fotos: fotos.filter((f) => e.categorias.includes(f.categoria)) })),
   ];
 

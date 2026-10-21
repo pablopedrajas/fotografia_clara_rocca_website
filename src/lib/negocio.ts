@@ -9,7 +9,7 @@ export const idPersona = sitio.url ? `${sitio.url}/#clara` : '#clara';
  * Datos de negocio local para Google (fotógrafa en una ciudad concreta).
  * Solo incluye lo que está en sitio.ts: nada inventado.
  */
-export function negocio() {
+export function negocio(retrato?: string) {
   const { email, telefono, instagram, ciudad } = sitio.contacto;
   return {
     '@context': 'https://schema.org',
@@ -47,6 +47,7 @@ export function negocio() {
         '@id': idPersona,
         name: sitio.nombre,
         jobTitle: ['Fotógrafa', 'Modelo'],
+        ...(retrato && sitio.url && { image: new URL(retrato, sitio.url).href }),
         worksFor: { '@id': idNegocio },
         ...(instagram && { sameAs: [`https://www.instagram.com/${instagram}/`] }),
       },

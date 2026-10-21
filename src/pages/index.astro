@@ -2,19 +2,20 @@
 import Base from '../layouts/Base.astro';
 import { ruta } from '../lib/ruta';
 import { sitio } from '../config/sitio';
-import { cargarFotos, sinModelo, type Foto } from '../lib/fotos';
+import { cargarFotos, sinModelo, retratoDeClara, type Foto } from '../lib/fotos';
 import Portada from '../components/Portada.astro';
 import Especialidades from '../components/Especialidades.astro';
 import Contacto from '../components/Contacto.astro';
 
-const fotos = sinModelo(await cargarFotos());
+const todas = await cargarFotos();
+const fotos = sinModelo(todas);
 const f = (a: string) => fotos.find((x) => x.archivo === a);
 const { ciudad } = sitio.contacto;
 const titulo = `${sitio.nombre} · Fotografía de bodas en ${ciudad || 'España'}`;
 const descripcion = `Fotógrafa de bodas en ${ciudad}: bodas reales contadas con mirada de revista, de los preparativos a la fiesta. También bautizos, comuniones, book y marcas.`;
 
 // La selección de Clara para la portada
-const intro = { grande: f('boda-novios-retrato-rocas.jpg'), pequena: f('boda-anillos-manos.jpg') };
+const intro = { grande: retratoDeClara(todas) ?? f('boda-novios-retrato-rocas.jpg'), pequena: f('boda-anillos-manos.jpg') };
 const plano = f('boda-arco-cala-sillas.jpg');
 const boda = f('boda-novia-nino-sofa.jpg');
 const lados = { izq: f('boda-vestido-percha-bn.jpg'), centro: f('boda-primera-mirada-bn.jpg'), der: f('boda-novia-orilla-cala.jpg') };
@@ -38,10 +39,11 @@ const iDer = img(lados.der, '(max-width: 800px) 40vw, 16vw');
     {iIntroG && <img {...iIntroG} class="intro-grande revela" loading="lazy" decoding="async" />}
     <div class="intro-texto revela">
       <span class="antetitulo">Fotógrafa de bodas en {ciudad}</span>
-      <h2 id="t-intro" class="intro-titulo">Fotos naturales, con la luz y la calma de una revista</h2>
+      <h2 id="t-intro" class="intro-titulo">Hola, soy Clara</h2>
       <p>
-        Bodas en la playa y en la ciudad. Clara lleva más de diez años en el sector y sabe lo que se siente delante
-        de la cámara: por eso consigue que estéis cómodos y que las fotos se parezcan a vosotros.
+        Fotografío bodas en la playa y en la ciudad. Llevo más de diez años en el sector y sé lo que se siente delante
+        de la cámara: por eso consigo que estéis cómodos y que las fotos se parezcan a vosotros, con la luz y la calma
+        de una revista.
       </p>
       <a class="enlace-linea" href={ruta('/sobre-clara/')}>Conoce a Clara</a>
     </div>

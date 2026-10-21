@@ -103,5 +103,11 @@ export async function cargarFotos(): Promise<Foto[]> {
   return cache;
 }
 
-/** Las fotos de Clara como modelo solo se enseñan en su página de book, nunca mezcladas con su trabajo */
-export const sinModelo = (fotos: Foto[]) => fotos.filter((f) => f.categoria !== 'Modelo');
+/**
+ * Solo el trabajo de Clara: fuera las fotos en las que posa ella (su book de modelo
+ * y su retrato de presentación, que se usan aparte en sus propios sitios).
+ */
+export const sinModelo = (fotos: Foto[]) => fotos.filter((f) => f.categoria !== 'Modelo' && f.categoria !== 'Presentación');
+
+/** Retrato de presentación de Clara */
+export const retratoDeClara = (fotos: Foto[]) => fotos.find((f) => f.categoria === 'Presentación');

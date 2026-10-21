@@ -5,10 +5,11 @@ import DosLados from '../components/DosLados.astro';
 import Especialidades from '../components/Especialidades.astro';
 import Contacto from '../components/Contacto.astro';
 import { sitio } from '../config/sitio';
-import { cargarFotos, sinModelo } from '../lib/fotos';
+import { cargarFotos, sinModelo, retratoDeClara } from '../lib/fotos';
 import { migas, pagina, idPersona } from '../lib/negocio';
 
-const fotos = sinModelo(await cargarFotos());
+const todas = await cargarFotos();
+const fotos = sinModelo(todas);
 const { ciudad } = sitio.contacto;
 const titulo = `Sobre ${sitio.nombre} · Fotógrafa y modelo en ${ciudad}`;
 const descripcion = `${sitio.nombre} lleva más de diez años en el sector como modelo y cinco como fotógrafa. Estudió Diseño Gráfico y trabaja en ${ciudad}.`;
@@ -23,7 +24,7 @@ const jsonld = [
     titulo={`Sobre ${sitio.nombre}`}
     actual="Sobre Clara"
     entradilla={`Fotógrafa y modelo en ${ciudad}. Más de diez años delante de la cámara y cinco detrás.`}
-    fotos={[fotos.find((f) => f.archivo === 'boda-novia-ventana.jpg'), fotos.find((f) => f.archivo === 'londres-noria-farolas.jpg')]}
+    fotos={[retratoDeClara(todas) ?? fotos.find((f) => f.archivo === 'boda-novia-ventana.jpg'), fotos.find((f) => f.archivo === 'boda-anillos-manos.jpg')]}
     fotosEnMovil
   />
   <DosLados fotos={fotos} />

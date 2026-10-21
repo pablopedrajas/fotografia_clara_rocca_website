@@ -10,6 +10,7 @@ import { especialidades } from '../config/especialidades';
 import type { Foto } from '../lib/fotos';
 import Menu from '../components/Menu.astro';
 import { negocio } from '../lib/negocio';
+import { cargarFotos, retratoDeClara } from '../lib/fotos';
 
 interface Props {
   titulo: string;
@@ -28,7 +29,8 @@ const hayContacto = email || telefono || instagram;
 const canonica = sitio.url ? new URL(Astro.url.pathname, sitio.url).href : undefined;
 // Las fotos verticales se recortan mal en las tarjetas al compartir: en ese caso, imagen apaisada general
 const ogImagen = sitio.url ? new URL(ogFoto && !ogFoto.vertical ? ogFoto.grande : '/og.jpg', sitio.url).href : undefined;
-const datos = [negocio(), ...jsonld];
+const retrato = retratoDeClara(await cargarFotos());
+const datos = [negocio(retrato?.grande), ...jsonld];
 ---
 
 <!doctype html>

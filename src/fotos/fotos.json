@@ -544,5 +544,11 @@
     "categoria": "Bodas",
     "lado": "detras",
     "orden": 54
+  },
+  "clara-rocca-retrato-camara.jpg": {
+    "alt": "Clara Rocca, fotógrafa de bodas en Alicante, con su cámara en la mano, en blanco y negro",
+    "categoria": "Presentación",
+    "lado": "delante",
+    "orden": 999
   }
 }
