@@ -44,7 +44,6 @@ const iDer = img(lados.der, '(max-width: 800px) 40vw, 16vw');
       <a class="enlace-linea" href={ruta('/sobre-clara/')}>Conoce a Clara</a>
     </div>
     {iIntroP && <img {...iIntroP} class="intro-pequena revela" loading="lazy" decoding="async" />}
-    <p class="palabra" aria-hidden="true">Mirar despacio</p>
   </section>
 
   <!-- Bodas -->
@@ -99,29 +98,27 @@ const iDer = img(lados.der, '(max-width: 800px) 40vw, 16vw');
   .intro {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 1fr) minmax(0, 5fr);
-    grid-template-rows: auto auto auto;
-    gap: 0 clamp(1.5rem, 4vw, 4rem);
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    grid-template-rows: auto auto;
+    gap: 0 clamp(2.5rem, 7vw, 8rem);
     padding: clamp(5rem, 11vw, 10rem) var(--margen) clamp(4rem, 8vw, 7rem);
     max-width: 110rem;
     margin: 0 auto;
   }
-  .intro-grande { grid-column: 1; grid-row: 1 / span 3; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; max-width: 34rem; }
-  .intro-texto { grid-column: 3; grid-row: 1; justify-self: end; text-align: right; max-width: 30rem; display: grid; justify-items: end; }
-  .intro-titulo { margin: 0 0 1.4rem; font: 300 clamp(1.7rem, 2.8vw, 2.6rem)/1.2 var(--serif); font-style: italic; }
+  .intro-grande { grid-column: 1; grid-row: 1 / span 2; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  .intro-texto { grid-column: 2; grid-row: 1; align-self: end; max-width: 32rem; display: grid; justify-items: start; padding-bottom: clamp(2rem, 5vw, 4rem); }
+  .intro-titulo { margin: 0 0 1.4rem; font: 300 clamp(1.8rem, 3vw, 2.9rem)/1.2 var(--serif); font-style: italic; }
   .intro-texto p { margin: 0 0 2rem; color: var(--grafito-suave); }
-  .intro-pequena { grid-column: 3; grid-row: 3; justify-self: end; width: min(100%, 22rem); aspect-ratio: 4 / 5; object-fit: cover; margin-top: clamp(2rem, 5vw, 4rem); }
-  .palabra {
-    grid-column: 1 / -1; grid-row: 2;
-    align-self: center;
-    margin: clamp(2rem, 5vw, 4rem) 0;
-    position: relative; z-index: 1;
-    text-align: center;
-    font: 300 clamp(2.6rem, 8.5vw, 9.5rem)/1 var(--serif);
-    letter-spacing: .3em; margin-right: -.3em;
-    text-transform: uppercase;
-    color: var(--grafito);
-    pointer-events: none;
+  /* La foto pequeña se monta sobre el borde de la grande */
+  .intro-pequena {
+    grid-column: 2; grid-row: 2;
+    align-self: end;
+    width: min(70%, 22rem);
+    aspect-ratio: 4 / 5; object-fit: cover;
+    margin-left: calc(-1 * clamp(5rem, 12vw, 13rem));
+    margin-bottom: calc(-1 * clamp(2rem, 5vw, 4rem));
+    outline: clamp(.5rem, 1vw, .9rem) solid var(--papel);
+    position: relative;
   }
 
   /* ── Bodas ── */
@@ -177,10 +174,9 @@ const iDer = img(lados.der, '(max-width: 800px) 40vw, 16vw');
 
   @media (max-width: 800px) {
     .intro { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
-    .intro-texto { grid-column: 1 / -1; grid-row: 1; justify-self: start; text-align: left; justify-items: start; margin-bottom: 2.5rem; }
+    .intro-texto { grid-column: 1 / -1; grid-row: 1; margin-bottom: 1rem; padding-bottom: 1.5rem; }
     .intro-grande { grid-column: 1 / span 2; grid-row: 2; width: 82%; }
-    .palabra { grid-row: 3; font-size: clamp(2rem, 11vw, 3.5rem); letter-spacing: .2em; margin-right: -.2em; }
-    .intro-pequena { grid-column: 2; grid-row: 2; align-self: end; justify-self: end; width: 70%; margin: 0 0 -3rem; }
+    .intro-pequena { grid-column: 2; grid-row: 2; justify-self: end; width: 62%; margin: 0 0 -2.5rem; }
 
     .bodas { grid-template-columns: 1fr; padding: 2rem 0 4rem; }
     .bodas-texto { padding: 0 var(--margen); }
