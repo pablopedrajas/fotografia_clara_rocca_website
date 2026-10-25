@@ -11,6 +11,7 @@ import type { Foto } from '../lib/fotos';
 import Menu from '../components/Menu.astro';
 import { negocio } from '../lib/negocio';
 import { cargarFotos, retratoDeClara } from '../lib/fotos';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   titulo: string;
@@ -109,6 +110,9 @@ const datos = [negocio(retrato?.grande), ...jsonld];
         bloques.forEach((b) => io.observe(b));
       } else bloques.forEach((b) => b.classList.add('visto'));
     </script>
+
+    <!-- Vercel Web Analytics: visitas agregadas, sin cookies -->
+    <Analytics />
   </body>
 </html>
 
