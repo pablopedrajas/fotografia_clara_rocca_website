@@ -9,6 +9,7 @@ import { sitio } from '../config/sitio';
 import { especialidades } from '../config/especialidades';
 import type { Foto } from '../lib/fotos';
 import Menu from '../components/Menu.astro';
+import Analytics from '@vercel/analytics/astro';
 import { negocio } from '../lib/negocio';
 import { cargarFotos, retratoDeClara } from '../lib/fotos';
 
@@ -56,6 +57,8 @@ const datos = [negocio(retrato?.grande), ...jsonld];
     <link rel="icon" href={ruta('/favicon.svg')} type="image/svg+xml" />
     <script is:inline>document.documentElement.classList.add('js');</script>
     {datos.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
+    <!-- Medición de visitas de Vercel (sin cookies) -->
+    <Analytics />
   </head>
   <body>
     <a class="saltar" href="#principal">Saltar al contenido</a>
